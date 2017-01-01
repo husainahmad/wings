@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+
+<struts-config>
+    
+    <form-beans>
+        <form-bean name="monthYearForm" type="com.wings.web.struts.forms.MonthYearForm"/> 
+        <form-bean name="jobsheetForm" type="com.wings.web.struts.forms.JobsheetForm"/>   
+        <form-bean name="jobsheetaiDetailForm" type="com.wings.web.struts.forms.JobsheetaiDetailForm"/>   
+        <form-bean name="jobsheetaiForm" type="com.wings.web.struts.forms.JobsheetaiForm"/>   
+        
+        <form-bean name="jobsheetDynaForm" type="org.apache.struts.action.DynaActionForm">        
+           <form-property
+                name="jobsheetaiDetailForm"
+                type="com.wings.web.struts.forms.JobsheetaiDetailForm"/>    
+           <form-property
+                name="agentfees"
+                type="com.wings.persistence.Agentfee[]"/>    
+           <form-property
+                name="shipperfees"
+                type="com.wings.persistence.Shipperfee[]"/>     
+           <form-property
+                name="billingagent"
+                type="com.wings.persistence.Billingagent[]"/>    
+           <form-property
+                name="billingshipper"
+                type="com.wings.persistence.Billingshipper[]"/>                     
+        </form-bean>
+        
+        <form-bean name="jobsheetaoDynaForm" type="org.apache.struts.action.DynaActionForm">        
+           <form-property
+                name="jobsheetaoDetailForm"
+                type="com.wings.web.struts.forms.JobsheetaoDetailForm"/>    
+           <form-property
+                name="agentfees"
+                type="com.wings.persistence.Agentfee[]"/>    
+           <form-property
+                name="shipperfees"
+                type="com.wings.persistence.Shipperfee[]"/>     
+           <form-property
+                name="billingagent"
+                type="com.wings.persistence.Billingagent[]"/>    
+           <form-property
+                name="billingshipper"
+                type="com.wings.persistence.Billingshipper[]"/>                     
+        </form-bean>
+        
+        <form-bean name="jobsheetsiDynaForm" type="org.apache.struts.action.DynaActionForm">        
+           <form-property
+                name="jobsheetsiDetailForm"
+                type="com.wings.web.struts.forms.JobsheetsiDetailForm"/>    
+           <form-property
+                name="agentfees"
+                type="com.wings.persistence.Agentfee[]"/>    
+           <form-property
+                name="shipperfees"
+                type="com.wings.persistence.Shipperfee[]"/>     
+           <form-property
+                name="billingagent"
+                type="com.wings.persistence.Billingagent[]"/>    
+           <form-property
+                name="billingshipper"
+                type="com.wings.persistence.Billingshipper[]"/>                     
+        </form-bean>
+         <form-bean name="jobsheetsoDynaForm" type="org.apache.struts.action.DynaActionForm">        
+           <form-property
+                name="jobsheetsoDetailForm"
+                type="com.wings.web.struts.forms.JobsheetsoDetailForm"/>    
+           <form-property
+                name="agentfees"
+                type="com.wings.persistence.Agentfee[]"/>    
+           <form-property
+                name="shipperfees"
+                type="com.wings.persistence.Shipperfee[]"/>     
+           <form-property
+                name="billingagent"
+                type="com.wings.persistence.Billingagent[]"/>    
+           <form-property
+                name="billingshipper"
+                type="com.wings.persistence.Billingshipper[]"/>                     
+        </form-bean>
+    </form-beans>
+  <global-forwards>    
+  </global-forwards>    
+  
+    <action-mappings>        
+        <!-- jobsheet AI -->
+        <action path="/jobsheetai" type="com.wings.web.struts.actions.SelectJobsheetaiAction"
+            name="monthYearForm" scope="session" validate="false">
+            <forward name="list" path="/formJobSheetaiIndex.jsp"/>            
+        </action>
+        
+        <action path="/newJobsheetai" type="com.wings.web.struts.actions.NewJobsheetaiAction"
+          name="jobsheetDynaForm" scope="request" validate="false" >       
+            <forward name="input" path="/formJobSheetai.jsp"/>    
+            <forward name="form" path="/formJobSheetai.jsp"/>
+        </action>
+        
+        <action path="/insertJobsheetai" type="com.wings.web.struts.actions.InsertJobsheetaiAction"
+          name="jobsheetDynaForm" scope="request" validate="false">                  
+            <forward name="form" path="/formJobSheetai.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+        
+        <action path="/insertAsNewJobsheetai" type="com.wings.web.struts.actions.InsertAsNewJobsheetaiAction"
+          name="jobsheetDynaForm" scope="request" validate="false">                  
+            <forward name="form" path="/formJobSheetai.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+        
+        <action path="/findJobsheetai" type="com.wings.web.struts.actions.FindJobsheetaiAction"
+          name="jobsheetDynaForm" validate="false" scope="request">                      
+            <forward name="form" path="/formJobSheetai.jsp"/>
+        </action>
+
+        <action path="/copyJobsheetai" type="com.wings.web.struts.actions.CopyJobsheetaiAction"
+          name="jobsheetDynaForm" validate="false" scope="request">
+            <forward name="form" path="/formJobSheetai.jsp"/>
+        </action>
+        
+        <action path="/findAsNewJobsheetai" type="com.wings.web.struts.actions.FindAsNewJobsheetaiAction"
+          name="jobsheetDynaForm" validate="false" scope="request">                      
+            <forward name="input" path="/formJobSheetai.jsp"/>
+            <forward name="form" path="/formJobSheetai.jsp"/>
+        </action>
+        
+        <action path="/updateJobsheetai" type="com.wings.web.struts.actions.UpdateJobsheetaiAction"
+          name="jobsheetDynaForm" scope="request" validate="true" input="/formJobSheetai.jsp">                  
+            <forward name="form" path="/formJobSheetai.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>        
+        
+        <action path="/printJobsheetai" type="com.wings.web.struts.actions.PrintJobsheetaiAction">                              
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+
+        <action path="/printJobsheetaiHeader" type="com.wings.web.struts.actions.PrintJobsheetaiHeaderAction">
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+
+        <action path="/viewJobsheetai" type="com.wings.web.struts.actions.ViewJobsheetaiAction"
+          name="jobsheetDynaForm" validate="false" scope="request">                      
+            <forward name="form" path="/formJobSheetai.jsp"/>
+        </action>
+        
+        <action path="/deleteJobsheetai" type="com.wings.web.struts.actions.DeleteJobsheetaiAction"
+          name="jobsheetDynaForm" validate="false" scope="request">                      
+            <forward name="view" path="/jobsheetai.do"/>
+        </action>
+        
+        <!-- jobsheet AO -->
+        <action path="/jobsheetao" type="com.wings.web.struts.actions.SelectJobsheetaoAction"
+        name="monthYearForm" scope="session" validate="false">
+            <forward name="list" path="/formJobSheetaoIndex.jsp"/>            
+        </action>
+        
+        <action path="/newJobsheetao" type="com.wings.web.struts.actions.NewJobsheetaoAction"
+          name="jobsheetaoDynaForm" scope="request" validate="false" >       
+            <forward name="input" path="/formJobSheetao.jsp"/>    
+            <forward name="form" path="/formJobSheetao.jsp"/>
+        </action>
+        
+        <action path="/insertJobsheetao" type="com.wings.web.struts.actions.InsertJobsheetaoAction"
+          name="jobsheetaoDynaForm" scope="request" validate="false">                  
+            <forward name="form" path="/formJobSheetao.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+        
+        <action path="/insertAsNewJobsheetao" type="com.wings.web.struts.actions.InsertAsNewJobsheetaoAction"
+          name="jobsheetaoDynaForm" scope="request" validate="false">                  
+            <forward name="form" path="/formJobSheetao.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+                
+        <action path="/findJobsheetao" type="com.wings.web.struts.actions.FindJobsheetaoAction"
+          name="jobsheetaoDynaForm" validate="false" scope="request">                      
+            <forward name="form" path="/formJobSheetao.jsp"/>
+        </action>
+
+        <action path="/copyJobsheetao" type="com.wings.web.struts.actions.CopyJobsheetaoAction"
+          name="jobsheetDynaForm" validate="false" scope="request">
+            <forward name="form" path="/formJobSheetao.jsp"/>
+        </action>
+
+        <action path="/findAsNewJobsheetao" type="com.wings.web.struts.actions.FindAsNewJobsheetaoAction"
+          name="jobsheetaoDynaForm" validate="false" scope="request">                      
+            <forward name="input" path="/formJobSheetao.jsp"/>
+            <forward name="form" path="/formJobSheetao.jsp"/>
+        </action>
+        
+        <action path="/updateJobsheetao" type="com.wings.web.struts.actions.UpdateJobsheetaoAction"
+          name="jobsheetaoDynaForm" scope="request" validate="true" input="/formJobSheetao.jsp">                  
+            <forward name="form" path="/formJobSheetao.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+        
+        <action path="/printJobsheetao" type="com.wings.web.struts.actions.PrintJobsheetaoAction">                              
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+
+        <action path="/printJobsheetaoHeader" type="com.wings.web.struts.actions.PrintJobsheetaoHeaderAction">
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+
+        <action path="/viewJobsheetao" type="com.wings.web.struts.actions.ViewJobsheetaoAction"
+          name="jobsheetaoDynaForm" validate="false" scope="request">                      
+            <forward name="form" path="/formJobSheetao.jsp"/>
+        </action>
+        
+        <action path="/deleteJobsheetao" type="com.wings.web.struts.actions.DeleteJobsheetaoAction"
+          name="jobsheetaoDynaForm" validate="false" scope="request">                      
+            <forward name="view" path="/jobsheetao.do"/>
+        </action>
+        
+        <!-- jobsheet SI-->
+        <action path="/jobsheetsi" type="com.wings.web.struts.actions.SelectJobsheetsiAction"
+        name="monthYearForm" scope="session" validate="false">
+            <forward name="list" path="/formJobSheetsiIndex.jsp"/>            
+        </action>
+        
+        <action path="/newJobsheetsi" type="com.wings.web.struts.actions.NewJobsheetsiAction"
+          name="jobsheetsiDynaForm" scope="request" validate="false" >       
+            <forward name="input" path="/formJobSheetsi.jsp"/>    
+            <forward name="form" path="/formJobSheetsi.jsp"/>
+        </action>
+        
+        <action path="/insertJobsheetsi" type="com.wings.web.struts.actions.InsertJobsheetsiAction"
+          name="jobsheetsiDynaForm" scope="request" validate="true" input="/formJobSheetsi.jsp">                  
+            <forward name="form" path="/formJobSheetsi.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+        
+        <action path="/insertAsNewJobsheetsi" type="com.wings.web.struts.actions.InsertAsNewJobsheetsiAction"
+          name="jobsheetsiDynaForm" scope="request" validate="true" input="/formJobSheetsi.jsp">                  
+            <forward name="form" path="/formJobSheetsi.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+        
+        <action path="/findJobsheetsi" type="com.wings.web.struts.actions.FindJobsheetsiAction"
+          name="jobsheetsiDynaForm" validate="false" scope="request">                      
+            <forward name="form" path="/formJobSheetsi.jsp"/>
+        </action>
+
+        <action path="/copyJobsheetsi" type="com.wings.web.struts.actions.CopyJobsheetsiAction"
+          name="jobsheetDynaForm" validate="false" scope="request">
+            <forward name="form" path="/formJobSheetsi.jsp"/>
+        </action>
+
+
+        <action path="/findAsNewJobsheetsi" type="com.wings.web.struts.actions.FindAsNewJobsheetsiAction"
+          name="jobsheetsiDynaForm" validate="false" scope="request">                      
+            <forward name="input" path="/formJobSheetsi.jsp"/>
+            <forward name="form" path="/formJobSheetsi.jsp"/>
+        </action>
+        
+        <action path="/updateJobsheetsi" type="com.wings.web.struts.actions.UpdateJobsheetsiAction"
+          name="jobsheetsiDynaForm" scope="request" validate="true" input="/formJobSheetsi.jsp">                  
+            <forward name="form" path="/formJobSheetsi.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+        
+        <action path="/printJobsheetsi" type="com.wings.web.struts.actions.PrintJobsheetsiAction">                              
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>        
+
+        <action path="/printJobsheetsiHeader" type="com.wings.web.struts.actions.PrintJobsheetsiHeaderAction">
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+
+        <action path="/viewJobsheetsi" type="com.wings.web.struts.actions.ViewJobsheetsiAction"
+          name="jobsheetsiDynaForm" validate="false" scope="request">                      
+            <forward name="form" path="/formJobSheetsi.jsp"/>
+        </action>
+        
+        <action path="/deleteJobsheetsi" type="com.wings.web.struts.actions.DeleteJobsheetsiAction"
+          name="jobsheetsiDynaForm" validate="false" scope="request">                      
+            <forward name="view" path="/jobsheetsi.do"/>
+        </action>
+        
+        <!-- jobsheet SO-->
+        <action path="/jobsheetso" type="com.wings.web.struts.actions.SelectJobsheetsoAction"
+        name="monthYearForm" scope="session" validate="false">
+            <forward name="list" path="/formJobSheetsoIndex.jsp"/>            
+        </action>
+        
+        <action path="/newJobsheetso" type="com.wings.web.struts.actions.NewJobsheetsoAction"
+          name="jobsheetsoDynaForm" scope="request" validate="false" >       
+            <forward name="input" path="/formJobSheetso.jsp"/>    
+            <forward name="form" path="/formJobSheetso.jsp"/>
+        </action>
+        
+        <action path="/insertJobsheetso" type="com.wings.web.struts.actions.InsertJobsheetsoAction"
+          name="jobsheetsoDynaForm" scope="request" validate="true" input="/formJobSheetso.jsp">                  
+            <forward name="form" path="/formJobSheetso.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+        
+        <action path="/insertAsNewJobsheetso" type="com.wings.web.struts.actions.InsertAsNewJobsheetsoAction"
+          name="jobsheetsoDynaForm" scope="request" validate="true" input="/formJobSheetso.jsp">                  
+            <forward name="form" path="/formJobSheetso.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+        
+        <action path="/findJobsheetso" type="com.wings.web.struts.actions.FindJobsheetsoAction"
+          name="jobsheetsoDynaForm" validate="false" scope="request">                      
+            <forward name="form" path="/formJobSheetso.jsp"/>
+        </action>
+
+        <action path="/copyJobsheetso" type="com.wings.web.struts.actions.CopyJobsheetsoAction"
+          name="jobsheetDynaForm" validate="false" scope="request">
+            <forward name="form" path="/formJobSheetso.jsp"/>
+        </action>
+
+        <action path="/findAsNewJobsheetso" type="com.wings.web.struts.actions.FindAsNewJobsheetsoAction"
+          name="jobsheetsoDynaForm" validate="false" scope="request">                      
+            <forward name="input" path="/formJobSheetso.jsp"/>
+            <forward name="form" path="/formJobSheetso.jsp"/>
+        </action>
+        
+        <action path="/updateJobsheetso" type="com.wings.web.struts.actions.UpdateJobsheetsoAction"
+          name="jobsheetsoDynaForm" scope="request" validate="true" input="/formJobSheetso.jsp">                  
+            <forward name="form" path="/formJobSheetso.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+                
+        <action path="/printJobsheetso" type="com.wings.web.struts.actions.PrintJobsheetsoAction">                              
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+
+        <action path="/printJobsheetsoHeader" type="com.wings.web.struts.actions.PrintJobsheetsoHeaderAction">
+            <forward name="view" path="/Close.html"/>
+            <forward name="print" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+
+        <action path="/viewJobsheetso" type="com.wings.web.struts.actions.ViewJobsheetsoAction"
+          name="jobsheetsoDynaForm" validate="false" scope="request">                      
+            <forward name="form" path="/formJobSheetso.jsp"/>
+        </action>
+        
+        <action path="/deleteJobsheetso" type="com.wings.web.struts.actions.DeleteJobsheetsoAction"
+          name="jobsheetsoDynaForm" validate="false" scope="request">                      
+            <forward name="view" path="/jobsheetso.do"/>
+        </action>
+        
+    </action-mappings>    
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+    
+
+    <message-resources parameter="com/wings/struts/JobsheetResource"/>        
+    
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/users/validation.xml"/>
+    </plug-in>
+  
+</struts-config>

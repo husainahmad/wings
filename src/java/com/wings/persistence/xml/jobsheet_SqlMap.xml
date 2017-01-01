@@ -1,0 +1,3378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Jobsheet">
+
+  <typeAlias alias="jobsheet" type="com.wings.persistence.Jobsheet"/>    
+  <typeAlias alias="jobsheetKey" type="com.wings.persistence.JobsheetKey"/>
+  <typeAlias alias="invoiceAIDetail" type="com.wings.persistence.InvoiceAIDetail"/>
+  <typeAlias alias="jobsheetDetail" type="com.wings.persistence.JobsheetDetail"/>
+  <typeAlias alias="jobsheetDetailAO" type="com.wings.persistence.JobsheetDetailAO"/>
+  <typeAlias alias="jobsheetDetailSI" type="com.wings.persistence.JobsheetDetailSI"/>
+  <typeAlias alias="jobsheetDetailSO" type="com.wings.persistence.JobsheetDetailSO"/>
+  <typeAlias alias="taxJobSheetDetail" type="com.wings.persistence.TaxJobSheetDetail"/>
+  <typeAlias alias="detailJobsheet" type="com.wings.persistence.DetailJobsheet"/>
+  <typeAlias alias="consignee" type="com.wings.persistence.Consignee"/>
+  
+  <select id="jobsheet_selectByPrimaryKey" resultClass="jobsheet" parameterClass="com.wings.persistence.JobsheetKey">   
+    select idJobSheet,
+      jobNo,
+      invoiceNoUSD,
+      idShipper,
+      idConsignee,
+      idAgent,
+      idForwarder,
+      qty,
+      weight,
+      volume,
+      qtyDesc,
+      weightDesc,
+      volumeDesc,
+      idJobType,
+      shippeddate,
+      remark,
+      totalBillingIDR,
+      totalBillingUSD,
+      totalExpensesIDR,
+      totalExpensesUSD,
+      invoiceStatus,
+      debitStatus,
+      idTransporter,
+      transportCost,
+      refundIDR,
+      refundUSD,
+      cnNo,
+      depart,
+      cnKurs,
+      debitNo,
+      cmb,
+      creditNoteIDR,
+      creditNoteUSD,
+      jaminan,
+      status,
+      vatIDR,
+      pphIDR,
+      vatUSD,
+      pphUSD,
+      dppIDR,
+      dppUSD 
+    from jobsheet j
+    where j.idJobSheet = #idJobSheet#
+  </select>   
+  
+  <select id="jobsheet_selectByJobNo" resultClass="jobsheet" parameterClass="com.wings.persistence.Jobsheet">   
+    select idJobSheet,
+      jobNo,
+      invoiceNoUSD,
+      idShipper,
+      idConsignee,
+      idAgent,
+      idForwarder,
+      qty,
+      weight,
+      volume,
+      qtyDesc,
+      weightDesc,
+      volumeDesc,
+      idJobType,
+      shippeddate,
+      remark,
+      totalBillingIDR,
+      totalBillingUSD,
+      totalExpensesIDR,      
+      totalExpensesUSD,
+      invoiceStatus,
+      debitStatus,
+      idTransporter,
+      transportCost,
+      refundIDR,
+      refundUSD,      
+      cnNo,
+      depart,
+      cnKurs,
+      debitNo,
+      cmb,
+      creditNoteIDR,
+      creditNoteUSD,
+      jaminan,
+      status,
+      vatIDR,
+      pphIDR,
+      vatUSD,
+      pphUSD,
+      dppIDR,
+      dppUSD
+    from jobsheet j
+    where j.jobNo = #jobNo#
+  </select>   
+  
+  <select id="jobsheet_selectMaxJobNo" resultClass="jobsheet" parameterClass="com.wings.persistence.Jobsheet">   
+    SELECT ifnull(max(convert(substring(jobNo,10,7),UNSIGNED)),0)+1 as jobNo FROM jobsheet
+    where idJobType = #idJobType#
+        and month(shippeddate) = month(#shippeddate#)
+        and year(shippeddate) = year(#shippeddate#)
+  </select>
+  
+  <select id="jobsheet_selectAll" resultClass="jobsheet" parameterClass="com.wings.persistence.JobsheetKey">   
+    select idJobSheet,
+      jobNo,
+      invoiceNoUSD,
+      idShipper,
+      idConsignee,
+      idAgent,
+      idForwarder,
+      qty,
+      weight,
+      volume,
+      qtyDesc,
+      weightDesc,
+      volumeDesc,
+      idJobType,
+      shippeddate,
+      remark,
+      totalBillingIDR,
+      totalBillingUSD,
+      totalExpensesIDR,
+      totalExpensesUSD,
+      invoiceStatus,
+      debitStatus,
+      idTransporter,
+      transportCost,
+      refundIDR,
+      refundUSD,      
+      cnNo,
+      depart,
+      cnKurs,
+      debitNo,
+      cmb,
+      creditNoteIDR,
+      creditNoteUSD,
+      jaminan,
+      status,
+      vatIDR,
+      pphIDR,
+      vatUSD,
+      pphUSD,
+      dppIDR,
+      dppUSD
+    from jobsheet
+  </select>
+  
+  <select id="jobsheet_selectByidJobTypeAI" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">
+    SELECT j.idJobSheet, j.jobNo,ifnull(s.name,'') as idShipper,
+          ifnull(c.name,'') as idConsignee,
+          ifnull(a.name,'') as idAgent,
+        j.qtyDesc, j.weightDesc, 
+        j.volumeDesc, j.idJobType, 
+        j.shippeddate, j.totalBillingIDR, 
+        i.invoiceNumber as invoiceNumber,
+        d.debitNumber as debitNumber 
+    FROM jobsheet j
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet
+    left join debit d
+        on d.idJobSheet = j.idJobSheet,
+    jobsheetai jai
+        <dynamic prepend="WHERE ">
+          <isNotNull property="idJobType">
+             j.idJobType = #idJobType#
+             and j.idJobSheet = jai.idJobSheet
+          </isNotNull>
+          <isNotNull property="month">
+             and month(j.shippeddate) = #month#
+          </isNotNull>
+          <isNotNull property="year">
+             and year(j.shippeddate) = #year#
+          </isNotNull>
+          
+          <isNotNull property="mawb">
+             and jai.mawb like #mawb#
+          </isNotNull>
+
+          <isNotNull property="hawb">
+             and jai.hawb like #hawb#
+          </isNotNull>
+
+          <isNotNull property="flight">
+             and jai.flights like #flight#
+          </isNotNull>
+
+          <isNotNull property="jobNo">
+             and j.jobNo like #jobNo#
+          </isNotNull>
+
+          <isNotNull property="idShipper">
+             and s.name like #idShipper#
+          </isNotNull>
+
+          <isNotNull property="idConsignee">
+             and c.name like #idConsignee#
+          </isNotNull>
+
+          <isNotNull property="idAgent">
+             and a.name like #idAgent#
+          </isNotNull>
+          <isNotNull property="qty">
+             and j.qty = #qty#
+          </isNotNull>
+          
+      </dynamic>
+
+    order by j.jobNo
+  </select>
+
+
+  <select id="jobsheet_selectByidJobTypeAO" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">
+    SELECT j.idJobSheet, j.jobNo, ifnull(s.name,'') as idShipper,
+          ifnull(c.name,'') as idConsignee,
+          ifnull(a.name,'') as idAgent,
+        j.qtyDesc, j.weightDesc,
+        j.volumeDesc, j.idJobType,
+        j.shippeddate, j.totalBillingIDR,
+        i.invoiceNumber as invoiceNumber,
+        d.debitNumber as debitNumber
+    FROM jobsheet j
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+   left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet
+    left join debit d
+        on d.idJobSheet = j.idJobSheet,
+    jobsheetao jao
+        <dynamic prepend="WHERE ">
+          <isNotNull property="idJobType">
+             j.idJobType = #idJobType#
+             and j.idJobSheet = jao.idJobSheet
+          </isNotNull>
+          <isNotNull property="month">
+             and month(j.shippeddate) = #month#
+          </isNotNull>
+          <isNotNull property="year">
+             and year(j.shippeddate) = #year#
+          </isNotNull>
+
+          <isNotNull property="mawb">
+             and jao.mawb like #mawb#
+          </isNotNull>
+
+          <isNotNull property="hawb">
+             and jao.hawb like #hawb#
+          </isNotNull>
+
+          <isNotNull property="flight">
+             and jao.flights like #flight#
+          </isNotNull>
+
+          <isNotNull property="jobNo">
+             and j.jobNo like #jobNo#
+          </isNotNull>
+
+          <isNotNull property="idShipper">
+             and s.name like #idShipper#
+          </isNotNull>
+
+          <isNotNull property="idConsignee">
+             and c.name like #idConsignee#
+          </isNotNull>
+
+          <isNotNull property="idAgent">
+             and a.name like #idAgent#
+          </isNotNull>
+          <isNotNull property="qty">
+             and j.qty = #qty#
+          </isNotNull>
+
+      </dynamic>
+
+    order by j.jobNo
+  </select>
+
+
+  <select id="jobsheet_selectByidJobTypeSI" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">
+    SELECT j.idJobSheet, j.jobNo, ifnull(s.name,'') as idShipper,
+          ifnull(c.name,'') as idConsignee,
+          ifnull(a.name,'') as idAgent,
+        j.qtyDesc, j.weightDesc,
+        j.volumeDesc, j.idJobType,
+        j.shippeddate, j.totalBillingIDR,
+        i.invoiceNumber as invoiceNumber,
+        d.debitNumber as debitNumber
+    FROM jobsheet j
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet
+    left join debit d
+        on d.idJobSheet = j.idJobSheet,
+    jobsheetsi jsi
+    left join consignee sl
+        on sl.idConsignee = jsi.shippingLine
+        <dynamic prepend="WHERE ">
+          <isNotNull property="idJobType">
+             j.idJobType = #idJobType#
+             and j.idJobSheet = jsi.idJobSheet
+          </isNotNull>
+          <isNotNull property="month">
+             and month(j.shippeddate) = #month#
+          </isNotNull>
+          <isNotNull property="year">
+             and year(j.shippeddate) = #year#
+          </isNotNull>
+          
+          <isNotNull property="shippingLine">
+             and sl.name like #shippingLine#
+          </isNotNull>
+
+          <isNotNull property="feederVessel">
+             and jsi.feederVessel like #feederVessel#
+          </isNotNull>
+
+          <isNotNull property="mvessel">
+             and jsi.mvessel like #mvessel#
+          </isNotNull>
+
+          <isNotNull property="termMbl">
+             and jsi.termMbl like #termMbl#
+          </isNotNull>
+
+            <isNotNull property="termHbl">
+             and jsi.termHbl like #termHbl#
+          </isNotNull>
+
+          <isNotNull property="jobNo">
+             and j.jobNo like #jobNo#
+          </isNotNull>
+
+          <isNotNull property="idShipper">
+             and s.name like #idShipper#
+          </isNotNull>
+
+          <isNotNull property="idConsignee">
+             and c.name like #idConsignee#
+          </isNotNull>
+
+          <isNotNull property="idAgent">
+             and a.name like #idAgent#
+          </isNotNull>
+          <isNotNull property="qty">
+             and j.qty = #qty#
+          </isNotNull>
+
+      </dynamic>
+
+    order by j.jobNo
+  </select>
+
+  <select id="jobsheet_selectByidJobTypeSO" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">
+    SELECT j.idJobSheet, j.jobNo,ifnull(s.name,'') as idShipper,
+          ifnull(c.name,'') as idConsignee,
+          ifnull(a.name,'') as idAgent,
+        j.qtyDesc, j.weightDesc,
+        j.volumeDesc, j.idJobType,
+        j.shippeddate, j.totalBillingIDR,
+        i.invoiceNumber as invoiceNumber,
+        d.debitNumber as debitNumber
+    FROM jobsheet j
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet
+    left join debit d
+        on d.idJobSheet = j.idJobSheet,
+    jobsheetso jso
+    left join consignee sl
+        on sl.idConsignee = jso.shippingLine
+
+        <dynamic prepend="WHERE ">
+          <isNotNull property="idJobType">
+             j.idJobType = #idJobType#
+             and j.idJobSheet = jso.idJobSheet
+          </isNotNull>
+          <isNotNull property="month">
+             and month(j.shippeddate) = #month#
+          </isNotNull>
+          <isNotNull property="year">
+             and year(j.shippeddate) = #year#
+          </isNotNull>
+
+          <isNotNull property="shippingLine">
+             and sl.name like #shippingLine#
+          </isNotNull>
+
+          <isNotNull property="feederVessel">
+             and jso.feederVessel like #feederVessel#
+          </isNotNull>
+
+          <isNotNull property="mvessel">
+             and jso.mvessel like #mvessel#
+          </isNotNull>
+
+          <isNotNull property="termMbl">
+             and jso.termMbl like #termMbl#                                                                                                                                                    like #termMbl#
+          </isNotNull>
+
+            <isNotNull property="termHbl">
+             and jso.termHbl like #termHbl#
+          </isNotNull>
+
+          <isNotNull property="jobNo">
+             and j.jobNo like #jobNo#
+          </isNotNull>
+
+          <isNotNull property="idShipper">
+             and s.name like #idShipper#
+          </isNotNull>
+
+          <isNotNull property="idConsignee">
+             and c.name like #idConsignee#
+          </isNotNull>
+
+          <isNotNull property="idAgent">
+             and a.name like #idAgent#
+          </isNotNull>
+          <isNotNull property="qty">
+             and j.qty = #qty#
+          </isNotNull>
+
+      </dynamic>
+
+    order by j.jobNo
+  </select>
+
+  <select id="jobsheet_selectReportStatementOfAccountList" resultClass="invoiceAIDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">   
+    select j.idJobSheet,
+      ifnull(j.jobNo,'') as jobNo,
+      ifnull(s.name,'') as idShipper,
+      ifnull(c.name,'') as idConsignee,
+      ifnull(a.name,'') as idAgent,
+      ifnull(s.idConsignee,'') as idS,
+      ifnull(c.idConsignee,'') as idC,
+      ifnull(a.idConsignee,'') as idA,
+      ifnull(s.idAccountIDR,'') as idSAccountIDR,
+      ifnull(c.idAccountIDR,'') as idCAccountIDR,
+      ifnull(a.idAccountIDR,'') as idAAccountIDR,
+      ifnull(s.idAccountUSD,'') as idSAccountUSD,
+      ifnull(c.idAccountUSD,'') as idCAccountUSD,
+      ifnull(a.idAccountUSD,'') as idAAccountUSD,
+      i.invoiceDate as dDate,
+      ifnull(i.invoiceNumber,'') as idNumber,
+      totalBillingIDR,
+      totalBillingUSD,
+      j.idJobType,
+      j.status,
+      (
+        case j.idJobType
+            when 'AI'
+               then ai.destination
+            when 'AO'
+               then ao.destination
+            when 'SI'
+               then si.origin
+            when 'SO'
+               then so.destination
+        end
+      ) as destination,
+    (
+        case j.idJobType
+            when 'AI'
+               then ai.mawb
+            when 'AO'
+               then ao.mawb
+           when 'SI'
+               then si.termHBL
+            when 'SO'
+               then so.termHBL
+        end
+      ) as hawb,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billTo
+            when 'AO'
+               then ao.billTo
+            when 'SI'
+               then si.billTo
+            when 'SO'
+               then so.billTo
+        end
+    ) as billTo,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billToDebit
+            when 'AO'
+               then ao.billToDebit
+            when 'SI'
+               then si.billToDebit
+            when 'SO'
+               then so.billToDebit
+        end
+    ) as billToDebit,
+    ifnull((
+        case j.idJobType
+            when 'AI'
+               then ''
+            when 'AO'
+               then ''
+            when 'SI'
+               then sli.name
+            when 'SO'
+               then slo.name
+        end
+    ),'') as shippingLine,
+    ifnull(i.isPayable,'') as isPayable
+    from jobsheet j
+    left join invoice i
+        on j.idJobSheet = i.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join jobsheetai ai
+        on j.idJobSheet = ai.idJobSheet
+    left join jobsheetao ao
+        on j.idJobSheet = ao.idJobSheet
+     left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee     
+    left join jobsheetso so
+        on j.idJobSheet = so.idJobSheet
+    left join consignee slo
+        on so.shippingLine = slo.idConsignee  
+    where  month(j.shippeddate) = #month# 
+    and year(j.shippeddate) = #year#
+    and i.isPayable = 'U'
+    and i.invoiceNumber is not null        
+    union
+    select j.idJobSheet,
+      ifnull(j.jobNo,'') as jobNo,
+      ifnull(s.name,'') as idShipper,
+      ifnull(c.name,'') as idConsignee,
+      ifnull(a.name,'') as idAgent,
+      ifnull(s.idConsignee,'') as idS,
+      ifnull(c.idConsignee,'') as idC,
+      ifnull(a.idConsignee,'') as idA,
+      ifnull(s.idAccountIDR,'') as idSAccountIDR,
+      ifnull(c.idAccountIDR,'') as idCAccountIDR,
+      ifnull(a.idAccountIDR,'') as idAAccountIDR,
+      ifnull(s.idAccountUSD,'') as idSAccountUSD,
+      ifnull(c.idAccountUSD,'') as idCAccountUSD,
+      ifnull(a.idAccountUSD,'') as idAAccountUSD,
+      d.debitDate as dDate,
+      ifnull(d.debitNumber,'') as idNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.idJobType,
+      j.status,
+      (
+        case j.idJobType
+            when 'AI'
+               then ai.destination
+            when 'AO'
+               then ao.destination
+            when 'SI'
+               then si.origin
+            when 'SO'
+               then so.destination
+        end
+      ) as destination,
+    (
+        case j.idJobType
+            when 'AI'
+               then ai.mawb
+            when 'AO'
+               then ao.mawb
+            when 'SI'
+               then si.termHBL
+            when 'SO'
+               then so.termHBL
+        end
+      ) as hawb,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billTo
+            when 'AO'
+               then ao.billTo
+            when 'SI'
+               then si.billTo
+            when 'SO'
+               then so.billTo
+        end
+    ) as billTo,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billToDebit
+            when 'AO'
+               then ao.billToDebit
+            when 'SI'
+               then si.billToDebit
+            when 'SO'
+               then so.billToDebit
+        end
+    ) as billToDebit,
+    ifnull((
+        case j.idJobType
+            when 'AI'
+               then ''
+            when 'AO'
+               then ''
+            when 'SI'
+               then sli.name
+            when 'SO'
+               then slo.name
+        end
+    ),'') as shippingLine,
+    ifnull(d.isPayable,'') as isPayable
+    from jobsheet j
+    left join debit d
+        on j.idJobSheet = d.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join jobsheetai ai
+        on j.idJobSheet = ai.idJobSheet
+    left join jobsheetao ao
+        on j.idJobSheet = ao.idJobSheet
+     left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee     
+    left join jobsheetso so
+        on j.idJobSheet = so.idJobSheet
+    left join consignee slo
+        on so.shippingLine = slo.idConsignee  
+    where  month(j.shippeddate) = #month# 
+    and year(j.shippeddate) = #year#
+    and d.isPayable = 'U'
+    and d.debitNumber is not null
+  </select>
+
+    <select id="jobsheet_selectReportStatementOfAccountListAll" resultClass="invoiceAIDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">   
+    select j.idJobSheet,
+      ifnull(j.jobNo,'') as jobNo,
+      ifnull(s.name,'') as idShipper,
+      ifnull(c.name,'') as idConsignee,
+      ifnull(a.name,'') as idAgent,
+      ifnull(s.idConsignee,'') as idS,
+      ifnull(c.idConsignee,'') as idC,
+      ifnull(a.idConsignee,'') as idA,
+      ifnull(s.idAccountIDR,'') as idSAccountIDR,
+      ifnull(c.idAccountIDR,'') as idCAccountIDR,
+      ifnull(a.idAccountIDR,'') as idAAccountIDR,
+      ifnull(s.idAccountUSD,'') as idSAccountUSD,
+      ifnull(c.idAccountUSD,'') as idCAccountUSD,
+      ifnull(a.idAccountUSD,'') as idAAccountUSD,
+      i.invoiceDate as dDate,
+      ifnull(i.invoiceNumber,'') as idNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.idJobType,
+      j.status,
+      (
+        case j.idJobType
+            when 'AI'
+               then ai.destination
+            when 'AO'
+               then ao.destination
+            when 'SI'
+               then si.origin
+            when 'SO'
+               then so.destination
+        end
+      ) as destination,
+    (
+        case j.idJobType
+            when 'AI'
+               then ai.mawb
+            when 'AO'
+               then ao.mawb
+            when 'SI'
+               then si.termHBL
+            when 'SO'
+               then so.termHBL
+        end
+      ) as hawb,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billTo
+            when 'AO'
+               then ao.billTo
+            when 'SI'
+               then si.billTo
+            when 'SO'
+               then so.billTo
+        end
+    ) as billTo,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billToDebit
+            when 'AO'
+               then ao.billToDebit
+            when 'SI'
+               then si.billToDebit
+            when 'SO'
+               then so.billToDebit
+        end
+    ) as billToDebit,
+     ifnull((
+        case j.idJobType
+            when 'AI'
+               then ''
+            when 'AO'
+               then ''
+            when 'SI'
+               then sli.name
+            when 'SO'
+               then slo.name
+        end
+    ),'') as shippingLine,
+    ifnull(i.isPayable,'') as isPayable
+    from jobsheet j
+    left join invoice i
+        on j.idJobSheet = i.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+   left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join jobsheetai ai
+        on j.idJobSheet = ai.idJobSheet
+    left join jobsheetao ao
+        on j.idJobSheet = ao.idJobSheet
+     left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee     
+    left join jobsheetso so
+        on j.idJobSheet = so.idJobSheet
+    left join consignee slo
+        on so.shippingLine = slo.idConsignee  
+    where  month(j.shippeddate) = #month# 
+    and year(j.shippeddate) = #year#
+    and i.invoiceNumber is not null        
+    union
+    select j.idJobSheet,
+      ifnull(j.jobNo,'') as jobNo,
+      ifnull(s.name,'') as idShipper,
+      ifnull(c.name,'') as idConsignee,
+      ifnull(a.name,'') as idAgent,
+      ifnull(s.idConsignee,'') as idS,
+      ifnull(c.idConsignee,'') as idC,
+      ifnull(a.idConsignee,'') as idA,
+      ifnull(s.idAccountIDR,'') as idSAccountIDR,
+      ifnull(c.idAccountIDR,'') as idCAccountIDR,
+      ifnull(a.idAccountIDR,'') as idAAccountIDR,
+      ifnull(s.idAccountUSD,'') as idSAccountUSD,
+      ifnull(c.idAccountUSD,'') as idCAccountUSD,
+      ifnull(a.idAccountUSD,'') as idAAccountUSD,
+      d.debitDate as dDate,
+      ifnull(d.debitNumber,'') as idNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.idJobType,
+      j.status,
+      (
+        case j.idJobType
+            when 'AI'
+               then ai.destination
+            when 'AO'
+               then ao.destination
+            when 'SI'
+               then si.origin
+            when 'SO'
+               then so.destination
+        end
+      ) as destination,
+    (
+        case j.idJobType
+            when 'AI'
+               then ai.mawb
+            when 'AO'
+               then ao.mawb
+            when 'SI'
+               then si.termHBL
+            when 'SO'
+               then so.termHBL
+        end
+      ) as hawb,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billTo
+            when 'AO'
+               then ao.billTo
+            when 'SI'
+               then si.billTo
+            when 'SO'
+               then so.billTo
+        end
+    ) as billTo,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billToDebit
+            when 'AO'
+               then ao.billToDebit
+            when 'SI'
+               then si.billToDebit
+            when 'SO'
+               then so.billToDebit
+        end
+    ) as billToDebit,
+     ifnull((
+        case j.idJobType
+            when 'AI'
+               then ''
+            when 'AO'
+               then ''
+            when 'SI'
+               then sli.name
+            when 'SO'
+               then slo.name
+        end
+    ),'') as shippingLine,
+    ifnull(d.isPayable,'') as isPayable
+    from jobsheet j
+    left join debit d
+        on j.idJobSheet = d.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join jobsheetai ai
+        on j.idJobSheet = ai.idJobSheet
+    left join jobsheetao ao
+        on j.idJobSheet = ao.idJobSheet
+     left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee     
+    left join jobsheetso so
+        on j.idJobSheet = so.idJobSheet
+    left join consignee slo
+        on so.shippingLine = slo.idConsignee  
+    where  month(j.shippeddate) = #month# 
+    and year(j.shippeddate) = #year#
+    and d.debitNumber is not null
+  </select>
+
+    <select id="jobsheet_selectReportUnPaymentStatementOfAccount" resultClass="invoiceAIDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">   
+    select j.idJobSheet,
+      ifnull(j.jobNo,'') as jobNo,
+      ifnull(s.name,'') as idShipper,
+      ifnull(c.name,'') as idConsignee,
+      ifnull(a.name,'') as idAgent,
+      ifnull(s.idConsignee,'') as idS,
+      ifnull(c.idConsignee,'') as idC,
+      ifnull(a.idConsignee,'') as idA,
+      ifnull(s.idAccountIDR,'') as idSAccountIDR,
+      ifnull(c.idAccountIDR,'') as idCAccountIDR,
+      ifnull(a.idAccountIDR,'') as idAAccountIDR,
+      ifnull(s.idAccountUSD,'') as idSAccountUSD,
+      ifnull(c.idAccountUSD,'') as idCAccountUSD,
+      ifnull(a.idAccountUSD,'') as idAAccountUSD,      
+      i.invoiceDate as dDate,
+      ifnull(i.invoiceNumber,'') as idNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.idJobType,
+      j.status,
+      (
+        case j.idJobType
+            when 'AI'
+               then ai.destination
+            when 'AO'
+               then ao.destination
+            when 'SI'
+               then si.origin
+            when 'SO'
+               then so.destination
+        end
+      ) as destination,
+    (
+        case j.idJobType
+            when 'AI'
+               then ai.mawb
+            when 'AO'
+               then ao.mawb
+            when 'SI'
+               then si.termHBL
+            when 'SO'
+               then so.termHBL
+        end
+      ) as hawb,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billTo
+            when 'AO'
+               then ao.billTo
+            when 'SI'
+               then si.billTo
+            when 'SO'
+               then so.billTo
+        end
+    ) as billTo,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billToDebit
+            when 'AO'
+               then ao.billToDebit
+            when 'SI'
+               then si.billToDebit
+            when 'SO'
+               then so.billToDebit
+        end
+    ) as billToDebit,
+     ifnull((
+        case j.idJobType
+            when 'AI'
+               then ''
+            when 'AO'
+               then ''
+            when 'SI'
+               then sli.name
+            when 'SO'
+               then slo.name
+        end
+    ),'') as shippingLine,
+    ifnull(i.isPayable,'') as isPayable
+    from jobsheet j
+    left join invoice i
+        on j.idJobSheet = i.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join jobsheetai ai
+        on j.idJobSheet = ai.idJobSheet
+    left join jobsheetao ao
+        on j.idJobSheet = ao.idJobSheet
+     left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee     
+    left join jobsheetso so
+        on j.idJobSheet = so.idJobSheet
+    left join consignee slo
+        on so.shippingLine = slo.idConsignee  
+    where  month(j.shippeddate) = #month# 
+    and year(j.shippeddate) = #year#
+    and i.invoiceNumber is not null        
+    union
+    select j.idJobSheet,
+      ifnull(j.jobNo,'') as jobNo,
+      ifnull(s.name,'') as idShipper,
+      ifnull(c.name,'') as idConsignee,
+      ifnull(a.name,'') as idAgent,
+      ifnull(s.idConsignee,'') as idS,
+      ifnull(c.idConsignee,'') as idC,
+      ifnull(a.idConsignee,'') as idA,
+      ifnull(s.idAccountIDR,'') as idSAccountIDR,
+      ifnull(c.idAccountIDR,'') as idCAccountIDR,
+      ifnull(a.idAccountIDR,'') as idAAccountIDR,
+      ifnull(s.idAccountUSD,'') as idSAccountUSD,
+      ifnull(c.idAccountUSD,'') as idCAccountUSD,
+      ifnull(a.idAccountUSD,'') as idAAccountUSD,
+      d.debitDate as dDate,
+      ifnull(d.debitNumber,'') as idNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.idJobType,
+      j.status,
+      (
+        case j.idJobType
+            when 'AI'
+               then ai.destination
+            when 'AO'
+               then ao.destination
+            when 'SI'
+               then si.origin
+            when 'SO'
+               then so.destination
+        end
+      ) as destination,
+    (
+        case j.idJobType
+            when 'AI'
+               then ai.mawb
+            when 'AO'
+               then ao.mawb
+           when 'SI'
+               then si.termHBL
+            when 'SO'
+               then so.termHBL
+        end
+      ) as hawb,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billTo
+            when 'AO'
+               then ao.billTo
+            when 'SI'
+               then si.billTo
+            when 'SO'
+               then so.billTo
+        end
+    ) as billTo,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billToDebit
+            when 'AO'
+               then ao.billToDebit
+            when 'SI'
+               then si.billToDebit
+            when 'SO'
+               then so.billToDebit
+        end
+    ) as billToDebit,
+     ifnull((
+        case j.idJobType
+            when 'AI'
+               then ''
+            when 'AO'
+               then ''
+            when 'SI'
+               then sli.name
+            when 'SO'
+               then slo.name
+        end
+    ),'') as shippingLine,
+    ifnull(d.isPayable,'') as isPayable
+    from jobsheet j
+    left join debit d
+        on j.idJobSheet = d.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join jobsheetai ai
+        on j.idJobSheet = ai.idJobSheet
+    left join jobsheetao ao
+        on j.idJobSheet = ao.idJobSheet
+     left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee     
+    left join jobsheetso so
+        on j.idJobSheet = so.idJobSheet
+    left join consignee slo
+        on so.shippingLine = slo.idConsignee  
+    where  month(j.shippeddate) = #month# 
+    and year(j.shippeddate) = #year#
+    and d.debitNumber is not null
+  </select>
+
+  <select id="jobsheet_selectReportStatementOfAccountByIdConsignee" resultClass="invoiceAIDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    select j.idJobSheet,
+      j.jobNo,
+      ifnull(s.name,'') as idShipper,
+          ifnull(c.name,'') as idConsignee,
+          ifnull(a.name,'') as idAgent,
+      ifnull(s.idConsignee,'') as idS,
+      ifnull(c.idConsignee,'') as idC,
+      ifnull(a.idConsignee,'') as idA,
+      ifnull(s.idAccountIDR,'') as idSAccountIDR,
+      ifnull(c.idAccountIDR,'') as idCAccountIDR,
+      ifnull(a.idAccountIDR,'') as idAAccountIDR,
+      ifnull(s.idAccountUSD,'') as idSAccountUSD,
+      ifnull(c.idAccountUSD,'') as idCAccountUSD,
+      ifnull(a.idAccountUSD,'') as idAAccountUSD,
+      i.invoiceDate as dDate,
+      i.invoiceNumber as idNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.idJobType,
+      j.status,
+      (
+        case j.idJobType
+            when 'AI'
+               then ai.destination
+            when 'AO'
+               then ao.destination
+            when 'SI'
+               then si.origin
+            when 'SO'
+               then so.destination
+        end
+      ) as destination,
+    (
+        case j.idJobType
+            when 'AI'
+               then ai.mawb
+            when 'AO'
+               then ao.mawb
+            when 'SI'
+               then si.termHBL
+            when 'SO'
+               then so.termHBL
+        end
+      ) as hawb,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billTo
+            when 'AO'
+               then ao.billTo
+            when 'SI'
+               then si.billTo
+            when 'SO'
+               then so.billTo
+        end
+    ) as billTo,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billToDebit
+            when 'AO'
+               then ao.billToDebit
+            when 'SI'
+               then si.billToDebit
+            when 'SO'
+               then so.billToDebit
+        end
+    ) as billToDebit,
+     ifnull((
+        case j.idJobType
+            when 'AI'
+               then ''
+            when 'AO'
+               then ''
+            when 'SI'
+               then sli.name
+            when 'SO'
+               then slo.name
+        end
+    ),'') as shippingLine,
+    i.isPayable
+    from jobsheet j
+    left join invoice i
+        on j.idJobSheet = i.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+   left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join jobsheetai ai
+        on j.idJobSheet = ai.idJobSheet
+    left join jobsheetao ao
+        on j.idJobSheet = ao.idJobSheet
+     left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee
+    left join jobsheetso so
+        on j.idJobSheet = so.idJobSheet
+    left join consignee slo
+        on so.shippingLine = slo.idConsignee  
+    where  j.shippeddate between #from# AND #to#
+    and i.isPayable is null
+    and i.invoiceNumber is not null        
+    union
+    select j.idJobSheet,
+      j.jobNo,
+      ifnull(s.name,'') as idShipper,
+          ifnull(c.name,'') as idConsignee,
+          ifnull(a.name,'') as idAgent,
+          ifnull(s.idConsignee,'') as idS,
+      ifnull(c.idConsignee,'') as idC,
+      ifnull(a.idConsignee,'') as idA,
+      ifnull(s.idAccountIDR,'') as idSAccountIDR,
+      ifnull(c.idAccountIDR,'') as idCAccountIDR,
+      ifnull(a.idAccountIDR,'') as idAAccountIDR,
+      ifnull(s.idAccountUSD,'') as idSAccountUSD,
+      ifnull(c.idAccountUSD,'') as idCAccountUSD,
+      ifnull(a.idAccountUSD,'') as idAAccountUSD,
+      d.debitDate as dDate,
+      d.debitNumber as idNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.idJobType,
+      j.status,
+      (
+        case j.idJobType
+            when 'AI'
+               then ai.destination
+            when 'AO'
+               then ao.destination
+            when 'SI'
+               then si.origin
+            when 'SO'
+               then so.destination
+        end
+      ) as destination,
+    (
+        case j.idJobType
+            when 'AI'
+               then ai.mawb
+            when 'AO'
+               then ao.mawb
+           when 'SI'
+               then si.termHBL
+            when 'SO'
+               then so.termHBL
+        end
+      ) as hawb,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billTo
+            when 'AO'
+               then ao.billTo
+            when 'SI'
+               then si.billTo
+            when 'SO'
+               then so.billTo
+        end
+    ) as billTo,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billToDebit
+            when 'AO'
+               then ao.billToDebit
+            when 'SI'
+               then si.billToDebit
+            when 'SO'
+               then so.billToDebit
+        end
+    ) as billToDebit,
+     ifnull((
+        case j.idJobType
+            when 'AI'
+               then ''
+            when 'AO'
+               then ''
+            when 'SI'
+               then sli.name
+            when 'SO'
+               then slo.name
+        end
+    ),'') as shippingLine,
+    d.isPayable
+    from jobsheet j
+    left join debit d
+        on j.idJobSheet = d.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join jobsheetai ai
+        on j.idJobSheet = ai.idJobSheet
+    left join jobsheetao ao
+        on j.idJobSheet = ao.idJobSheet
+    left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee
+    left join jobsheetso so
+        on j.idJobSheet = so.idJobSheet
+    left join consignee slo
+        on so.shippingLine = slo.idConsignee      
+    where  j.shippeddate between #from# AND #to#
+    and d.isPayable is null
+    and d.debitNumber is not null
+  </select>
+  
+  <select id="jobsheet_selectReportStatementOfAccount" resultClass="invoiceAIDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    select j.idJobSheet,
+      ifnull(j.jobNo,'') as jobNo,
+      ifnull(s.name,'') as idShipper,
+      ifnull(c.name,'') as idConsignee,
+      ifnull(a.name,'') as idAgent,
+      ifnull(s.idConsignee,'') as idS,
+      ifnull(c.idConsignee,'') as idC,
+      ifnull(a.idConsignee,'') as idA,
+      ifnull(s.idAccountIDR,'') as idSAccountIDR,
+      ifnull(c.idAccountIDR,'') as idCAccountIDR,
+      ifnull(a.idAccountIDR,'') as idAAccountIDR,
+      ifnull(s.idAccountUSD,'') as idSAccountUSD,
+      ifnull(c.idAccountUSD,'') as idCAccountUSD,
+      ifnull(a.idAccountUSD,'') as idAAccountUSD,
+      i.invoiceDate as dDate,
+      ifnull(i.invoiceNumber,'') as idNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      ifnull(j.idJobType,'') as idJobType,
+      (
+        case j.idJobType
+            when 'AI'
+               then ai.destination
+            when 'AO'
+               then ao.destination
+            when 'SI'
+               then si.origin
+            when 'SO'
+               then so.destination
+        end
+      ) as destination,
+    (
+        case j.idJobType
+            when 'AI'
+               then ai.mawb
+            when 'AO'
+               then ao.mawb
+           when 'SI'
+               then si.termHBL
+            when 'SO'
+               then so.termHBL
+        end
+      ) as hawb,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billTo
+            when 'AO'
+               then ao.billTo
+            when 'SI'
+               then si.billTo
+            when 'SO'
+               then so.billTo
+        end
+    ) as billTo,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billToDebit
+            when 'AO'
+               then ao.billToDebit
+            when 'SI'
+               then si.billToDebit
+            when 'SO'
+               then so.billToDebit
+        end
+    ) as billToDebit,
+     ifnull((
+        case j.idJobType
+            when 'AI'
+               then ''
+            when 'AO'
+               then ''
+            when 'SI'
+               then sli.name
+            when 'SO'
+               then slo.name
+        end
+    ),'') as shippingLine,
+    ifnull(i.isPayable,'') as isPayable
+    from jobsheet j
+    left join invoice i
+        on j.idJobSheet = i.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+   left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join jobsheetai ai
+        on j.idJobSheet = ai.idJobSheet
+    left join jobsheetao ao
+        on j.idJobSheet = ao.idJobSheet
+    left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee                         
+    left join jobsheetso so
+        on j.idJobSheet = so.idJobSheet
+    left join consignee slo
+        on so.shippingLine = slo.idConsignee       
+    where  j.shippeddate between #from# AND #to#
+    and i.isPayable is null
+    and i.invoiceNumber is not null        
+    union
+    select j.idJobSheet,
+      ifnull(j.jobNo,'') as jobNo,
+      ifnull(s.name,'') as idShipper,
+      ifnull(c.name,'') as idConsignee,
+      ifnull(a.name,'') as idAgent,
+      ifnull(s.idConsignee,'') as idS,
+      ifnull(c.idConsignee,'') as idC,
+      ifnull(a.idConsignee,'') as idA,
+      ifnull(s.idAccountIDR,'') as idSAccountIDR,
+      ifnull(c.idAccountIDR,'') as idCAccountIDR,
+      ifnull(a.idAccountIDR,'') as idAAccountIDR,
+      ifnull(s.idAccountUSD,'') as idSAccountUSD,
+      ifnull(c.idAccountUSD,'') as idCAccountUSD,
+      ifnull(a.idAccountUSD,'') as idAAccountUSD,
+      d.debitDate as dDate,
+      ifnull(d.debitNumber,'') as idNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.idJobType,
+      (
+        case j.idJobType
+            when 'AI'
+               then ai.destination
+            when 'AO'
+               then ao.destination
+            when 'SI'
+               then si.origin
+            when 'SO'
+               then so.destination
+        end
+      ) as destination,
+    (
+        case j.idJobType
+            when 'AI'
+               then ai.mawb
+            when 'AO'
+               then ao.mawb
+            when 'SI'
+               then si.termHBL
+            when 'SO'
+               then so.termHBL
+        end
+      ) as hawb,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billTo
+            when 'AO'
+               then ao.billTo
+            when 'SI'
+               then si.billTo
+            when 'SO'
+               then so.billTo
+        end
+    ) as billTo,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billToDebit
+            when 'AO'
+               then ao.billToDebit
+            when 'SI'
+               then si.billToDebit
+            when 'SO'
+               then so.billToDebit
+        end
+    ) as billToDebit,
+     ifnull((
+        case j.idJobType
+            when 'AI'
+               then ''
+            when 'AO'
+               then ''
+            when 'SI'
+               then sli.name
+            when 'SO'
+               then slo.name
+        end
+    ),'') as shippingLine,
+    ifnull(d.isPayable, '') as isPayable
+    from jobsheet j
+    left join debit d
+        on j.idJobSheet = d.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent        
+    left join jobsheetai ai
+        on j.idJobSheet = ai.idJobSheet
+    left join jobsheetao ao
+        on j.idJobSheet = ao.idJobSheet
+    left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee                     
+    left join jobsheetso so
+        on j.idJobSheet = so.idJobSheet
+    left join consignee slo
+        on so.shippingLine = slo.idConsignee                    
+    where  j.shippeddate between #from# AND #to#
+    and d.isPayable is null
+    and d.debitNumber is not null
+  </select>
+  
+  <select id="jobsheet_selectReportSummaryJobsheet" resultClass="jobsheet" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo, ifnull(s.name,'') as idShipper,
+          ifnull(c.name,'') as idConsignee,
+          ifnull(a.name,'') as idAgent, 
+        j.qtyDesc, j.weightDesc, 
+        j.volumeDesc, j.idJobType, 
+        j.shippeddate, 
+        j.totalBillingIDR,
+        j.totalBillingUSD,
+        j.totalExpensesIDR,
+        j.totalExpensesUSD,
+        j.idTransporter 
+    FROM jobsheet j
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    where j.shippeddate between #from# AND #to#
+  </select>
+  
+  <select id="jobsheet_selectReportSummaryJobsheetCustomer" resultClass="jobsheet" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo, ifnull(s.name,'') as idShipper,
+          ifnull(c.name,'') as idConsignee,
+          ifnull(a.name,'') as idAgent,
+        j.qtyDesc, j.weightDesc, 
+        j.volumeDesc, j.idJobType, 
+        j.shippeddate, 
+        j.totalBillingIDR,
+        j.totalBillingUSD,
+        j.totalExpensesIDR,
+        j.totalExpensesUSD,
+        j.idTransporter 
+    FROM jobsheet j
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    where j.idConsignee = #idConsignee# 
+        and j.shippeddate between #from# AND #to#
+  </select>
+  
+  <select id="jobsheet_selectReportOutstandingCustomer" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo, ifnull(s.name,'') as idShipper,
+          ifnull(c.name,'') as idConsignee,
+          ifnull(a.name,'') as idAgent,
+        j.qtyDesc, j.weightDesc, 
+        j.volumeDesc, j.idJobType, 
+        j.shippeddate, 
+        j.totalBillingIDR,
+        j.totalBillingUSD,
+        j.totalExpensesIDR,
+        j.totalExpensesUSD,
+        j.idTransporter,
+        i.isPayable as invoicePaymentStatus,
+        d.isPayable as debitPaymentStatus
+    FROM jobsheet j
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet    
+    left join debit d
+        on d.idJobSheet = j.idJobSheet      
+    where j.idConsignee = #idConsignee#        
+        and i.isPayable != 'Y'
+        or d.isPayable != 'Y'
+        and j.shippeddate between #from# AND #to#
+  </select>
+  
+  <select id="jobsheet_selectReportOutstanding" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo,ifnull(s.name,'') as idShipper,
+          ifnull(c.name,'') as idConsignee,
+          ifnull(a.name,'') as idAgent,
+        j.qtyDesc, j.weightDesc, 
+        j.volumeDesc, j.idJobType, 
+        j.shippeddate, 
+        j.totalBillingIDR,
+        j.totalBillingUSD,
+        j.totalExpensesIDR,
+        j.totalExpensesUSD,
+        j.idTransporter,
+        i.isPayable as invoicePaymentStatus,
+        d.isPayable as debitPaymentStatus 
+    FROM jobsheet j
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet
+    left join debit d
+        on d.idJobSheet = j.idJobSheet
+    where j.shippeddate between #from# AND #to#
+        and i.isPayable != 'Y'
+        or d.isPayable != 'Y'
+  </select>
+  
+  <select id="jobsheet_selectReportPayableCustomer" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo, ifnull(s.name,'') as idShipper,
+        ifnull(c.name,'') as idConsignee,
+        ifnull(a.name,'') as idAgent, 
+        j.qtyDesc, j.weightDesc, 
+        j.volumeDesc, j.idJobType, 
+        j.shippeddate, 
+        j.totalBillingIDR,
+        j.totalBillingUSD,
+        j.totalExpensesIDR,
+        j.totalExpensesUSD,
+        j.idTransporter,
+        i.isPayable as invoicePaymentStatus,
+        d.isPayable as debitPaymentStatus
+    FROM jobsheet j
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet    
+    left join debit d
+        on d.idJobSheet = j.idJobSheet      
+    where j.idConsignee = #idConsignee#        
+        and i.isPayable = 'Y'
+        and d.isPayable = 'Y'
+        and j.shippeddate between #from# AND #to#
+  </select>
+  
+  <select id="jobsheet_selectReportMonthlySales" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo, ifnull(s.name,'') as idShipper,
+        ifnull(c.name,'') as idConsignee,
+        ifnull(a.name,'') as idAgent,
+        convert(replace(replace(j.qtyDesc,',',''),'.',''),unsigned) as qtyDesc,        
+        convert(replace(replace(j.weightDesc,',',''),'.',''),unsigned) as weightDesc,
+        replace(group_concat(distinct(j.cnNo)),',','') as cnNo,
+        convert(j.volumeDesc,unsigned) as volumeDesc, 
+        j.idJobType,
+        j.shippeddate,j.cnKurs, j.depart,
+        group_concat(distinct(j.remark)) as remark,
+        ja.destination as destination,
+        ja.mawb as mawb,
+        sum(j.refundIDR) as refundIDR,
+        sum(j.refundUSD) as refundUSD,
+        sum(ifnull(j.creditNoteIDR,0)) as creditNoteIDR,
+        sum(ifnull(j.creditNoteUSD,0)) as creditNoteUSD,
+        (sum(ifnull(esf.charge,0))
+        +
+        sum(ifnull(eaf.charge,0)))
+        as refund,
+        (
+          sum(ifnull(esfusd.charge,0))
+          +
+          sum(ifnull(eafusd.charge,0))
+        ) as refundUS,
+        j.cnNo,        
+        0 as baTax,
+        j.vatIDR as bsTax,
+        j.pphIDR as bsPPH,
+    ja.billTo,
+    ja.billToDebit,
+    ja.agentTo as flights,
+    0 as pag,
+    sum((
+        select ifnull(sum(b.charge),0) from expensesagent b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+      ) +
+      (
+        select ifnull(sum(b.charge),0) from expensesshipper b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+        and b.idShipperFee != 379
+      ))
+      as
+      totalExpensesIDR,
+      sum(ifnull((
+        select ifnull(sum(b1.charge),0) from expensesagent b1
+        where b1.kurs = 'USD'
+        and b1.idJobSheet = j.idJobSheet
+      ),0) +
+       ifnull((
+        select ifnull(sum(b2.charge),0) from expensesshipper b2
+        where b2.kurs = 'USD'
+        and b2.idJobSheet = j.idJobSheet
+        and b2.idShipperFee != 379
+      ),0))
+      as
+    totalExpensesUSD    
+    FROM jobsheet j
+    left join jobsheetai ja
+        on ja.idJobSheet = j.idJobSheet        
+    left join expensesshipper esf
+        on esf.idJobSheet = j.idJobSheet
+        and esf.idShipperFee in (158, 162, 45, 44, 291)
+        and esf.kurs = 'IDR'
+    left join expensesagent eaf
+        on eaf.idJobSheet = j.idJobSheet
+        and eaf.idAgentFee in (28, 85, 170, 228)
+        and eaf.kurs = 'IDR'
+    left join expensesshipper esfusd
+        on esfusd.idJobSheet = j.idJobSheet
+        and esfusd.idShipperFee in (158, 162, 45, 44, 291)
+        and esfusd.kurs = 'USD'
+    left join expensesagent eafusd
+        on eafusd.idJobSheet = j.idJobSheet
+        and eafusd.idAgentFee in (28, 85, 170, 228)
+        and eafusd.kurs = 'USD'
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet
+    left join debit d
+        on d.idJobSheet = j.idJobSheet  
+    where j.idJobType = 'AI'
+        and j.shippeddate between #from# AND #to#
+    group by j.jobNo
+    order by j.jobNo
+  </select>
+  
+  <select id="jobsheet_selectReportMonthlySalesInvoiceAI" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    select distinct
+      ifnull(s.name,'') as shipper,
+      ifnull(c.name,'') as consignee,
+      ifnull(a.name,'') as agent,
+      ai.billTo,
+      ai.billToDebit,
+      j.jobNo, i.invoiceNumber as inumber,
+       (
+            select ifnull(sum(b.charge),0) from billingshipper b
+            where b.kurs = 'IDR'
+            and b.idJobSheet = j.idJobSheet
+       )
+          as
+       totalIDR,
+       (
+            select ifnull(sum(b.charge),0) from billingshipper b
+            where b.kurs = 'USD'
+            and b.idJobSheet = j.idJobSheet
+       )
+       as
+       totalUSD
+    from jobsheet j
+    left join jobsheetai ai on j.idjobsheet = ai.idjobsheet
+    left join invoice i
+            on i.idJobSheet = j.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    where i.invoiceNumber is not null
+        and j.idJobType = #jobType#
+        and j.shippeddate between #from# AND #to#
+    union
+    select distinct
+      ifnull(s.name,'') as shipper,
+      ifnull(c.name,'') as consignee,
+      ifnull(a.name,'') as agent,
+      ai.billTo,
+      ai.billToDebit,
+      j.jobNo, d.debitNumber as inumber,
+           (
+                select ifnull(sum(b.charge),0) from billingagent b
+                where b.kurs = 'IDR'
+                and b.idJobSheet = j.idJobSheet
+           )
+              as
+           totalIDR,
+           (
+                select ifnull(sum(b.charge),0) from billingagent b
+                where b.kurs = 'USD'
+                and b.idJobSheet = j.idJobSheet
+           )
+           as
+           totalUSD
+    from jobsheet j
+    left join jobsheetai ai on j.idjobsheet = ai.idjobsheet
+    left join debit d
+            on d.idJobSheet = j.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    where d.debitNumber is not null
+        and j.idJobType = #jobType#
+        and j.shippeddate between #from# AND #to#
+  </select>
+  
+  <select id="jobsheet_selectReportMonthlySalesInvoiceAO" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    select distinct
+      ifnull(s.name,'') as shipper,
+      ifnull(c.name,'') as consignee,
+      ifnull(a.name,'') as agent,
+      ao.billTo,
+      ao.billToDebit,
+      j.jobNo, i.invoiceNumber as inumber,
+       (
+            select ifnull(sum(b.charge),0) from billingshipper b
+            where b.kurs = 'IDR'
+            and b.idJobSheet = j.idJobSheet
+       )
+          as
+       totalIDR,
+       (
+            select ifnull(sum(b.charge),0) from billingshipper b
+            where b.kurs = 'USD'
+            and b.idJobSheet = j.idJobSheet
+       )
+       as
+       totalUSD
+    from jobsheet j
+    left join jobsheetao ao on j.idjobsheet = ao.idjobsheet
+    left join invoice i
+            on i.idJobSheet = j.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    where i.invoiceNumber is not null
+        and j.idJobType = #jobType#
+        and j.shippeddate between #from# AND #to#
+    union
+    select distinct
+      ifnull(s.name,'') as shipper,
+      ifnull(c.name,'') as consignee,
+      ifnull(a.name,'') as agent,
+      ao.billTo,
+      ao.billToDebit,
+      j.jobNo, d.debitNumber as inumber,
+           (
+                select ifnull(sum(b.charge),0) from billingagent b
+                where b.kurs = 'IDR'
+                and b.idJobSheet = j.idJobSheet
+           )
+              as
+           totalIDR,
+           (
+                select ifnull(sum(b.charge),0) from billingagent b
+                where b.kurs = 'USD'
+                and b.idJobSheet = j.idJobSheet
+           )
+           as
+           totalUSD
+    from jobsheet j
+    left join jobsheetao ao on j.idjobsheet = ao.idjobsheet
+    left join debit d
+            on d.idJobSheet = j.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    where d.debitNumber is not null
+        and j.idJobType = #jobType#
+        and j.shippeddate between #from# AND #to#
+  </select>
+  
+  <select id="jobsheet_selectReportMonthlySalesInvoiceSI" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    select distinct
+      ifnull(s.name,'') as shipper,
+      ifnull(c.name,'') as consignee,
+      ifnull(a.name,'') as agent,
+      si.billTo,
+      si.billToDebit,
+      j.jobNo, i.invoiceNumber as inumber,
+       (
+            select ifnull(sum(b.charge),0) from billingshipper b
+            where b.kurs = 'IDR'
+            and b.idJobSheet = j.idJobSheet
+       )
+          as
+       totalIDR,
+       (
+            select ifnull(sum(b.charge),0) from billingshipper b
+            where b.kurs = 'USD'
+            and b.idJobSheet = j.idJobSheet
+       )
+       as
+       totalUSD
+    from jobsheet j
+    left join jobsheetsi si on j.idjobsheet = si.idjobsheet
+    left join invoice i
+            on i.idJobSheet = j.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    where i.invoiceNumber is not null
+        and j.idJobType = 'SI'
+        and j.shippeddate between #from# AND #to#
+    union
+    select distinct
+      ifnull(s.name,'') as shipper,
+      ifnull(c.name,'') as consignee,
+      ifnull(a.name,'') as agent,
+      si.billTo,
+      si.billToDebit,
+      j.jobNo, d.debitNumber as inumber,
+           (
+                select ifnull(sum(b.charge),0) from billingagent b
+                where b.kurs = 'IDR'
+                and b.idJobSheet = j.idJobSheet
+           )
+              as
+           totalIDR,
+           (
+                select ifnull(sum(b.charge),0) from billingagent b
+                where b.kurs = 'USD'
+                and b.idJobSheet = j.idJobSheet
+           )
+           as
+           totalUSD
+    from jobsheet j
+    left join jobsheetsi si on j.idjobsheet = si.idjobsheet
+    left join debit d
+            on d.idJobSheet = j.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    where d.debitNumber is not null
+        and j.idJobType = 'SI'
+        and j.shippeddate between #from# AND #to#
+  </select>
+  <select id="jobsheet_selectReportMonthlySalesInvoiceSO" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    select distinct
+      ifnull(s.name,'') as shipper,
+      ifnull(c.name,'') as consignee,
+      ifnull(a.name,'') as agent,
+      so.billTo,
+      so.billToDebit,
+      j.jobNo, i.invoiceNumber as inumber,
+       (
+            select ifnull(sum(b.charge),0) from billingshipper b
+            where b.kurs = 'IDR'
+            and b.idJobSheet = j.idJobSheet
+       )
+          as
+       totalIDR,
+       (
+            select ifnull(sum(b.charge),0) from billingshipper b
+            where b.kurs = 'USD'
+            and b.idJobSheet = j.idJobSheet
+       )
+       as
+       totalUSD
+    from jobsheet j
+    left join jobsheetso so on j.idjobsheet = so.idjobsheet
+    left join invoice i
+            on i.idJobSheet = j.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    where i.invoiceNumber is not null
+        and j.idJobType = 'SO'
+        and j.shippeddate between #from# AND #to#
+    union
+    select distinct
+      ifnull(s.name,'') as shipper,
+      ifnull(c.name,'') as consignee,
+      ifnull(a.name,'') as agent,
+      so.billTo,
+      so.billToDebit,
+      j.jobNo, d.debitNumber as inumber,
+           (
+                select ifnull(sum(b.charge),0) from billingagent b
+                where b.kurs = 'IDR'
+                and b.idJobSheet = j.idJobSheet
+           )
+              as
+           totalIDR,
+           (
+                select ifnull(sum(b.charge),0) from billingagent b
+                where b.kurs = 'USD'
+                and b.idJobSheet = j.idJobSheet
+           )
+           as
+           totalUSD
+    from jobsheet j
+    left join jobsheetso so on j.idjobsheet = so.idjobsheet
+    left join debit d
+            on d.idJobSheet = j.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    where d.debitNumber is not null
+        and j.idJobType = 'SO'
+        and j.shippeddate between #from# AND #to#
+  </select>
+  
+  <select id="jobsheet_selectReportMonthlySalesDebit" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT 
+    j.idJobSheet,
+    (
+            select ifnull(sum(b.charge),0) from billingagent b
+            where b.kurs = 'IDR'
+            and b.idJobSheet = j.idJobSheet
+          )
+          as
+          totalBillingIDR,
+          (
+            select ifnull(sum(b.charge),0) from billingagent b
+            where b.kurs = 'USD'
+            and b.idJobSheet = j.idJobSheet
+          )
+          as
+          totalBillingUSD,
+    d.debitNumber as inumber
+    FROM jobsheet j
+    left join debit d
+        on d.idJobSheet = j.idJobSheet
+    where j.idJobType = #jobType#
+        and j.shippeddate between #from# AND #to#
+  </select>
+  
+  <select id="jobsheet_selectReportMonthlySalesAICustomer" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo, ifnull(s.name,'') as idShipper,
+        ifnull(c.name,'') as idConsignee,
+        ifnull(a.name,'') as idAgent, 
+        j.qtyDesc, j.weightDesc, 
+        j.volumeDesc, j.idJobType, 
+        j.shippeddate, j.cnKurs, j.depart,
+        sum((
+        select ifnull(sum(b.charge),0) from expensesagent b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+      ) +
+      (
+        select ifnull(sum(b.charge),0) from expensesshipper b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+        and b.idShipperFee != 379
+      ))
+      as
+      totalExpensesIDR,
+      sum(ifnull((
+        select ifnull(sum(b1.charge),0) from expensesagent b1
+        where b1.kurs = 'USD'
+        and b1.idJobSheet = j.idJobSheet
+      ),0) +
+       ifnull((
+        select ifnull(sum(b2.charge),0) from expensesshipper b2
+        where b2.kurs = 'USD'
+        and b2.idJobSheet = j.idJobSheet
+        and b2.idShipperFee != 379
+      ),0))
+      as
+    totalExpensesUSD,
+        j.idTransporter,
+        i.isPayable as invoicePaymentStatus,
+        i.invoiceNumber as invoiceNumber,
+        group_concat(distinct(j.remark)) as remark,
+        ja.destination as destination,
+        ja.mawb as mawb,
+        ja.hawb as hawb,
+        d.isPayable as debitPaymentStatus,
+        sum(j.refundIDR) as refundIDR,
+        sum(j.refundUSD) as refundUSD,
+        (sum(ifnull(esf.charge,0))
+        +
+        sum(ifnull(eaf.charge,0)))
+        as refund,
+        (
+          sum(ifnull(esfusd.charge,0))
+          +
+          sum(ifnull(eafusd.charge,0))
+        ) as refundUS,
+        sum(j.creditNoteIDR) as creditNoteIDR,
+        sum(j.creditNoteUSD) as creditNoteUSD,
+        j.cnNo,        
+        0 as baTax,
+        j.vatIDR as bsTax,
+        j.pphIDR as bsPPH,
+    FROM jobsheet j
+    left join expensesshipper esf
+        on esf.idJobSheet = j.idJobSheet
+        and esf.idShipperFee in (158, 162, 45, 44, 291)
+        and esf.kurs = 'IDR'
+    left join expensesagent eaf
+        on eaf.idJobSheet = j.idJobSheet
+        and eaf.idAgentFee in (28, 85, 170, 228)
+        and eaf.kurs = 'IDR'
+    left join expensesshipper esfusd
+        on esfusd.idJobSheet = j.idJobSheet
+        and esfusd.idShipperFee in (158, 162, 45, 44, 291)
+        and esfusd.kurs = 'USD'
+    left join expensesagent eafusd
+        on eafusd.idJobSheet = j.idJobSheet
+        and eafusd.idAgentFee in (28, 85, 170, 228)
+        and eafusd.kurs = 'USD'
+    left join jobsheetai ja
+        on ja.idJobSheet = j.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet
+    left join debit d
+        on d.idJobSheet = j.idJobSheet
+    where j.idJobType = 'AI' and j.idConsignee = #idConsignee#   
+        and j.shippeddate between #from# AND #to#
+  </select>
+
+  <select id="jobsheet_selectReportMonthlySalesAO" resultClass="jobsheetDetailAO" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo, ifnull(s.name,'') as idShipper,
+        ifnull(c.name,'') as idConsignee,
+        ifnull(a.name,'') as idAgent,
+        convert(replace(replace(j.qtyDesc,',',''),'.',''),unsigned) as qtyDesc,        
+        convert(replace(replace(j.weightDesc,',',''),'.',''),unsigned) as weightDesc,
+        convert(j.volumeDesc,unsigned) as volumeDesc, j.idJobType,         
+        j.shippeddate, j.cnKurs, j.depart,
+        group_concat(distinct(j.remark)) as remark,
+        replace(group_concat(distinct(j.cnNo)),',','') as cnNo,
+        jo.destination as destination,
+        jo.mawb as mawb,
+        jo.hawb as hawb,
+        sum(j.refundIDR) as refundIDR,
+        sum(j.refundUSD) as refundUSD,
+        sum(ifnull(j.creditNoteIDR,0)) as creditNoteIDR,
+        sum(ifnull(j.creditNoteUSD,0)) as creditNoteUSD,
+        (sum(ifnull(esf.charge,0))
+        +
+        sum(ifnull(eaf.charge,0)))
+        as refund,
+        (
+          sum(ifnull(esfusd.charge,0))
+          +
+          sum(ifnull(eafusd.charge,0))
+        ) as refundUS,
+        j.cnNo,
+        0 as baTax,
+        j.vatIDR as bsTax,
+        j.pphIDR as bsPPH,
+    jo.billTo,
+    jo.billToDebit,
+    left(jo.flights,2) as flights,
+    0 as pag,
+    sum((
+        select ifnull(sum(b.charge),0) from expensesagent b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+      ) +
+      (
+        select ifnull(sum(b.charge),0) from expensesshipper b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+        and b.idShipperFee != 379
+      ))
+      as
+      totalExpensesIDR,
+      sum(ifnull((
+        select ifnull(sum(b1.charge),0) from expensesagent b1
+        where b1.kurs = 'USD'
+        and b1.idJobSheet = j.idJobSheet
+      ),0) +
+       ifnull((
+        select ifnull(sum(b2.charge),0) from expensesshipper b2
+        where b2.kurs = 'USD'
+        and b2.idJobSheet = j.idJobSheet
+        and b2.idShipperFee != 379
+      ),0))
+      as
+    totalExpensesUSD    
+    FROM jobsheet j
+    left join jobsheetao jo
+        on jo.idJobSheet = j.idJobSheet
+    left join expensesshipper esf
+        on esf.idJobSheet = j.idJobSheet
+        and esf.idShipperFee in (158, 162, 45, 44, 291)
+        and esf.kurs = 'IDR'
+    left join expensesagent eaf
+        on eaf.idJobSheet = j.idJobSheet
+        and eaf.idAgentFee in (28, 85, 170, 228)
+        and eaf.kurs = 'IDR'
+    left join expensesshipper esfusd
+        on esfusd.idJobSheet = j.idJobSheet
+        and esfusd.idShipperFee in (158, 162, 45, 44, 291)
+        and esfusd.kurs = 'USD'
+    left join expensesagent eafusd
+        on eafusd.idJobSheet = j.idJobSheet
+        and eafusd.idAgentFee in (28, 85, 170, 228)
+        and eafusd.kurs = 'USD'
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet
+    left join debit d
+        on d.idJobSheet = j.idJobSheet
+   
+    where j.idJobType = 'AO'
+        and j.shippeddate between #from# AND #to#
+    group by j.jobNo
+    order by j.jobNo
+  </select>
+  
+  <select id="jobsheet_selectReportMonthlySalesAOCustomer" resultClass="jobsheetDetailAO" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo, ifnull(s.name,'') as idShipper,
+        ifnull(c.name,'') as idConsignee,
+        ifnull(a.name,'') as idAgent, 
+        j.qtyDesc, j.weightDesc, 
+        j.volumeDesc, j.idJobType, 
+        j.shippeddate, j.cnKurs, j.depart,
+        sum((
+        select ifnull(sum(b.charge),0) from expensesagent b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+      ) +
+      (
+        select ifnull(sum(b.charge),0) from expensesshipper b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+        and b.idShipperFee != 379
+      ))
+      as
+      totalExpensesIDR,
+      sum(ifnull((
+        select ifnull(sum(b1.charge),0) from expensesagent b1
+        where b1.kurs = 'USD'
+        and b1.idJobSheet = j.idJobSheet
+      ),0) +
+       ifnull((
+        select ifnull(sum(b2.charge),0) from expensesshipper b2
+        where b2.kurs = 'USD'
+        and b2.idJobSheet = j.idJobSheet
+        and b2.idShipperFee != 379
+      ),0))
+      as
+    totalExpensesUSD,
+        j.idTransporter,
+        i.isPayable as invoicePaymentStatus,
+        i.invoiceNumber as invoiceNumber,
+        group_concat(distinct(j.remark)) as remark,
+        jo.destination as destination,
+        jo.mawb as mawb,
+        jo.hawb as hawb,
+        d.isPayable as debitPaymentStatus,
+        sum(j.refundIDR) as refundIDR,
+        sum(j.refundUSD) as refundUSD,
+        sum(j.creditNoteIDR) as creditNoteIDR,
+        sum(j.creditNoteUSD) as creditNoteUSD,
+        (sum(ifnull(esf.charge,0))
+        +
+        sum(ifnull(eaf.charge,0)))
+        as refund,
+        (
+          sum(ifnull(esfusd.charge,0))
+          +
+          sum(ifnull(eafusd.charge,0))
+        ) as refundUS,
+        j.cnNo,
+        0 as baTax,
+        j.vatIDR as bsTax,
+        j.pphIDR as bsPPH,
+        jo.billTo,
+        jo.billToDebit,
+        ifnull(d.debitNumber, '') as debitNumber
+    FROM jobsheet j
+    left join jobsheetao jo
+        on jo.idJobSheet = j.idJobSheet
+    left join expensesshipper esf
+        on esf.idJobSheet = j.idJobSheet
+        and esf.idShipperFee in (158, 162, 45, 44, 291)
+        and esf.kurs = 'IDR'
+    left join expensesagent eaf
+        on eaf.idJobSheet = j.idJobSheet
+        and eaf.idAgentFee in (28, 85, 170, 228)
+        and eaf.kurs = 'IDR'
+    left join expensesshipper esfusd
+        on esfusd.idJobSheet = j.idJobSheet
+        and esfusd.idShipperFee in (158, 162, 45, 44, 291)
+        and esfusd.kurs = 'USD'
+    left join expensesagent eafusd
+        on eafusd.idJobSheet = j.idJobSheet
+        and eafusd.idAgentFee in (28, 85, 170, 228)
+        and eafusd.kurs = 'USD'
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet
+    left join debit d
+        on d.idJobSheet = j.idJobSheet
+   
+    where j.idJobType = 'AO' and j.idConsignee = #idConsignee#   
+        and j.shippeddate between #from# AND #to#
+  </select>
+
+  <select id="jobsheet_selectReportMonthlySalesSI" resultClass="jobsheetDetailSI" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo, ifnull(s.name,'') as idShipper,
+        ifnull(c.name,'') as idConsignee,
+        ifnull(a.name,'') as idAgent,
+        convert(replace(replace(j.qtyDesc,',',''),'.',''),unsigned) as qtyDesc,
+        convert(replace(replace(j.weightDesc,',',''),'.',''),unsigned) as weightDesc,
+        j.volumeDesc as volumeDesc, j.idJobType,
+        j.shippeddate, j.cnKurs, j.depart,
+        group_concat(distinct(j.remark)) as remark,
+        replace(group_concat(distinct(j.cnNo)),',','') as cnNo,
+        ji.origin as destination,
+        ji.termMBL as mawb,
+        sum(j.refundIDR) as refundIDR,
+        sum(j.refundUSD) as refundUSD,
+        sum(ifnull(j.creditNoteIDR,0)) as creditNoteIDR,
+        sum(ifnull(j.creditNoteUSD,0)) as creditNoteUSD,
+
+        (sum(ifnull(esf.charge,0))
+        +
+        sum(ifnull(eaf.charge,0)))
+        as refund,
+        (
+          sum(ifnull(esfusd.charge,0))
+          +
+          sum(ifnull(eafusd.charge,0))
+        ) as refundUS,
+        j.cnNo,
+        j.vatIDR as baTax,
+        0 as bsTax,
+        j.pphIDR as bsPPH
+        ji.billTo,
+        ji.billToDebit,
+    sl.name as flights,
+    0 as pag,
+    sum((
+        select ifnull(sum(b.charge),0) from expensesagent b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+      ) +
+      (
+        select ifnull(sum(b.charge),0) from expensesshipper b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+        and b.idShipperFee != 379
+      ))
+      as
+      totalExpensesIDR,
+      sum(ifnull((
+        select ifnull(sum(b1.charge),0) from expensesagent b1
+        where b1.kurs = 'USD'
+        and b1.idJobSheet = j.idJobSheet
+      ),0) +
+       ifnull((
+        select ifnull(sum(b2.charge),0) from expensesshipper b2
+        where b2.kurs = 'USD'
+        and b2.idJobSheet = j.idJobSheet
+        and b2.idShipperFee != 379
+      ),0))
+      as
+    totalExpensesUSD    
+    FROM jobsheet j
+    left join jobsheetsi ji
+        on ji.idJobSheet = j.idJobSheet
+    left join expensesshipper esf
+        on esf.idJobSheet = j.idJobSheet
+        and esf.idShipperFee in (158, 162, 45, 44, 291)
+        and esf.kurs = 'IDR'
+    left join expensesagent eaf
+        on eaf.idJobSheet = j.idJobSheet
+        and eaf.idAgentFee in (28, 85, 170, 228)
+        and eaf.kurs = 'IDR'
+    left join expensesshipper esfusd
+        on esfusd.idJobSheet = j.idJobSheet
+        and esfusd.idShipperFee in (158, 162, 45, 44, 291)
+        and esfusd.kurs = 'USD'
+    left join expensesagent eafusd
+        on eafusd.idJobSheet = j.idJobSheet
+        and eafusd.idAgentFee in (28, 85, 170, 228)
+        and eafusd.kurs = 'USD'
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join consignee sl
+        on sl.idConsignee = ji.shippingLine        
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet
+    left join debit d
+        on d.idJobSheet = j.idJobSheet    
+    where j.idJobType = 'SI'
+        and j.shippeddate between #from# AND #to#
+    group by j.jobNo
+    order by j.jobNo
+  </select>
+  
+  <select id="jobsheet_selectReportMonthlySalesSICustomer" resultClass="jobsheetDetailSI" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo, ifnull(s.name,'') as idShipper,
+        ifnull(c.name,'') as idConsignee,
+        ifnull(a.name,'') as idAgent,
+        convert(replace(replace(j.qtyDesc,',',''),'.',''),unsigned) as qtyDesc,
+        convert(replace(replace(j.weightDesc,',',''),'.',''),unsigned) as weightDesc,
+        j.volumeDesc as volumeDesc, j.idJobType,
+        j.shippeddate, j.cnKurs, j.depart,
+        group_concat(distinct(j.remark)) as remark,
+        replace(group_concat(distinct(j.cnNo)),',','') as cnNo,
+        ji.origin as destination,
+        ji.termMBL as mawb,
+        sum(j.refundIDR) as refundIDR,
+        sum(j.refundUSD) as refundUSD,
+        sum(ifnull(j.creditNoteIDR,0)) as creditNoteIDR,
+        sum(ifnull(j.creditNoteUSD,0)) as creditNoteUSD,
+        (sum(ifnull(esf.charge,0))
+        +
+        sum(ifnull(eaf.charge,0)))
+        as refund,
+        (
+          sum(ifnull(esfusd.charge,0))
+          +
+          sum(ifnull(eafusd.charge,0))
+        ) as refundUS,
+        j.cnNo,
+        0 as baTax,
+        j.vatIDR as bsTax,
+        j.pphIDR as bsPPH,
+    ji.billTo,
+    ji.billToDebit,
+    sl.name as flights,
+    0 as pag,
+    sum((
+        select ifnull(sum(b.charge),0) from expensesagent b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+      ) +
+      (
+        select ifnull(sum(b.charge),0) from expensesshipper b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+        and b.idShipperFee != 379
+      ))
+      as
+      totalExpensesIDR,
+      sum(ifnull((
+        select ifnull(sum(b1.charge),0) from expensesagent b1
+        where b1.kurs = 'USD'
+        and b1.idJobSheet = j.idJobSheet
+      ),0) +
+       ifnull((
+        select ifnull(sum(b2.charge),0) from expensesshipper b2
+        where b2.kurs = 'USD'
+        and b2.idJobSheet = j.idJobSheet
+        and b2.idShipperFee != 379
+      ),0))
+      as
+    totalExpensesUSD    
+    FROM jobsheet j
+    left join jobsheetsi ji
+        on ji.idJobSheet = j.idJobSheet
+    left join expensesshipper esf
+        on esf.idJobSheet = j.idJobSheet
+        and esf.idShipperFee in (158, 162, 45, 44, 291)
+        and esf.kurs = 'IDR'
+    left join expensesagent eaf
+        on eaf.idJobSheet = j.idJobSheet
+        and eaf.idAgentFee in (28, 85, 170, 228)
+        and eaf.kurs = 'IDR'
+    left join expensesshipper esfusd
+        on esfusd.idJobSheet = j.idJobSheet
+        and esfusd.idShipperFee in (158, 162, 45, 44, 291)
+        and esfusd.kurs = 'USD'
+    left join expensesagent eafusd
+        on eafusd.idJobSheet = j.idJobSheet
+        and eafusd.idAgentFee in (28, 85, 170, 228)
+        and eafusd.kurs = 'USD'
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join consignee sl
+        on sl.idConsignee = ji.shippingLine        
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet
+    left join debit d
+        on d.idJobSheet = j.idJobSheet   
+    where j.idJobType = 'SI' and j.idConsignee = #idConsignee#
+        and j.shippeddate between #from# AND #to#
+  </select>
+  
+  <select id="jobsheet_selectReportMonthlySalesSO" resultClass="jobsheetDetailSO" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo, ifnull(s.name,'') as idShipper,
+        ifnull(c.name,'') as idConsignee,
+        ifnull(a.name,'') as idAgent,
+        convert(replace(replace(j.qtyDesc,',',''),'.',''),unsigned) as qtyDesc,
+        convert(replace(replace(j.weightDesc,',',''),'.',''),unsigned) as weightDesc,
+        j.volumeDesc as volumeDesc, j.idJobType,
+        j.shippeddate,
+        group_concat(distinct(j.remark)) as remark,
+        replace(group_concat(distinct(j.cnNo)),',','') as cnNo,
+        jo.destination as destination,
+        jo.termMBL as mawb,
+        sum(j.refundIDR) as refundIDR,
+        sum(j.refundUSD) as refundUSD,
+        sum(ifnull(j.creditNoteIDR,0)) as creditNoteIDR,
+        sum(ifnull(j.creditNoteUSD,0)) as creditNoteUSD,
+        sum(ifnull(esf.charge,0)) as refund,
+        sum(ifnull(esfusd.charge,0)) as refundUS,
+        j.cnNo,
+        0 as baTax,
+        j.vatIDR as bsTax,
+        j.pphIDR as bsPPH,
+    jo.billTo,
+    jo.billToDebit,
+    ifnull(sl.name,'') as flights,
+    0 as pag,
+      sum((
+        select ifnull(sum(b.charge),0) from expensesagent b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+      ) +
+      (
+        select ifnull(sum(b.charge),0) from expensesshipper b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+        and b.idShipperFee != 379
+      ))
+      as
+      totalExpensesIDR,
+      sum(ifnull((
+        select ifnull(sum(b1.charge),0) from expensesagent b1
+        where b1.kurs = 'USD'
+        and b1.idJobSheet = j.idJobSheet
+      ),0) +
+       ifnull((
+        select ifnull(sum(b2.charge),0) from expensesshipper b2
+        where b2.kurs = 'USD'
+        and b2.idJobSheet = j.idJobSheet
+        and b2.idShipperFee != 379
+      ),0))
+      as
+    totalExpensesUSD
+    FROM jobsheet j
+    left join jobsheetso jo
+        on jo.idJobSheet = j.idJobSheet
+    left join expensesshipper esf
+        on esf.idJobSheet = j.idJobSheet
+        and esf.idShipperFee in (158, 162, 45, 44, 291)
+        and esf.kurs = 'IDR'
+    left join expensesagent eaf
+        on eaf.idJobSheet = j.idJobSheet
+        and eaf.idAgentFee in (28, 85, 170, 228)
+        and eaf.kurs = 'IDR'
+    left join expensesshipper esfusd
+        on esfusd.idJobSheet = j.idJobSheet
+        and esfusd.idShipperFee in (158, 162, 45, 44, 291)
+        and esfusd.kurs = 'USD'
+    left join expensesagent eafusd
+        on eafusd.idJobSheet = j.idJobSheet
+        and eafusd.idAgentFee in (28, 85, 170, 228)
+        and eafusd.kurs = 'USD'
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join consignee sl
+        on sl.idConsignee = jo.shippingLine    
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet
+    left join debit d
+        on d.idJobSheet = j.idJobSheet
+     where j.idJobType = 'SO'
+        and j.shippeddate between #from# AND #to#
+    group by j.jobNo
+    order by j.jobNo
+   
+  </select>
+  
+  <select id="jobsheet_selectReportMonthlySalesSOCustomer" resultClass="jobsheetDetailSO" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo, ifnull(s.name,'') as idShipper,
+        ifnull(c.name,'') as idConsignee,
+        ifnull(a.name,'') as idAgent,
+        convert(replace(replace(j.qtyDesc,',',''),'.',''),unsigned) as qtyDesc,
+        convert(replace(replace(j.weightDesc,',',''),'.',''),unsigned) as weightDesc,
+        j.volumeDesc as volumeDesc, j.idJobType,
+        j.shippeddate,
+        group_concat(distinct(j.remark)) as remark,
+        replace(group_concat(distinct(j.cnNo)),',','') as cnNo,
+        jo.destination as destination,
+        jo.termMBL as mawb,
+        sum(j.refundIDR) as refundIDR,
+        sum(j.refundUSD) as refundUSD,
+        sum(ifnull(j.creditNoteIDR,0)) as creditNoteIDR,
+        sum(ifnull(j.creditNoteUSD,0)) as creditNoteUSD,
+        sum(ifnull(esf.charge,0)) as refund,
+        sum(ifnull(esfusd.charge,0)) as refundUS,
+        j.cnNo,
+        0 as baTax,
+        j.vatIDR as bsTax,
+        j.pphIDR as bsPPH,
+    jo.billTo,
+    jo.billToDebit,
+    ifnull(sl.name,'') as flights,
+    0 as pag,
+      sum((
+        select ifnull(sum(b.charge),0) from expensesagent b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+      ) +
+      (
+        select ifnull(sum(b.charge),0) from expensesshipper b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+        and b.idShipperFee != 379
+      ))
+      as
+      totalExpensesIDR,
+      sum(ifnull((
+        select ifnull(sum(b1.charge),0) from expensesagent b1
+        where b1.kurs = 'USD'
+        and b1.idJobSheet = j.idJobSheet
+      ),0) +
+       ifnull((
+        select ifnull(sum(b2.charge),0) from expensesshipper b2
+        where b2.kurs = 'USD'
+        and b2.idJobSheet = j.idJobSheet
+        and b2.idShipperFee != 379
+      ),0))
+      as
+    totalExpensesUSD
+    FROM jobsheet j
+    left join jobsheetso jo
+        on jo.idJobSheet = j.idJobSheet
+    left join expensesshipper esf
+        on esf.idJobSheet = j.idJobSheet
+        and esf.idShipperFee in (158, 162, 45, 44, 291)
+        and esf.kurs = 'IDR'
+    left join expensesagent eaf
+        on eaf.idJobSheet = j.idJobSheet
+        and eaf.idAgentFee in (28, 85, 170, 228)
+        and eaf.kurs = 'IDR'
+    left join expensesshipper esfusd
+        on esfusd.idJobSheet = j.idJobSheet
+        and esfusd.idShipperFee in (158, 162, 45, 44, 291)
+        and esfusd.kurs = 'USD'
+    left join expensesagent eafusd
+        on eafusd.idJobSheet = j.idJobSheet
+        and eafusd.idAgentFee in (28, 85, 170, 228)
+        and eafusd.kurs = 'USD'
+     left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join consignee sl
+        on sl.idConsignee = jo.shippingLine 
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet
+    left join debit d
+        on d.idJobSheet = j.idJobSheet
+     where j.idJobType = 'SO' and j.idConsignee = #idConsignee#
+        and j.shippeddate between #from# AND #to#
+    group by j.jobNo
+    order by j.jobNo
+  </select>
+  
+  <select id="jobsheet_selectReportPayable" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    SELECT j.jobNo, s.name as idShipper,
+        c.name as idConsignee,
+        a.name as idAgent, 
+        j.qtyDesc, j.weightDesc, 
+        j.volumeDesc, j.idJobType, 
+        j.shippeddate, 
+        j.totalBillingIDR,
+        j.totalBillingUSD,
+        j.totalExpensesIDR,
+        j.totalExpensesUSD,
+        j.idTransporter,
+        i.isPayable as invoicePaymentStatus,
+        d.isPayable as debitPaymentStatus 
+    FROM jobsheet j
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join invoice i
+        on i.idJobSheet = j.idJobSheet          
+    left join debit d
+        on d.idJobSheet = j.idJobSheet     
+    where j.shippeddate between #from# AND #to#
+        and i.isPayable = 'Y'
+        and d.isPayable = 'Y'
+  </select>
+  
+  <select id="jobsheet_selectReportSummaryTruckingByTransporter" resultClass="invoiceAIDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    select j.idJobSheet,
+      j.jobNo,
+      ifnull(j.invoiceNoUSD, j.debitNo) as invoiceNoUSD,
+      ifnull(s.name,'') as idShipper,
+      ifnull(c.name,'') as idConsignee,
+      ifnull(a.name,'') as idAgent,
+      ifnull(i.invoiceDate, d.debitDate) as invoiceDate,
+      i.invoiceNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.totalExpensesIDR,
+      j.totalExpensesUSD,
+      t.name,      
+      ifnull(ifnull((
+              select sum(ba.charge) from billingagent ba
+              left join agentfee af
+                on ba.idAgentFee = af.idAgentFee
+                where af.aliasName = 'TRUCKING'
+                and ba.idJobSheet = j.idJobSheet
+              ),0)+
+              ifnull((
+              select sum(bs.charge) from billingshipper bs
+              left join shipperfee sf
+                on bs.idShipperFee = sf.idShipperFee
+                where sf.aliasName = 'TRUCKING'
+                and bs.idJobSheet = j.idJobSheet
+              ),0)
+              ,0) as transportCost,
+       ifnull(ifnull((
+              select sum(ea.charge) from expensesagent ea
+              left join agentfee af
+                on ea.idAgentFee = af.idAgentFee
+                where af.aliasName = 'TRUCKING'
+                and ea.idJobSheet = j.idJobSheet
+              ),0)+
+              ifnull((
+              select sum(es.charge) from expensesshipper es
+              left join shipperfee sf
+                on es.idShipperFee = sf.idShipperFee
+                where sf.aliasName = 'TRUCKING'
+                and es.idJobSheet = j.idJobSheet
+              ),0)
+              ,0) as transportExp,
+      j.volumeDesc
+    from jobsheet j
+    left join invoice i
+        on j.idJobSheet = i.idJobSheet
+    left join debit d
+        on j.idJobSheet = d.idJobSheet    
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join transporter t
+        on t.idTransporter = j.idTransporter
+    where j.idTransporter = #idConsignee#        
+        and j.shippeddate between #from# AND #to#
+    order by t.name, i.invoiceDate        
+  </select>
+  
+  <select id="jobsheet_selectReportSummaryTrucking" resultClass="invoiceAIDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    select j.idJobSheet,
+      j.jobNo,
+      (
+        case LENGTH(j.invoiceNoUSD)
+            when 0
+               then j.debitNo
+            else
+                j.invoiceNoUSD
+        end
+      ) as invoiceNoUSD,   
+      ifnull(s.name,'') as idShipper,
+      ifnull(c.name,'') as idConsignee,
+      ifnull(a.name,'') as idAgent,
+      ifnull(i.invoiceDate, d.debitDate) as invoiceDate,
+      ifnull(i.invoiceNumber, j.debitNo) as invoiceNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.totalExpensesIDR,
+      j.totalExpensesUSD,
+      t.name,
+      ifnull(ifnull((
+              select sum(ba.charge) from billingagent ba
+              left join agentfee af
+                on ba.idAgentFee = af.idAgentFee
+                where af.aliasName = 'TRUCKING'
+                and ba.idJobSheet = j.idJobSheet
+              ),0)+
+              ifnull((
+              select sum(bs.charge) from billingshipper bs
+              left join shipperfee sf
+                on bs.idShipperFee = sf.idShipperFee
+                where sf.aliasName = 'TRUCKING'
+                and bs.idJobSheet = j.idJobSheet
+              ),0)
+              ,0) as transportCost,
+      ifnull(ifnull((
+              select sum(ea.charge) from expensesagent ea
+              left join agentfee af
+                on ea.idAgentFee = af.idAgentFee
+                where af.aliasName = 'TRUCKING'
+                and ea.idJobSheet = j.idJobSheet
+              ),0)+
+              ifnull((
+              select sum(es.charge) from expensesshipper es
+              left join shipperfee sf
+                on es.idShipperFee = sf.idShipperFee
+                where sf.aliasName = 'TRUCKING'
+                and es.idJobSheet = j.idJobSheet
+              ),0)
+              ,0) as transportExp,
+      j.volumeDesc
+    from jobsheet j
+    left join invoice i
+        on j.idJobSheet = i.idJobSheet
+    left join debit d
+        on j.idJobSheet = d.idJobSheet    
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+     left join consignee a
+        on a.idConsignee = j.idAgent
+    left join transporter t
+        on t.idTransporter = j.idTransporter
+    where j.shippeddate between #from# AND #to#
+    order by t.name, i.invoiceDate     
+  </select>
+  
+  <select id="jobsheet_selectReportTaxMonthlyCustomer" resultClass="taxJobSheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    select j.idJobSheet,
+      j.jobNo,
+     (
+        case LENGTH(j.invoiceNoUSD)
+            when 0
+               then j.debitNo
+            else
+                j.invoiceNoUSD
+        end
+      ) as invoiceNoUSD,
+      s.name as idShipper,
+      c.name as idConsignee,
+      (
+        case j.idJobType
+            when 'AI'
+               then c.npwp
+            when 'AO'
+               then s.npwp
+            when 'SI'
+               then c.npwp
+            when 'SO'
+               then s.npwp
+        end
+      ) as npwp,
+      a.name as idAgent,
+      i.invoiceDate,
+      ifnull(i.invoiceNumber, j.debitNo) as invoiceNumber,      
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.totalExpensesIDR,
+      j.totalExpensesUSD,
+      j.volumeDesc,
+      t.noFaktur,
+      t.fakturDate,
+      t.dpp
+    from jobsheet j
+    left join invoice i
+        on j.idJobSheet = i.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join tax t
+        on j.idJobSheet = t.idJobSheet
+    where j.shippeddate between #from# AND #to#
+        and j.idConsignee = #idConsignee#   
+    and j.invoiceNoUSD is not null
+    and length(j.invoiceNoUSD) <![CDATA[ > ]]> 0
+    and t.noFaktur is not null
+    order by t.noFaktur
+  </select>
+  
+  <select id="jobsheet_selectReportTaxMonthly" resultClass="taxJobSheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    select j.idJobSheet,
+      j.jobNo,
+      j.invoiceNoUSD,
+      s.name as idShipper,
+      c.name as idConsignee,
+      (
+        case j.idJobType
+            when 'AI'
+               then c.npwp
+            when 'AO'
+               then s.npwp
+            when 'SI'
+               then c.npwp
+            when 'SO'
+               then s.npwp
+        end
+      ) as npwp,
+      a.name as idAgent,
+      i.invoiceDate,
+      ifnull(i.invoiceNumber, j.debitNo) as invoiceNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.totalExpensesIDR,
+      j.totalExpensesUSD,
+      j.volumeDesc,
+      t.noFaktur,
+      t.fakturDate,
+      t.dpp
+    from jobsheet j
+    left join invoice i
+        on j.idJobSheet = i.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+     left join consignee a
+        on a.idConsignee = j.idAgent
+    left join tax t
+        on j.idJobSheet = t.idJobSheet
+    where j.shippeddate between #from# AND #to#
+    and j.invoiceNoUSD is not null
+    and length(j.invoiceNoUSD) <![CDATA[ > ]]> 0
+    and t.noFaktur is not null
+    order by t.noFaktur
+  </select>
+  
+<select id="jobsheet_select_detail" resultClass="detailJobsheet" parameterClass="com.wings.persistence.JobsheetKey">
+    select af.description,
+        IFNULL((
+          select sum(ba.charge) from billingagent ba
+          where ba.idJobSheet = v.idJobsheet
+          and ba.kurs = 'IDR'
+          and ba.idAgentFee = af.idAgentFee
+        ),0) as billingIDR,
+        IFNULL((
+          select sum(ba.charge) from billingagent ba
+          where ba.idJobSheet = v.idJobsheet
+          and ba.kurs = 'USD'
+          and ba.idAgentFee = af.idAgentFee
+        ),0) as billingUSD,
+        IFNULL((
+          select sum(ea.charge) from expensesagent ea
+          where ea.idJobSheet = v.idJobsheet
+          and ea.kurs = 'IDR'
+          and ea.idAgentFee = af.idAgentFee
+        ),0) as expensesIDR,
+        IFNULL((
+          select sum(ea.charge) from expensesagent ea
+          where ea.idJobSheet = v.idJobsheet
+          and ea.kurs = 'USD'
+          and ea.idAgentFee = af.idAgentFee
+        ),0) as expensesUSD,
+        IFNULL((
+          select group_concat(ba.description) from billingagent ba
+              where ba.idJobSheet = v.idJobsheet
+              and ba.idAgentFee = af.idAgentFee
+        ),'') as description2,
+        IFNULL((
+          select group_concat(ea.description) FROM expensesagent ea
+            where ea.idJobsheet = v.idJobsheet
+            and ea.idAgentFee = af.idAgentFee            
+        ),'') as description3
+FROM v_agent_charge_distinct v left join agentfee af
+on v.idAgentFee = af.idAgentFee
+where v.idJobsheet = #idJobSheet#
+
+UNION
+SELECT sf.description,
+IFNULL((
+          select sum(bs.charge) from billingshipper bs
+          where bs.idJobSheet = v.idJobsheet
+          and bs.kurs = 'IDR'
+          and bs.idShipperFee = v.idShipperFee
+        ),0) as billingIDR,
+        IFNULL((
+          select sum(bs.charge) from billingshipper bs
+          where bs.idJobSheet = v.idJobsheet
+          and bs.kurs = 'USD'
+          and bs.idShipperFee = v.idShipperFee
+        ),0) as billingUSD,
+        IFNULL((
+          select sum(es.charge) from expensesshipper es
+          where es.idJobSheet = v.idJobsheet
+          and es.kurs = 'IDR'
+          and es.idShipperFee = v.idShipperFee
+        ),0) as expensesIDR,
+        IFNULL((
+          select sum(es.charge) from expensesshipper es
+          where es.idJobSheet = v.idJobsheet
+          and es.kurs = 'USD'
+          and es.idShipperFee = v.idShipperFee
+        ),0) as expensesUSD,
+        IFNULL((
+          select group_concat(bs.description) from billingshipper bs
+          where bs.idJobSheet = v.idJobsheet
+          and bs.idShipperFee = sf.idShipperFee
+        ),'') as description2,
+        IFNULL((
+          select group_concat(es.description) FROM expensesshipper es
+            where es.idJobsheet = v.idJobsheet
+            and es.idShipperFee = sf.idShipperFee
+        ),'') as description3
+FROM v_shipper_charge_distinct v left join shipperfee sf
+on v.idShipperFee = sf.idShipperFee
+where v.idJobsheet = #idJobSheet#
+
+  </select>
+
+  <select id="jobsheet_select_detail_by_jobno" resultClass="detailJobsheet" parameterClass="com.wings.persistence.Jobsheet">    
+select af.description,
+        IFNULL((
+          select sum(ba.charge) from billingagent ba
+          where ba.idJobSheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+          )
+          and ba.kurs = 'IDR'
+          and ba.idAgentFee = af.idAgentFee
+        ),0) as billingIDR,
+        IFNULL((
+          select sum(ba.charge) from billingagent ba
+          where ba.idJobSheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+          )
+          and ba.kurs = 'USD'
+          and ba.idAgentFee = af.idAgentFee
+        ),0) as billingUSD,
+        IFNULL((
+          select sum(ea.charge) from expensesagent ea
+          where ea.idJobSheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+          )
+         and ea.kurs = 'IDR'
+          and ea.idAgentFee = af.idAgentFee
+        ),0) as expensesIDR,
+        IFNULL((
+          select sum(ea.charge) from expensesagent ea
+          where ea.idJobSheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+        )
+          and ea.kurs = 'USD'
+          and ea.idAgentFee = af.idAgentFee
+        ),0) as expensesUSD,
+        IFNULL((
+          select group_concat(ba.description) from billingagent ba
+              where ba.idJobSheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+            )
+              and ba.idAgentFee = af.idAgentFee
+        ),'') as description2,
+        IFNULL((
+          select group_concat(ea.description) FROM expensesagent ea
+            where ea.idJobsheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+            )
+            and ea.idAgentFee = af.idAgentFee            
+        ),'') as description3
+FROM v_agent_charge_distinct v left join agentfee af
+on v.idAgentFee = af.idAgentFee
+where v.idJobsheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+)
+
+UNION
+SELECT sf.description,
+IFNULL((
+          select sum(bs.charge) from billingshipper bs
+          where bs.idJobSheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+        )
+          and bs.kurs = 'IDR'
+          and bs.idShipperFee = v.idShipperFee
+        ),0) as billingIDR,
+        IFNULL((
+          select sum(bs.charge) from billingshipper bs
+          where bs.idJobSheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+        )
+          and bs.kurs = 'USD'
+          and bs.idShipperFee = v.idShipperFee
+        ),0) as billingUSD,
+        IFNULL((
+          select sum(es.charge) from expensesshipper es
+          where es.idJobSheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+        )
+          and es.kurs = 'IDR'
+          and es.idShipperFee = v.idShipperFee
+        ),0) as expensesIDR,
+        IFNULL((
+          select sum(es.charge) from expensesshipper es
+          where es.idJobSheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+          )
+          and es.kurs = 'USD'
+          and es.idShipperFee = v.idShipperFee
+        ),0) as expensesUSD,
+        IFNULL((
+          select group_concat(bs.description) from billingshipper bs
+          where bs.idJobSheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+          )
+          and bs.idShipperFee = sf.idShipperFee
+        ),'') as description2,
+        IFNULL((
+          select group_concat(es.description) FROM expensesshipper es
+            where es.idJobsheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+        )
+            and es.idShipperFee = sf.idShipperFee
+        ),'') as description3
+FROM v_shipper_charge_distinct v left join shipperfee sf
+on v.idShipperFee = sf.idShipperFee
+where v.idJobsheet in (
+                  select idJobSheet from jobsheet j
+                  where j.jobNo = #jobNo#
+) 
+  </select>
+
+  <select id="jobsheet_selectReportRefund" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+        select j.idJobSheet,
+          ifnull(j.jobNo,'') as jobNo,
+          ifnull(s.name,'') as idShipper,
+          ifnull(c.name,'') as idConsignee,
+          ifnull(a.name,'') as idAgent,
+          j.refundIDR,
+          j.refundUSD,
+          ifnull(j.idJobType,'') as idJobType,
+          (
+            case j.idJobType
+                when 'AI'
+                   then ai.destination
+                when 'AO'
+                   then ao.destination
+                when 'SI'
+                   then si.origin
+                when 'SO'
+                   then so.destination
+            end
+          ) as destination,
+         ifnull((
+            case j.idJobType
+                when 'AI'
+                   then ''
+                when 'AO'
+                   then ''
+                when 'SI'
+                   then si.shippingLine
+                when 'SO'
+                   then so.shippingLine
+            end
+        ),'') as shippingLine
+        from jobsheet j
+        left join consignee c
+            on c.idConsignee = j.idConsignee
+        left join consignee s
+            on s.idConsignee = j.idShipper
+        left join consignee a
+            on a.idConsignee = j.idAgent
+        left join jobsheetai ai
+            on j.idJobSheet = ai.idJobSheet
+        left join jobsheetao ao
+            on j.idJobSheet = ao.idJobSheet
+        left join jobsheetsi si
+            on j.idJobSheet = si.idJobSheet
+        left join jobsheetso so
+            on j.idJobSheet = so.idJobSheet        
+        where j.idConsignee = #idConsignee#
+            and j.shippeddate between #from# AND #to#        
+        group by jobNo
+        order by idJobType, jobNo
+  </select>
+  
+  <select id="jobsheet_selectChartByYear" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">   
+    SELECT month(shippeddate) as jobNo, sum(totalBillingIDR) as totalBillingIDR, sum(totalBillingUSD) as totalBillingUSD,
+        sum(totalExpensesIDR) as totalExpensesIDR, sum(totalExpensesUSD) as totalExpensesUSD FROM jobsheet
+    where year(shippeddate) = #year#
+    group by month(shippeddate), year(shippeddate)
+  </select>
+  
+  
+  <select id="jobsheet_select_LAST_INSERT_ID" resultClass="jobsheetKey" parameterClass="com.wings.persistence.JobsheetKey">   
+    SELECT max(last_insert_id(idJobSheet)) AS idJobSheet from jobsheet;
+  </select>
+  
+  <select id="jobsheet_select_Name" resultClass="consignee" parameterClass="com.wings.persistence.Consignee">   
+        SELECT c.name as name FROM consignee c
+            where c.name like #name#
+        
+  </select>    
+  
+  <delete id="jobsheet_deleteByPrimaryKey" parameterClass="com.wings.persistence.JobsheetKey">  
+    DELETE  
+    FROM 
+    jobsheet    
+    WHERE     
+    idJobSheet = #idJobSheet#
+  </delete>
+ 
+  <insert id="jobsheet_insert" parameterClass="com.wings.persistence.Jobsheet">  
+    insert into jobsheet (jobNo, invoiceNoUSD, idShipper, 
+      idConsignee, idAgent, qty, weight, volume, qtyDesc, weightDesc, 
+      volumeDesc, idJobType, shippeddate, remark, totalBillingIDR,
+      totalExpensesIDR,
+      totalBillingUSD,
+      totalExpensesUSD,
+      invoiceStatus, debitStatus, idTransporter, transportCost, refundIDR, refundUSD,            
+      cnNo,depart,cnKurs,debitNo, cmb, creditNoteIDR,
+      creditNoteUSD, idForwarder, jaminan, vatIDR, pphIDR, vatUSD, pphUSD, status) 
+    values (#jobNo:VARCHAR#, #invoiceNoUSD:VARCHAR#, 
+      #idShipper:VARCHAR#, #idConsignee:VARCHAR#, #idAgent:VARCHAR#, 
+      #qty:DOUBLE#, #weight:DOUBLE#, #volume:DOUBLE#, #qtyDesc:VARCHAR#, 
+      #weightDesc:VARCHAR#, #volumeDesc:VARCHAR#, #idJobType:VARCHAR#, 
+      #shippeddate:TIMESTAMP#, #remark:VARCHAR#, #totalBillingIDR:DOUBLE#, 
+      #totalExpensesIDR:DOUBLE#, #totalBillingUSD:DOUBLE#, 
+      #totalExpensesUSD:DOUBLE#, #invoiceStatus:VARCHAR#, #debitStatus:VARCHAR#,
+      #idTransporter:VARCHAR#, #transportCost:DOUBLE#, #refundIDR:DOUBLE#, #refundUSD:DOUBLE#,
+      #cnNo:VARCHAR#, #depart:DOUBLE#, #cnKurs:VARCHAR#, 
+      #debitNo:VARCHAR#, #cmb:VARCHAR#, #creditNoteIDR:DOUBLE#, #creditNoteUSD:DOUBLE#, #idForwarder:VARCHAR#,
+      #jaminan:DOUBLE#, #vatIDR:DOUBLE#,#pphIDR:DOUBLE#,#vatUSD:DOUBLE#,#pphUSD:DOUBLE#, #status:INTEGER#)
+      <selectKey resultClass="jobsheetKey">
+            select LAST_INSERT_ID() AS idJobSheet
+      </selectKey>
+  </insert>
+  
+  <update id="jobsheet_updateByPrimaryKey" parameterClass="com.wings.persistence.Jobsheet">  
+    update jobsheet
+    set jobNo = #jobNo:VARCHAR#,      
+      idShipper = #idShipper:VARCHAR#,
+      idConsignee = #idConsignee:VARCHAR#,
+      idAgent = #idAgent:VARCHAR#,
+      idForwarder = #idForwarder:VARCHAR#,
+      qty = #qty:DOUBLE#,
+      weight = #weight:DOUBLE#,
+      volume = #volume:DOUBLE#,
+      qtyDesc = #qtyDesc:VARCHAR#,
+      weightDesc = #weightDesc:VARCHAR#,
+      volumeDesc = #volumeDesc:VARCHAR#,
+      idJobType = #idJobType:VARCHAR#,
+      shippeddate = #shippeddate:TIMESTAMP#,
+      remark = #remark:VARCHAR#,
+      totalBillingIDR = #totalBillingIDR:DOUBLE#,
+      totalExpensesIDR = #totalExpensesIDR:DOUBLE#,
+      totalBillingUSD = #totalBillingUSD:DOUBLE#,
+      totalExpensesUSD = #totalExpensesUSD:DOUBLE#,
+      idTransporter = #idTransporter:VARCHAR#,
+      transportCost = #transportCost:DOUBLE#,
+      refundIDR = #refundIDR:DOUBLE#,
+      refundUSD = #refundUSD:DOUBLE#,
+      cnNo = #cnNo:VARCHAR#, 
+      depart = #depart:DOUBLE#, 
+      cnKurs = #cnKurs:VARCHAR#,      
+      cmb = #cmb:VARCHAR#,
+      creditNoteIDR = #creditNoteIDR:DOUBLE#, 
+      creditNoteUSD = #creditNoteUSD:DOUBLE#,
+      jaminan = #jaminan:DOUBLE#,
+      vatIDR = #vatIDR:DOUBLE#,
+      pphIDR = #pphIDR:DOUBLE#,
+      vatUSD = #vatUSD:DOUBLE#,
+      pphUSD = #pphUSD:DOUBLE#,
+      dppIDR = #dppIDR:DOUBLE#,
+      dppUSD = #dppUSD:DOUBLE#,
+      status = #status:INTEGER#
+    where idJobSheet = #idJobSheet#
+  </update>
+  
+  <update id="jobsheet_updateInvoiceNoAndStatusByPrimaryKey" parameterClass="com.wings.persistence.Jobsheet">  
+    update jobsheet
+    set 
+      invoiceNoUSD = #invoiceNoUSD:VARCHAR#,      
+      invoiceStatus = #invoiceStatus:VARCHAR#
+    where idJobSheet = #idJobSheet#
+  </update>
+  
+  <update id="jobsheet_updateDebitNoAndStatusByPrimaryKey" parameterClass="com.wings.persistence.Jobsheet">  
+    update jobsheet
+    set 
+      debitNo = #debitNo:VARCHAR#,      
+      debitStatus = #debitStatus:VARCHAR#
+    where idJobSheet = #idJobSheet#
+  </update>
+  
+  <update id="jobsheet_updateTaxVatByPrimaryKey" parameterClass="com.wings.persistence.Jobsheet">  
+    update jobsheet
+    set 
+      vatIDR = #vatIDR:DOUBLE#,
+      pphIDR = #pphIDR:DOUBLE#,
+      vatUSD = #vatUSD:DOUBLE#,
+      pphUSD = #pphUSD:DOUBLE#,
+      dppIDR = #dppIDR:DOUBLE#,
+      dppUSD = #dppUSD:DOUBLE#      
+    where idJobSheet = #idJobSheet#
+  </update>
+  
+  <update id="jobsheet_updateStatusByPrimaryKey" parameterClass="com.wings.persistence.Jobsheet">  
+    update jobsheet
+    set 
+      status = #status:INTEGER#
+    where idJobSheet = #idJobSheet#
+  </update>
+  
+  
+</sqlMap>

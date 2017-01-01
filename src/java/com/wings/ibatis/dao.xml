@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE daoConfig
+    PUBLIC "-//ibatis.apache.org//DTD DAO Configuration 2.0//EN"
+    "http://ibatis.apache.org/dtd/dao-2.dtd">
+
+<daoConfig>
+
+  <context>
+    <transactionManager type="SQLMAP">
+      <property name="SqlMapConfigResource"
+        value="com/wings/ibatis/sql-map-config.xml"/>
+    </transactionManager>   
+    
+    <dao interface="com.wings.dao.AgentfeeDAO"
+      implementation="com.wings.dao.AgentfeeDAOImpl"/>
+      
+    <dao interface="com.wings.dao.AgentsDAO"
+      implementation="com.wings.dao.AgentsDAOImpl"/>
+      
+    <dao interface="com.wings.dao.BillingagentDAO"
+      implementation="com.wings.dao.BillingagentDAOImpl"/>    
+    <dao interface="com.wings.dao.AuthorityDAO"
+      implementation="com.wings.dao.AuthorityDAOImpl"/>  
+    <dao interface="com.wings.dao.BillingshipperDAO"
+      implementation="com.wings.dao.BillingshipperDAOImpl"/>    
+    <dao interface="com.wings.dao.ConsigneeDAO"
+      implementation="com.wings.dao.ConsigneeDAOImpl"/>     
+      
+    <dao interface="com.wings.dao.DebitDAO"
+      implementation="com.wings.dao.DebitDAOImpl"/>    
+      
+    <dao interface="com.wings.dao.ExpensesagentDAO"
+      implementation="com.wings.dao.ExpensesagentDAOImpl"/>    
+    <dao interface="com.wings.dao.ExpensesshipperDAO"
+      implementation="com.wings.dao.ExpensesshipperDAOImpl"/>    
+    <dao interface="com.wings.dao.InvoiceDAO"
+      implementation="com.wings.dao.InvoiceDAOImpl"/>    
+    <dao interface="com.wings.dao.JobsheetDAO"
+      implementation="com.wings.dao.JobsheetDAOImpl"/>     
+    <dao interface="com.wings.dao.JobsheetaiDAO"
+      implementation="com.wings.dao.JobsheetaiDAOImpl"/>     
+    <dao interface="com.wings.dao.JobsheetaoDAO"
+      implementation="com.wings.dao.JobsheetaoDAOImpl"/>  
+   <dao interface="com.wings.dao.JobsheetsiDAO"
+      implementation="com.wings.dao.JobsheetsiDAOImpl"/>     
+  <dao interface="com.wings.dao.JobsheetsoDAO"
+  implementation="com.wings.dao.JobsheetsoDAOImpl"/>  
+  <dao interface="com.wings.dao.JobtypeDAO"
+  implementation="com.wings.dao.JobtypeDAOImpl"/>  
+  <dao interface="com.wings.dao.ShipperDAO"
+  implementation="com.wings.dao.ShipperDAOImpl"/> 
+  <dao interface="com.wings.dao.ShippinglineDAO"
+  implementation="com.wings.dao.ShippinglineDAOImpl"/> 
+   <dao interface="com.wings.dao.ShipperfeeDAO"
+  implementation="com.wings.dao.ShipperfeeDAOImpl"/> 
+  <dao interface="com.wings.dao.UsersDAO"
+  implementation="com.wings.dao.UsersDAOImpl"/> 
+  <dao interface="com.wings.dao.JobnumberDAO"
+  implementation="com.wings.dao.JobnumberDAOImpl"/> 
+  <dao interface="com.wings.dao.TransporterDAO"
+  implementation="com.wings.dao.TransporterDAOImpl"/> 
+  <dao interface="com.wings.dao.DestinationDAO"
+  implementation="com.wings.dao.DestinationDAOImpl"/> 
+  <dao interface="com.wings.dao.IncomeDAO"
+  implementation="com.wings.dao.IncomeDAOImpl"/> 
+  <dao interface="com.wings.dao.InvoicekreditDAO"
+  implementation="com.wings.dao.InvoicekreditDAOImpl"/> 
+  <dao interface="com.wings.dao.DebitkreditDAO"
+  implementation="com.wings.dao.DebitkreditDAOImpl"/>   
+  <dao interface="com.wings.dao.TaxDAO"
+  implementation="com.wings.dao.TaxDAOImpl"/> 
+  <dao interface="com.wings.dao.PerkiraanDAO"
+  implementation="com.wings.dao.PerkiraanDAOImpl"/> 
+  <dao interface="com.wings.dao.AccountDAO"
+  implementation="com.wings.dao.AccountDAOImpl"/>
+  
+  <dao interface="com.wings.dao.AccountSaldoDAO"
+  implementation="com.wings.dao.AccountSaldoDAOImpl"/>     
+  <dao interface="com.wings.dao.TransactionaccDAO"
+  implementation="com.wings.dao.TransactionaccDAOImpl"/>     
+  <dao interface="com.wings.dao.TransactionaccdetailDAO"
+  implementation="com.wings.dao.TransactionaccdetailDAOImpl"/>    
+  <dao interface="com.wings.dao.BatchDAO"
+  implementation="com.wings.dao.BatchDAOImpl"/>     
+  <dao interface="com.wings.dao.KursdollarDAO"
+  implementation="com.wings.dao.KursdollarDAOImpl"/>     
+  <dao interface="com.wings.dao.PaymentDAO"
+  implementation="com.wings.dao.PaymentDAOImpl"/>     
+  <dao interface="com.wings.dao.CashonhandDAO"
+  implementation="com.wings.dao.CashonhandDAOImpl"/>     
+  
+  </context>
+
+</daoConfig>

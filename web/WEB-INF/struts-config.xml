@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+
+<struts-config>
+    <form-beans>
+         <form-bean name="userForm" type="com.wings.web.struts.forms.UserForm"/> 
+    </form-beans>
+    
+    <global-exceptions>
+    
+    </global-exceptions>
+
+    <global-forwards>
+        <forward name="master"  path="/master.do"/>
+        <forward name="jobsheet"  path="/jobsheet.do"/>
+        <forward name="debitinvoice"  path="/debitinvoice.do"/> 
+        <forward name="tax"  path="/tax.do"/> 
+        <forward name="inventory"  path="/inventory.do"/> 
+        <forward name="accounting"  path="/accounting.do"/> 
+    </global-forwards>
+
+    <action-mappings>        
+        <action path="/master" forward="/formMasterIndex.jsp"/>     
+        <action path="/jobsheet" forward="/formJobSheetIndex.jsp"/>     
+        <action path="/debitinvoice" forward="/formDebitInvoiceIndex.jsp"/> 
+        <action path="/tax" forward="/formTaxIndex.jsp"/> 
+        <action path="/inventory" forward="/formInventoryIndex.jsp"/>
+        <action path="/reports" forward="/formReportsIndex.jsp"/>
+        <action path="/accounting" forward="/formAccountingIndex.jsp"/>
+        <action path="/accreports" forward="/formAccReportsIndex.jsp"/>
+        <action path="/login" type="com.wings.web.struts.actions.Login"
+          name="userForm" scope="request" validate="false" >       
+            <forward name="form" path="/formLogin.jsp"/>
+        </action>
+        <action path="/getLogin" type="com.wings.web.struts.actions.GetLogin"
+          name="userForm" scope="request" validate="true" input="/formLogin.jsp" >          
+            <forward name="failed" path="/formLogin.jsp"/>
+            <forward name="success" path="/formWelcome.jsp"/>
+        </action>
+        <action path="/changePassword" type="com.wings.web.struts.actions.SetupChangePasswordAction"
+          name="userForm" scope="request" validate="false" >          
+            <forward name="form" path="/formChangePassword.jsp"/>            
+        </action>
+        <action path="/updatePassword" type="com.wings.web.struts.actions.ChangePasswordAction"
+          name="userForm" scope="request" validate="true" input="/changePassword.do" >          
+            <forward name="form" path="/formChangePassword.jsp"/>            
+        </action>
+
+    </action-mappings>
+    
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+
+    <message-resources parameter="com/wings/struts/ApplicationResource"/>    
+    
+    <!-- ========================= Tiles plugin ===============================-->
+    <!--
+    This plugin initialize Tiles definition factory. This later can takes some
+    parameters explained here after. The plugin first read parameters from
+    web.xml, thenoverload them with parameters defined here. All parameters
+    are optional.
+    The plugin should be declared in each struts-config file.
+    - definitions-config: (optional)
+    Specify configuration file names. There can be several comma
+    separated file names (default: ?? )
+    - moduleAware: (optional - struts1.1)
+    Specify if the Tiles definition factory is module aware. If true
+    (default), there will be one factory for each Struts module.
+    If false, there will be one common factory for all module. In this
+    later case, it is still needed to declare one plugin per module.
+    The factory will be initialized with parameters found in the first
+    initialized plugin (generally the one associated with the default
+    module).
+    true : One factory per module. (default)
+    false : one single shared factory for all modules
+    - definitions-parser-validate: (optional)
+    Specify if xml parser should validate the Tiles configuration file.
+    true : validate. DTD should be specified in file header (default)
+    false : no validation
+
+    Paths found in Tiles definitions are relative to the main context.
+    -->
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
+    </plug-in>
+  
+</struts-config>

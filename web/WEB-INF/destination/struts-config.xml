@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+
+<struts-config>
+    <form-beans>
+        <form-bean name="destinationForm" type="com.wings.web.struts.forms.DestinationForm"/>    
+    </form-beans>
+  <global-forwards>    
+  </global-forwards>    
+  
+    <action-mappings>        
+        
+        <action path="/destination" type="com.wings.web.struts.actions.SelectDestinationAction"
+            name="destinationForm" scope="session" validate="false" >       
+            <forward name="list" path="/formDestinationIndex.jsp"/>            
+        </action>
+        
+        <action path="/newDestination" type="com.wings.web.struts.actions.NewDestinationAction"
+          name="destinationForm" scope="request" validate="false" >       
+            <forward name="input" path="/formDestination.jsp"/>    
+            <forward name="form" path="/formDestination.jsp"/>
+        </action>
+        
+        <action path="/insertDestination" type="com.wings.web.struts.actions.InsertDestinationAction"
+          name="destinationForm" scope="request" validate="true" input="/formDestination.jsp">                  
+            <forward name="form" path="/formDestination.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/findDestination" type="com.wings.web.struts.actions.FindDestinationAction"
+          name="destinationForm" validate="false" scope="request">                      
+            <forward name="form" path="/formDestination.jsp"/>
+        </action>
+        
+        <action path="/updateDestination" type="com.wings.web.struts.actions.UpdateDestinationAction"
+          name="destinationForm" scope="request" validate="true" input="/formDestination.jsp">                  
+            <forward name="form" path="/formDestination.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        
+        <action path="/viewDestination" type="com.wings.web.struts.actions.ViewDestinationAction"
+          name="destinationForm" validate="false" scope="request">                      
+            <forward name="form" path="/formDestination.jsp"/>
+        </action>
+        
+        <action path="/deleteDestination" type="com.wings.web.struts.actions.DeleteDestinationAction"
+          name="destinationForm" validate="false" scope="request">                      
+            <forward name="view" path="/destination.do"/>
+        </action>
+        
+    </action-mappings>    
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+    
+
+    <message-resources parameter="com/wings/struts/DestinationResource"/>        
+    
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/destination/validation.xml"/>
+    </plug-in>
+  
+</struts-config>

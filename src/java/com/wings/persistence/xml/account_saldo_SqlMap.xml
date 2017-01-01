@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="AccountSaldo">
+    
+  <typeAlias alias="accountSaldo" type="com.wings.persistence.AccountSaldo"/>
+  
+  <select id="accountSaldo_selectByPrimaryKey" resultClass="accountSaldo" parameterClass="com.wings.persistence.AccountSaldo">    
+    select ac.idAccount, a.accountName,
+      ac.bulan, ac.tahun, ac.saldoAkhir,  
+      ac.kurs, ac.kursrange
+    from account_saldo ac 
+    left join account a on 
+        ac.idAccount = a.idAccount
+    where ac.idAccount = #idAccount#
+        and ac.bulan = #bulan#
+        and ac.tahun = #tahun#    
+  </select>
+  
+  <select id="accountSaldo_selectByDate" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">
+     select ac.idAccount, a.accountName,
+      ac.bulan, ac.tahun, ac.saldoAkhir,  
+      ac.kurs, ac.kursrange      
+    from account_saldo ac left join account a on 
+        ac.idAccount = a.idAccount   
+    where ac.bulan = #month#
+        and ac.tahun = #year#           
+  </select>
+  
+  <select id="accountSaldo_selectByIdAccount" resultClass="accountSaldo" parameterClass="com.wings.persistence.AccountKey">    
+    select idAccount,
+      bulan, tahun, saldoAkhir,  
+      kurs, kursrange      
+    from account_saldo
+    where idAccount like #idAccount#
+  </select>
+  
+  <select id="accountSaldo_selectByAccountName" resultClass="accountSaldo" parameterClass="com.wings.persistence.AccountSaldo">    
+     select idAccount,
+      bulan, tahun, saldoAkhir,  
+      kurs, kursrange      
+    from account_saldo   
+  </select>
+  
+  <select id="accountSaldo_selectByAll" resultClass="accountSaldo" parameterClass="com.wings.persistence.AccountSaldo">    
+    select idAccount,
+      bulan, tahun, saldoAkhir,  
+      kurs, kursrange      
+    from account_saldo    
+    order by idAccount
+  </select>
+  
+  <select id="accountSaldo_selectByKas" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select 
+    ifnull((
+            case kurs
+                when 'IDR'
+                    then ifnull(sum(saldoakhir), 0)
+                when 'USD'
+                    then ifnull(sum(saldoakhir), 0) * kursrange
+            end
+       ),0) as saldoakhir
+    from account_saldo
+    where idAccount in('10100','10101','10102')
+    and bulan = #month#
+    and tahun = #year#
+  </select>
+  
+  <select id="accountSaldo_selectByBank" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select
+   ifnull((
+            case kurs
+                when 'IDR'
+                    then ifnull(sum(saldoakhir), 0)
+                when 'USD'
+                    then ifnull(sum(saldoakhir), 0) * kursrange
+            end
+       ),0) as saldoakhir
+    from account_saldo
+    where idAccount in('10200','10201','10202','10203','10204','10205')
+    and bulan = #month#
+    and tahun = #year#
+  </select>
+  
+  <select id="accountSaldo_selectByDeposit" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select 
+    ifnull((
+            case kurs
+                when 'IDR'
+                    then ifnull(sum(saldoakhir), 0)
+                when 'USD'
+                    then ifnull(sum(saldoakhir), 0) * kursrange
+            end
+       ),0) as saldoakhir
+    from account_saldo
+    where idAccount in('10400','10401','10402','10403','10404','10405')
+    and bulan = #month#
+    and tahun = #year#
+  </select>
+  
+  <select id="accountSaldo_selectByPiutang" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select
+    ifnull((
+            case kurs
+                when 'IDR'
+                    then ifnull(sum(saldoakhir), 0)
+                when 'USD'
+                    then ifnull(sum(saldoakhir), 0) * kursrange
+            end
+       ),0) as saldoakhir
+    from account_saldo
+    where idAccount in('11000','11200','11300')
+    and bulan = #month#
+    and tahun = #year#
+  </select>
+  
+  <select id="accountSaldo_selectByPiutangPihak" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select 
+   ifnull((
+            case kurs
+                when 'IDR'
+                    then ifnull(sum(saldoakhir), 0)
+                when 'USD'
+                    then ifnull(sum(saldoakhir), 0) * kursrange
+            end
+       ),0) as saldoakhir
+    from account_saldo
+    where idAccount like '11400'
+    and bulan = #month#
+    and tahun = #year#
+  </select>
+  
+  <select id="accountSaldo_selectByPajak" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select 
+    ifnull((
+            case kurs
+                when 'IDR'
+                    then ifnull(sum(saldoakhir), 0)
+                when 'USD'
+                    then ifnull(sum(saldoakhir), 0) * kursrange
+            end
+       ),0) as saldoakhir
+    from account_saldo
+    where idAccount in('13103')
+    and bulan = #month#
+    and tahun = #year#
+  </select>
+  
+  <select id="accountSaldo_selectByAktivaTidakLancar" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select
+    ifnull((
+            case kurs
+                when 'IDR'
+                    then ifnull(sum(saldoakhir), 0)
+                when 'USD'
+                    then ifnull(sum(saldoakhir), 0) * kursrange
+            end
+       ),0) as saldoakhir
+    from account_saldo
+    where idAccount in('16200','16301','16303','16304','16500')
+    and bulan = #month#
+    and tahun = #year#
+  </select>
+  
+  <select id="accountSaldo_selectByHutangLancar" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select 
+    ifnull((
+            case kurs
+                when 'IDR'
+                    then ifnull(sum(saldoakhir), 0)
+                when 'USD'
+                    then ifnull(sum(saldoakhir), 0) * kursrange
+            end
+       ),0) as saldoakhir
+    from account_saldo
+    where idAccount in('20100','20102','20103')
+    and bulan = #month#
+    and tahun = #year#
+  </select>
+  
+  <select id="accountSaldo_selectByHutangLeasing" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select 
+    ifnull((
+            case kurs
+                when 'IDR'
+                    then ifnull(sum(saldoakhir), 0)
+                when 'USD'
+                    then ifnull(sum(saldoakhir), 0) * kursrange
+            end
+       ),0) as saldoakhir
+    from account_saldo
+    where idAccount in('20105','20121','20135')
+    and bulan = #month#
+    and tahun = #year#
+  </select>
+  
+  <select id="accountSaldo_selectByHutangPajak" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select 
+   ifnull((
+            case kurs
+                when 'IDR'
+                    then ifnull(sum(saldoakhir), 0)
+                when 'USD'
+                    then ifnull(sum(saldoakhir), 0) * kursrange
+            end
+       ),0) as saldoakhir
+    from account_saldo
+    where idAccount in('21200','21201','21205','21207','21202','21203')
+    and bulan = #month#
+    and tahun = #year#
+  </select>
+  
+  
+  <select id="accountSaldo_selectByEkuitas" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select 
+    ifnull((
+            case kurs
+                when 'IDR'
+                    then ifnull(sum(saldoakhir), 0)
+                when 'USD'
+                    then ifnull(sum(saldoakhir), 0) * kursrange
+            end
+       ),0) as saldoakhir
+    from account_saldo
+    where idAccount in('31000')
+    and bulan = #month#
+    and tahun = #year#
+  </select>
+  
+  <select id="accountSaldo_selectByEkuitas2" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select 
+    ifnull((
+            case kurs
+                when 'IDR'
+                    then ifnull(sum(saldoakhir), 0)
+                when 'USD'
+                    then ifnull(sum(saldoakhir), 0) * kursrange
+            end
+       ),0) as saldoakhir
+    from account_saldo
+    where idAccount in('32000')
+    and bulan = #month#
+    and tahun = #year#
+  </select>
+  
+  <select id="accountSaldo_selectByEkuitas3" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select 
+     ifnull((
+            case kurs
+                when 'IDR'
+                    then ifnull(sum(saldoakhir), 0)
+                when 'USD'
+                    then ifnull(sum(saldoakhir), 0) * kursrange
+            end
+       ),0) as saldoakhir   
+    from account_saldo
+    where idAccount in('33000')
+    and bulan = #month#
+    and tahun = #year#
+  </select>
+ 
+  
+  <select id="accountSaldo_selectRL" resultClass="accountSaldo" parameterClass="com.wings.web.struts.forms.MonthYearForm">        
+select 'SALES' as category, a.accountName, 
+ifnull((
+            case aca.kurs
+                when 'IDR'
+                    then ifnull(aca.saldoakhir, 0)
+                when 'USD'
+                    then ifnull(aca.saldoakhir, 0) * aca.kursrange
+            end
+       ),0) as saldoawal,
+ifnull((
+            case acb.kurs
+                when 'IDR'
+                    then ifnull(acb.saldoakhir, 0)
+                when 'USD'
+                    then ifnull(acb.saldoakhir, 0) * acb.kursrange
+            end
+       ),0) as saldoakhir
+from account a
+left join account_saldo aca on
+a.idaccount = aca.idaccount
+and aca.bulan = 12
+and aca.tahun = (year(DATE_ADD(#year#, interval -1 year))) 
+left join account_saldo acb on
+a.idaccount = acb.idaccount
+and aca.bulan = 12
+and aca.tahun = #year#
+where a.idaccount in ('41000','42000','43000','44000')
+
+union
+
+select 'COST' as category, a.accountName, 
+ifnull((
+            case aca.kurs
+                when 'IDR'
+                    then ifnull(aca.saldoakhir, 0)
+                when 'USD'
+                    then ifnull(aca.saldoakhir, 0) * aca.kursrange
+            end
+       ),0) as saldoawal,
+ifnull((
+            case acb.kurs
+                when 'IDR'
+                    then ifnull(acb.saldoakhir, 0)
+                when 'USD'
+                    then ifnull(acb.saldoakhir, 0) * acb.kursrange
+            end
+       ),0) as saldoakhir
+from account a
+left join account_saldo aca on
+a.idaccount = aca.idaccount
+and aca.bulan = 12
+and aca.tahun = (year(DATE_ADD(#year#, interval -1 year))) 
+left join account_saldo acb on
+a.idaccount = acb.idaccount
+and aca.bulan = 12
+and aca.tahun = #year#
+where a.idaccount in ('51000','52000','53000','54000')
+
+UNION
+select 'EXPENSES' as category, a.accountName, 
+ifnull((
+            case aca.kurs
+                when 'IDR'
+                    then ifnull(aca.saldoakhir, 0)
+                when 'USD'
+                    then ifnull(aca.saldoakhir, 0) * aca.kursrange
+            end
+       ),0) as saldoawal,
+ifnull((
+            case acb.kurs
+                when 'IDR'
+                    then ifnull(acb.saldoakhir, 0)
+                when 'USD'
+                    then ifnull(acb.saldoakhir, 0) * acb.kursrange
+            end
+       ),0) as saldoakhir
+from account a
+left join account_saldo aca on
+a.idaccount = aca.idaccount
+and aca.bulan = 12
+and aca.tahun = (year(DATE_ADD(#year#, interval -1 year))) 
+left join account_saldo acb on
+a.idaccount = acb.idaccount
+and aca.bulan = 12
+and aca.tahun = #year#
+where a.idaccount LIKE '6%'
+
+UNION
+select 'NON OPERATING INCOME' as category, a.accountName, 
+ifnull((
+            case aca.kurs
+                when 'IDR'
+                    then ifnull(aca.saldoakhir, 0)
+                when 'USD'
+                    then ifnull(aca.saldoakhir, 0) * aca.kursrange
+            end
+       ),0) as saldoawal,
+ifnull((
+            case acb.kurs
+                when 'IDR'
+                    then ifnull(acb.saldoakhir, 0)
+                when 'USD'
+                    then ifnull(acb.saldoakhir, 0) * acb.kursrange
+            end
+       ),0) as saldoakhir
+from account a
+left join account_saldo aca on
+a.idaccount = aca.idaccount
+and aca.bulan = 12
+and aca.tahun = (year(DATE_ADD(#year#, interval -1 year))) 
+left join account_saldo acb on
+a.idaccount = acb.idaccount
+and aca.bulan = 12
+and aca.tahun = #year#
+where a.idaccount like '70%'
+
+UNION
+select 'NON OPERATING EXPENSES' as category, a.accountName, 
+ifnull((
+            case aca.kurs
+                when 'IDR'
+                    then ifnull(aca.saldoakhir, 0)
+                when 'USD'
+                    then ifnull(aca.saldoakhir, 0) * aca.kursrange
+            end
+       ),0) as saldoawal,
+ifnull((
+            case acb.kurs
+                when 'IDR'
+                    then ifnull(acb.saldoakhir, 0)
+                when 'USD'
+                    then ifnull(acb.saldoakhir, 0) * acb.kursrange
+            end
+       ),0) as saldoakhir
+from account a
+left join account_saldo aca on
+a.idaccount = aca.idaccount
+and aca.bulan = 12
+and aca.tahun = (year(DATE_ADD(#year#, interval -1 year))) 
+left join account_saldo acb on
+a.idaccount = acb.idaccount
+and aca.bulan = 12
+and aca.tahun = #year#
+where a.idaccount like '80%'
+
+  </select>
+  
+  <delete id="accountSaldo_deleteByPrimaryKey" parameterClass="com.wings.persistence.AccountSaldo">
+    delete from account_saldo
+    where idAccount = #idAccount#
+    and bulan = #bulan#
+    and tahun = #tahun#
+  </delete>
+    
+  <insert id="accountSaldo_insert" parameterClass="com.wings.persistence.AccountSaldo">
+    insert into account_saldo (idAccount, bulan, tahun, saldoAkhir, kurs, kursrange) 
+    values (#idAccount:VARCHAR#, #bulan:INTEGER#, #tahun:INTEGER#, #saldoAkhir:DOUBLE#, #kurs:VARCHAR#, #kursrange:DOUBLE#) 
+  </insert>
+ 
+  <update id="accountSaldo_updateByPrimaryKey" parameterClass="com.wings.persistence.AccountSaldo">
+    update account_saldo
+        set saldoAkhir = #saldoAkhir:DOUBLE#, 
+            kurs = #kurs:VARCHAR#, 
+            kursrange = #kursrange:DOUBLE#
+    where idAccount = #idAccount#
+    and bulan = #bulan#
+    and tahun = #tahun#
+  </update>
+  
+</sqlMap>

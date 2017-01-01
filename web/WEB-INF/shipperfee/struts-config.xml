@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+
+<struts-config>
+    <form-beans>
+        <form-bean name="shipperfeeForm" type="com.wings.web.struts.forms.ShipperfeeForm"/>    
+    </form-beans>
+  <global-forwards>    
+  </global-forwards>    
+  
+    <action-mappings>        
+        
+        <action path="/shipperfee" type="com.wings.web.struts.actions.SelectShipperfeeAction"
+            name="shipperfeeForm" scope="session" validate="false" >
+            <forward name="list" path="/formShipperfeeIndex.jsp"/>            
+        </action>
+        
+        <action path="/newShipperfee" type="com.wings.web.struts.actions.NewShipperfeeAction"
+          name="shipperfeeForm" scope="request" validate="false" >       
+            <forward name="input" path="/formShipperfee.jsp"/>    
+            <forward name="form" path="/formShipperfee.jsp"/>
+        </action>
+        
+        <action path="/insertShipperfee" type="com.wings.web.struts.actions.InsertShipperfeeAction"
+          name="shipperfeeForm" scope="request" validate="true" input="/formShipperfee.jsp">                  
+            <forward name="form" path="/formShipperfee.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/findShipperfee" type="com.wings.web.struts.actions.FindShipperfeeAction"
+          name="shipperfeeForm" validate="false" scope="request">                      
+            <forward name="form" path="/formShipperfee.jsp"/>
+        </action>
+        
+        <action path="/updateShipperfee" type="com.wings.web.struts.actions.UpdateShipperfeeAction"
+          name="shipperfeeForm" scope="request" validate="true" input="/formShipperfee.jsp">                  
+            <forward name="form" path="/formShipperfee.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>        
+        
+        <action path="/viewShipperfee" type="com.wings.web.struts.actions.ViewShipperfeeAction"
+          name="shipperfeeForm" validate="false" scope="request">                      
+            <forward name="form" path="/formShipperfee.jsp"/>
+        </action>
+        
+        <action path="/deleteShipperfee" type="com.wings.web.struts.actions.DeleteShipperfeeAction"
+          name="shipperfeeForm" validate="false" scope="request">                      
+            <forward name="view" path="/shipperfee.do"/>
+        </action>
+        
+        <action path="/printInvoiceFeeAction" type="com.wings.web.struts.actions.PrintInvoiceFeeAction">
+            <forward name="view" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>  
+        </action>
+        
+    </action-mappings>    
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+    
+    <message-resources parameter="com/wings/struts/ShipperResource"/>        
+    
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/users/validation.xml"/>
+    </plug-in>
+  
+</struts-config>

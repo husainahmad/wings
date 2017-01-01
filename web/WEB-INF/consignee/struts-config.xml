@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+
+<struts-config>
+    <form-beans>
+        <form-bean name="consigneeForm" type="com.wings.web.struts.forms.ConsigneeForm"/>    
+    </form-beans>
+  <global-forwards>    
+  </global-forwards>    
+  
+    <action-mappings>        
+        
+        <action path="/consignee" type="com.wings.web.struts.actions.SelectConsigneeAction"
+        name="consigneeForm" scope="session" validate="false" >       
+            <forward name="list" path="/formConsigneeIndex.jsp"/>            
+        </action>
+        
+        <action path="/newConsignee" type="com.wings.web.struts.actions.NewConsigneeAction"
+          name="consigneeForm" scope="request" validate="false" >       
+            <forward name="input" path="/formConsignee.jsp"/>    
+            <forward name="form" path="/formConsignee.jsp"/>
+        </action>
+        
+        <action path="/insertConsignee" type="com.wings.web.struts.actions.InsertConsigneeAction"
+          name="consigneeForm" scope="request" validate="true" input="/formConsignee.jsp">                  
+            <forward name="form" path="/formConsignee.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/findConsignee" type="com.wings.web.struts.actions.FindConsigneeAction"
+          name="consigneeForm" validate="false" scope="request">                      
+            <forward name="form" path="/formConsignee.jsp"/>
+        </action>
+        
+        <action path="/updateConsignee" type="com.wings.web.struts.actions.UpdateConsigneeAction"
+          name="consigneeForm" scope="request" validate="true" input="/formConsignee.jsp">                  
+            <forward name="form" path="/formConsignee.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        
+        <action path="/viewConsignee" type="com.wings.web.struts.actions.ViewConsigneeAction"
+          name="consigneeForm" validate="false" scope="request">                      
+            <forward name="form" path="/formConsignee.jsp"/>
+        </action>
+        
+        <action path="/deleteConsignee" type="com.wings.web.struts.actions.DeleteConsigneeAction"
+          name="consigneeForm" validate="false" scope="request">                      
+            <forward name="view" path="/consignee.do"/>
+        </action>
+        
+    </action-mappings>    
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+    
+
+    <message-resources parameter="com/wings/struts/ConsigneeResource"/>        
+    
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/users/validation.xml"/>
+    </plug-in>
+  
+</struts-config>

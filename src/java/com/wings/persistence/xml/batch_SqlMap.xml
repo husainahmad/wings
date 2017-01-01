@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Batch">
+  <typeAlias alias="batch" type="com.wings.persistence.Batch"/>  
+  
+  <select id="batch_selectByPrimaryKey" resultClass="batch" parameterClass="com.wings.persistence.BatchKey">    
+    select noBatch,
+      description
+    from batch
+    where noBatch = #noBatch#
+  </select>
+  
+  <select id="batch_selectByName" resultClass="batch" parameterClass="com.wings.persistence.BatchKey">    
+    select noBatch,
+      description
+    from batch
+    where noBatch like #noBatch#
+  </select>
+  
+  <select id="batch_selectByAll" resultClass="batch" parameterClass="com.wings.persistence.BatchKey">    
+    select noBatch,
+      description
+    from batch    
+  </select>
+  
+  <delete id="batch_deleteByPrimaryKey" parameterClass="com.wings.persistence.BatchKey">
+    delete from batch
+    where noBatch = #noBatch#
+  </delete>
+  
+  <insert id="batch_insert" parameterClass="com.wings.persistence.Batch">
+    insert into batch (noBatch, description) 
+    values (#noBatch:VARCHAR#, #description:VARCHAR#) 
+  </insert>
+  
+  <update id="batch_updateByPrimaryKey" parameterClass="com.wings.persistence.Batch">
+    update batch
+    set description = #description:VARCHAR#
+    where noBatch = #noBatch#
+  </update>
+</sqlMap>

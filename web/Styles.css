@@ -1,0 +1,178 @@
+body {
+  font-size :10px ;
+}
+#table {
+#	font-size: 10px;
+#	font-family: Verdana, Arial, Helvetica, sans-serif;
+#}
+
+.loginbox
+{
+	font-size: 10px;
+	width: 80px;
+	border-top-style: none;
+	line-height: normal;
+	padding-top: 6px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	border-right-style: none;
+	border-left-style: none;
+	height: 23px;
+	background-color: #ffffff;
+	text-decoration: none;
+	border-bottom-style: none;
+}
+ 
+.menu
+{
+	font-weight: bold;
+	font-size: 10px;
+	color: #666666;
+	line-height: normal;
+	font-style: normal;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+}
+.ver10gray
+{
+	font-weight: normal;
+	font-size: 10px;
+	color: #666666;
+	line-height: normal;
+	font-style: normal;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+}
+.link1
+{
+	font-weight: bold;
+	font-size: 10px;
+	color: #095aca;
+	line-height: normal;
+	font-style: normal;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+}
+.ver12gray
+{
+	font-weight: bold;
+	font-size: 12px;
+	color: #666666;
+	line-height: normal;
+	font-style: normal;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+}
+.table1
+{
+	font-weight: normal;
+	font-size: 10px;
+	color: #666666;
+	line-height: normal;
+	font-style: normal;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+}
+.menu:hover
+{
+	color: #999999;
+}
+.link1:hover
+{
+	color: #ff9900;
+}
+.header
+{
+	background-position: right center;
+	background-attachment: fixed;
+	background-image: url(i/headerdd.jpg);
+	background-repeat: no-repeat;
+}
+.ver12white
+{
+	font-weight: bold;
+	font-size: 12px;
+	color: #ffffff;
+	line-height: normal;
+	font-style: normal;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+}
+.textboxgray
+{
+	font-size: 10px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-color: #ededed;
+}
+.textboxwhite
+{
+	font-size: 10px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.TabHeader
+{	
+	font-weight: normal;
+	font-size: 10px;
+	color: #666666;
+	line-height: normal;
+	font-style: normal;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	vertical-align:middle;
+	background-color:#C0C0C0;
+	height:20;
+}
+
+.TabHighlight
+{	
+	font-weight: normal;
+	font-size: 10px;
+	color: #666666;
+	line-height: normal;
+	font-style: normal;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	vertical-align:middle;
+	background-color:#EDEDED;
+	height:20;
+}
+
+.TabHighlight2
+{	
+	font-weight: normal;
+	font-size: 10px;
+	color: #666666;
+	line-height: normal;
+	font-style: normal;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	vertical-align:middle;
+	background-color:#EDEDED;
+	height:20;
+}
+
+.ReportHeader
+{	
+	font-weight: bold;
+	font-size: 10px;
+	color: #666666;
+	line-height: normal;
+	font-style: normal;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+}
+.ReportDetail
+{	
+	font-weight: normal;
+	font-size: 10px;
+	color: #666666;
+	line-height: normal;
+	font-style: normal;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	vertical-align:middle;
+	background-color:white;	
+}
+
+
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Perkiraan">
+
+  <typeAlias alias="perkiraan" type="com.wings.persistence.Perkiraan"/> 
+  
+  <select id="perkiraan_selectByPrimaryKey" resultClass="perkiraan" parameterClass="com.wings.persistence.PerkiraanKey">    
+    select idPerkiraan,
+      description
+    from perkiraan
+    where idPerkiraan = #idPerkiraan#
+  </select>
+  
+  <select id="perkiraan_selectByAll" resultClass="perkiraan" parameterClass="com.wings.persistence.PerkiraanKey">    
+    select idPerkiraan,
+      description
+    from perkiraan
+  </select>
+  
+  <delete id="perkiraan_deleteByPrimaryKey" parameterClass="com.wings.persistence.PerkiraanKey">   
+    delete from perkiraan
+    where idPerkiraan = #idPerkiraan#
+  </delete>
+    
+  <insert id="perkiraan_insert" parameterClass="com.wings.persistence.Perkiraan">    
+    insert into perkiraan (idPerkiraan, description) 
+    values (#idPerkiraan:VARCHAR#, #description:VARCHAR#) 
+  </insert>
+  
+  <update id="perkiraan_updateByPrimaryKey" parameterClass="com.wings.persistence.Perkiraan">  
+    update perkiraan
+    set description = #description:VARCHAR#
+    where idPerkiraan = #idPerkiraan#
+  </update>
+  
+</sqlMap>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+
+<struts-config>
+    <form-beans>
+        <form-bean name="shipperForm" type="com.wings.web.struts.forms.ShipperForm"/>    
+    </form-beans>
+  <global-forwards>    
+  </global-forwards>    
+  
+    <action-mappings>        
+        
+        <action path="/shipper" type="com.wings.web.struts.actions.SelectShipperAction"
+            name="shipperForm" scope="session" validate="false" >       
+            <forward name="list" path="/formShipperIndex.jsp"/>            
+        </action>
+        
+        <action path="/newShipper" type="com.wings.web.struts.actions.NewShipperAction"
+          name="shipperForm" scope="request" validate="false" >       
+            <forward name="input" path="/formShipper.jsp"/>    
+            <forward name="form" path="/formShipper.jsp"/>
+        </action>
+        
+        <action path="/insertShipper" type="com.wings.web.struts.actions.InsertShipperAction"
+          name="shipperForm" scope="request" validate="true" input="/formShipper.jsp">                  
+            <forward name="form" path="/formShipper.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/findShipper" type="com.wings.web.struts.actions.FindShipperAction"
+          name="shipperForm" validate="false" scope="request">                      
+            <forward name="form" path="/formShipper.jsp"/>
+        </action>
+        
+        <action path="/updateShipper" type="com.wings.web.struts.actions.UpdateShipperAction"
+          name="shipperForm" scope="request" validate="true" input="/formShipper.jsp">                  
+            <forward name="form" path="/formShipper.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        
+        <action path="/viewShipper" type="com.wings.web.struts.actions.ViewShipperAction"
+          name="shipperForm" validate="false" scope="request">                      
+            <forward name="form" path="/formShipper.jsp"/>
+        </action>
+        
+        <action path="/deleteShipper" type="com.wings.web.struts.actions.DeleteShipperAction"
+          name="shipperForm" validate="false" scope="request">                      
+            <forward name="view" path="/shipper.do"/>
+        </action>
+        
+    </action-mappings>    
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+    
+
+    <message-resources parameter="com/wings/struts/ShipperResource"/>        
+    
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/users/validation.xml"/>
+    </plug-in>
+  
+</struts-config>

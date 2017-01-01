@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Shippingline">
+
+  <typeAlias alias="shippingLine" type="com.wings.persistence.Shippingline"/>
+
+    <select id="shippingLine_selectByAll" resultClass="shippingLine" parameterClass="com.wings.persistence.ShippinglineKey">  
+    select idShippingLine,
+      name,
+      description,
+      description2,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      idAccountIDR,
+      idAccountUSD
+    from shippingline
+  </select>
+
+  
+  <select id="shippingLine_selectByPrimaryKey" resultClass="shippingLine" parameterClass="com.wings.persistence.ShippinglineKey">  
+    select idShippingLine,
+      name,
+      description,
+      description2,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      idAccountIDR,
+      idAccountUSD
+    from shippingline
+    where idShippingLine = #idShippingLine#
+  </select>
+
+  <select id="shippingLine_selectByLikeName" resultClass="shippingLine" parameterClass="com.wings.persistence.Shippingline">
+    select name
+      from shippingline
+    where name like #name#
+  </select>
+  
+  <delete id="shippingLine_deleteByPrimaryKey" parameterClass="com.wings.persistence.ShippinglineKey">    
+    delete from shippingline
+    where idShippingLine = #idShippingLine#
+  </delete>
+   
+  <insert id="shippingLine_insert" parameterClass="com.wings.persistence.Shippingline">
+    insert into shippingline (idShippingLine, name, description, contactPerson,
+      telp, fax, email, address1, address2, postalCode, city, region, npwp, 
+      idAccountIDR, idAccountUSD, description2) 
+    values (#idShippingLine:VARCHAR#, #name:VARCHAR#, #description:VARCHAR#, 
+      #contactPerson:VARCHAR#, #telp:VARCHAR#, #fax:VARCHAR#, #email:VARCHAR#, 
+      #address1:VARCHAR#, #address2:VARCHAR#, #postalCode:VARCHAR#, 
+      #city:VARCHAR#, #region:VARCHAR#, #npwp:VARCHAR#, #idAccountIDR:VARCHAR#, 
+      #idAccountUSD:VARCHAR#, #description:VARCHAR#) 
+  </insert>
+  
+  <update id="shippingLine_updateByPrimaryKey" parameterClass="com.wings.persistence.Shippingline">
+    update shippingline
+    set name = #name:VARCHAR#,
+      description = #description:VARCHAR#,
+      description2 = #description2:VARCHAR#,
+      contactPerson = #contactPerson:VARCHAR#,
+      telp = #telp:VARCHAR#,
+      fax = #fax:VARCHAR#,
+      email = #email:VARCHAR#,
+      address1 = #address1:VARCHAR#,
+      address2 = #address2:VARCHAR#,
+      postalCode = #postalCode:VARCHAR#,
+      city = #city:VARCHAR#,
+      region = #region:VARCHAR#,
+      npwp = #npwp:VARCHAR#,
+      idAccountIDR = #idAccountIDR:VARCHAR#,
+      idAccountUSD = #idAccountUSD:VARCHAR#
+    where idShippingLine = #idShippingLine#
+  </update>
+</sqlMap>

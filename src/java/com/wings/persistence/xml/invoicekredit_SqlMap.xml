@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Invoicekredit">
+
+  <typeAlias alias="invoicekredit" type="com.wings.persistence.Invoicekredit"/>
+  
+  <select id="invoicekredit_selectByPrimaryKey" resultClass="invoicekredit" parameterClass="com.wings.persistence.InvoicekreditKey">    
+    select idInvoiceKredit,
+      idInvoice,
+      value,
+      kreditDate,
+      number,
+      kurs
+    from invoicekredit
+    where idInvoiceKredit = #idInvoiceKredit#
+  </select>
+  
+  <select id="invoicekredit_selectByIdInvoice" resultClass="invoicekredit" parameterClass="com.wings.persistence.Invoicekredit">    
+    select idInvoiceKredit,
+      idInvoice,
+      value,
+      kreditDate,
+      number,
+      kurs
+    from invoicekredit
+    where idInvoice = #idInvoice#
+  </select>
+  
+  <delete id="invoicekredit_deleteByPrimaryKey" parameterClass="com.wings.persistence.InvoicekreditKey">    
+    delete from invoicekredit
+    where idInvoiceKredit = #idInvoiceKredit#
+  </delete>
+  
+  <delete id="invoicekredit_deleteByIdInvoice" parameterClass="com.wings.persistence.Invoicekredit">    
+    delete from invoicekredit
+    where idInvoice = #idInvoice#
+  </delete>
+  
+  <insert id="invoicekredit_insert" parameterClass="com.wings.persistence.Invoicekredit">   
+    insert into invoicekredit (idInvoiceKredit, idInvoice, value, kreditDate, 
+      number, kurs) 
+    values (#idInvoiceKredit:INTEGER#, #idInvoice:INTEGER#, #value:DOUBLE#, 
+      #kreditDate:TIMESTAMP#, #number:INTEGER#, #kurs:VARCHAR#) 
+  </insert>
+  
+  <update id="invoicekredit_updateByPrimaryKey" parameterClass="com.wings.persistence.Invoicekredit">   
+    update invoicekredit
+    set idInvoice = #idInvoice:INTEGER#,
+      value = #value:DOUBLE#,
+      kreditDate = #kreditDate:TIMESTAMP#,
+      number = #number:INTEGER#,
+      kurs = #kurs:VARCHAR#
+    where idInvoiceKredit = #idInvoiceKredit#
+  </update>
+</sqlMap>

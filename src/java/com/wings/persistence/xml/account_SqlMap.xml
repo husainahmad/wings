@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Account">
+    
+  <typeAlias alias="account" type="com.wings.persistence.Account"/>
+  
+  <select id="account_selectByPrimaryKey" resultClass="account" parameterClass="com.wings.persistence.AccountKey">    
+    select idAccount,
+      accountName,
+      category,
+      type,
+      saldoAwal
+    from account
+    where idAccount = #idAccount#
+  </select>
+  
+  <select id="account_selectByIdAccount" resultClass="account" parameterClass="com.wings.persistence.AccountKey">    
+    select idAccount,
+      accountName,
+      category,
+      type,
+      saldoAwal
+    from account
+    where idAccount like #idAccount#
+  </select>
+  
+  <select id="account_selectByAccountName" resultClass="account" parameterClass="com.wings.persistence.Account">    
+    select idAccount,
+      accountName,
+      category,
+      type,
+      saldoAwal
+    from account
+    where trim(accountName) like #accountName#    
+  </select>
+  
+  <select id="account_selectByAll" resultClass="account" parameterClass="com.wings.persistence.Account">    
+    select idAccount,
+      accountName,
+      category,
+      type,
+      saldoAwal
+    from account    
+    where trim(accountName) like #accountName#
+    order by idAccount
+  </select>
+  
+  <delete id="account_deleteByPrimaryKey" parameterClass="com.wings.persistence.AccountKey">
+    delete from account
+    where idAccount = #idAccount#
+  </delete>
+    
+  <insert id="account_insert" parameterClass="com.wings.persistence.Account">
+    insert into account (idAccount, accountName, category, type, saldoAwal) 
+    values (#idAccount:VARCHAR#, #accountName:VARCHAR#, #category:VARCHAR#, 
+      #type:VARCHAR#, #saldoAwal:DOUBLE#) 
+  </insert>
+  
+  <update id="account_updateByPrimaryKey" parameterClass="com.wings.persistence.Account">
+    update account
+    set accountName = #accountName:VARCHAR#,
+      category = #category:VARCHAR#,
+      type = #type:VARCHAR#,
+      saldoAwal = #saldoAwal:DOUBLE#
+    where idAccount = #idAccount#
+  </update>
+  
+</sqlMap>

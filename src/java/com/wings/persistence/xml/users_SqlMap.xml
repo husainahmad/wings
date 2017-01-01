@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Users">
+  <typeAlias alias="users" type="com.wings.persistence.Users"/>          
+  <select id="users_selectByPrimaryKey" resultClass="users" parameterClass="com.wings.persistence.UsersKey"> 
+    select userId,
+      name,
+      password,
+      authorityId
+    from users
+    where userId = #userId#
+  </select>
+  
+  <select id="users_selectAll" resultClass="users" parameterClass="com.wings.persistence.UsersKey"> 
+    select userId,
+      name,
+      password,
+      authorityId
+    from users 
+  </select>
+  
+  <select id="users_selectByUserIdAndPassword" resultClass="users" parameterClass="com.wings.persistence.Users"> 
+    select userId,
+      name,
+      password,
+      authorityId
+    from users
+    where userId = #userId#
+           and password = #password#
+  </select>
+  <delete id="users_deleteByPrimaryKey" parameterClass="com.wings.persistence.UsersKey">
+    delete from users
+    where userId = #userId#
+  </delete>
+  
+  <insert id="users_insert" parameterClass="com.wings.persistence.Users">    
+    insert into users (userId, name, password, authorityId) 
+    values (#userId:VARCHAR#, #name:VARCHAR#, #password:VARCHAR#, 
+      #authorityId:VARCHAR#) 
+  </insert>
+  
+  <update id="users_updatePasswordByPrimaryKey" parameterClass="com.wings.persistence.Users">    
+    update users
+    set password = #password:VARCHAR#
+    where userId = #userId#
+  </update>
+  
+  <update id="users_updateByPrimaryKey" parameterClass="com.wings.persistence.Users">    
+    update users
+    set name = #name:VARCHAR#,
+      password = #password:VARCHAR#,
+      authorityId = #authorityId:VARCHAR#
+    where userId = #userId#
+  </update>
+</sqlMap>

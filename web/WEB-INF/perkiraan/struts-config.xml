@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+
+<struts-config>
+    <form-beans>
+        <form-bean name="perkiraanForm" type="com.wings.web.struts.forms.PerkiraanForm"/>    
+    </form-beans>
+  <global-forwards>    
+  </global-forwards>    
+  
+    <action-mappings>        
+        
+        <action path="/perkiraan" type="com.wings.web.struts.actions.SelectPerkiraanAction">
+            <forward name="list" path="/formPerkiraanIndex.jsp"/>            
+        </action>
+        
+        <action path="/newPerkiraan" type="com.wings.web.struts.actions.NewPerkiraanAction"
+          name="perkiraanForm" scope="request" validate="false" >       
+            <forward name="input" path="/formPerkiraan.jsp"/>    
+            <forward name="form" path="/formPerkiraan.jsp"/>
+        </action>
+        
+        <action path="/insertPerkiraan" type="com.wings.web.struts.actions.InsertPerkiraanAction"
+          name="perkiraanForm" scope="request" validate="true" input="/formPerkiraan.jsp">                  
+            <forward name="form" path="/formPerkiraan.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/findPerkiraan" type="com.wings.web.struts.actions.FindPerkiraanAction"
+          name="perkiraanForm" validate="false" scope="request">                      
+            <forward name="form" path="/formPerkiraan.jsp"/>
+        </action>
+        
+        <action path="/updatePerkiraan" type="com.wings.web.struts.actions.UpdatePerkiraanAction"
+          name="perkiraanForm" scope="request" validate="true" input="/formPerkiraan.jsp">                  
+            <forward name="form" path="/formPerkiraan.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        
+        <action path="/viewPerkiraan" type="com.wings.web.struts.actions.ViewPerkiraanAction"
+          name="perkiraanForm" validate="false" scope="request">                      
+            <forward name="form" path="/formPerkiraan.jsp"/>
+        </action>
+        
+        <action path="/deletePerkiraan" type="com.wings.web.struts.actions.DeletePerkiraanAction"
+          name="perkiraanForm" validate="false" scope="request">                      
+            <forward name="view" path="/perkiraan.do"/>
+        </action>
+        
+    </action-mappings>    
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+    
+
+    <message-resources parameter="com/wings/struts/AgentResource"/>        
+    
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/agents/validation.xml"/>
+    </plug-in>
+  
+</struts-config>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Billingagent">
+    
+  <typeAlias alias="billingagent" type="com.wings.persistence.Billingagent"/> 
+  <typeAlias alias="billingagentDetail" type="com.wings.persistence.BillingagentDetail"/>  
+  <typeAlias alias="totalCharge" type="java.lang.Double"/>  
+  
+  <select id="billingagent_selectByPrimaryKey" resultClass="billingagent" parameterClass="com.wings.persistence.BillingagentKey">  
+    select idbillingAgent,
+      idJobSheet,
+      idAgentFee,
+      charge,
+      kurs, description,
+      kursValue, descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat
+    from billingagent
+    where idbillingAgent = #idbillingAgent#
+  </select>
+    
+  <select id="billingagent_selectAll" resultClass="billingagent" parameterClass="com.wings.persistence.BillingagentKey">  
+    select idbillingAgent,
+      idJobSheet,
+      idAgentFee,
+      charge,
+      kurs,description,
+      kursValue, descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat
+    from billingagent    
+  </select>
+  
+  <select id="billingagent_selectByJobsheetKey" resultClass="billingagentDetail" parameterClass="com.wings.persistence.JobsheetKey">  
+    select ba.idbillingAgent,
+      ba.idJobSheet,
+      ba.idAgentFee,
+      ba.charge,
+      ba.kurs,
+      af.aliasName,
+      af.description as descriptionFee,
+      ba.description,
+      ba.kursValue,
+      ba.descriptionInvoice,
+      ba.oriKurs, ba.oriWeight, ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category
+    from billingagent ba
+        left join agentfee af
+        on ba.idAgentFee = af.idAgentFee
+    where ba.idJobSheet = #idJobSheet#
+    order by ba.idbillingAgent
+  </select>
+  
+  <select id="billingagent_selectByJobsheetKeyIDR" resultClass="billingagentDetail" parameterClass="com.wings.persistence.JobsheetKey">  
+    select ba.idbillingAgent,
+      ba.idJobSheet,
+      ba.idAgentFee,
+      ba.charge,
+      ba.kurs,
+      af.aliasName,
+      af.description as descriptionFee,
+      ba.description,
+      ba.kursValue,
+      ba.descriptionInvoice,
+      ba.oriKurs, ba.oriWeight,
+      ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category
+    from billingagent ba
+        left join agentfee af
+        on ba.idAgentFee = af.idAgentFee
+    where ba.idJobSheet = #idJobSheet#
+    and ba.kurs = 'IDR'
+    order by ba.idbillingAgent
+  </select>
+  
+  <select id="billingagent_selectByJobsheetKeyUSD" resultClass="billingagentDetail" parameterClass="com.wings.persistence.JobsheetKey">  
+    select ba.idbillingAgent,
+      ba.idJobSheet,
+      ba.idAgentFee,
+      ba.charge,
+      ba.kurs,
+      af.aliasName,
+      af.description as descriptionFee,
+      ba.description,
+      ba.kursValue,
+      ba.descriptionInvoice,
+      ba.oriKurs, ba.oriWeight,
+      ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category
+    from billingagent ba
+        left join agentfee af
+        on ba.idAgentFee = af.idAgentFee
+    where ba.idJobSheet = #idJobSheet#
+    and ba.kurs = 'USD'
+    order by ba.idbillingAgent
+  </select>
+  
+  <select id="billingagent_selectTotalIDRByJobsheetKey" resultClass="totalCharge" parameterClass="com.wings.persistence.JobsheetKey">  
+    select ifnull(sum(charge),0) totalCharge      
+    from billingagent 
+    where idJobSheet = #idJobSheet#
+    and kurs = 'IDR'
+  </select>
+  
+  <select id="billingagent_selectTotalUSDByJobsheetKey" resultClass="totalCharge" parameterClass="com.wings.persistence.JobsheetKey">  
+    select ifnull(sum(charge),0) as totalCharge      
+    from billingagent 
+    where idJobSheet = #idJobSheet#
+    and kurs = 'USD'
+  </select>
+  
+  <select id="billingagent_selectByJobNo" resultClass="billingagentDetail" parameterClass="com.wings.persistence.Jobsheet">  
+    select ba.idbillingAgent,
+      ba.idJobSheet,
+      ba.idAgentFee,
+      ba.charge,
+      ba.kurs,
+      af.aliasName,
+      af.description as descriptionFee,
+      ba.description,
+      ba.kursValue,
+      ba.descriptionInvoice, ba.oriKurs, ba.oriWeight,
+      ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category
+    from billingagent ba
+        left join agentfee af
+        on ba.idAgentFee = af.idAgentFee
+    where ba.idJobSheet in
+    (
+       select j.idJobSheet from jobsheet j where
+       j.jobNo = #jobNo#
+    )
+    
+    order by ba.idbillingAgent
+  </select>
+  
+  <select id="billingagent_selectTaxByJobsheetKey" resultClass="billingagentDetail" parameterClass="com.wings.persistence.JobsheetKey">  
+    select ba.idbillingAgent,
+      ba.idJobSheet,
+      ba.idAgentFee,
+      ba.charge,
+      ba.kurs,
+      af.aliasName,
+      af.description as descriptionFee,
+      ba.description,
+      ba.kursValue,
+      ba.descriptionInvoice, ba.oriKurs, ba.oriWeight,
+      ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category
+    from billingagent ba
+        left join agentfee af
+        on ba.idAgentFee = af.idAgentFee
+    where ba.idJobSheet = #idJobSheet#
+    and ba.isTax = 1
+    order by ba.idbillingAgent
+    
+  </select>
+ 
+  
+  <delete id="billingagent_deleteByPrimaryKey" parameterClass="com.wings.persistence.BillingagentKey">   
+    delete from billingagent
+    where idbillingAgent = #idbillingAgent#
+  </delete>   
+  
+   <delete id="billingagent_deleteByJobsheetKey" parameterClass="com.wings.persistence.JobsheetKey"> 
+    delete from billingagent
+    where idJobSheet = #idJobSheet#
+  </delete>
+  
+  <insert id="billingagent_insert" parameterClass="com.wings.persistence.Billingagent">  
+    insert into billingagent (idJobSheet, idAgentFee, charge, 
+      kurs, description, kursValue, descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat) 
+    values (#idJobSheet:INTEGER#, 
+      #idAgentFee:INTEGER#, #charge:DOUBLE#, #kurs:VARCHAR#, #description:VARCHAR#, 
+      #kursValue:DOUBLE#, #descriptionInvoice:VARCHAR#, #oriKurs:DOUBLE#, #oriWeight:DOUBLE#, #isTax:INTEGER#, #isVat:INTEGER#, #totalTax:DOUBLE#, #totalVat:DOUBLE#) 
+  </insert>
+  
+  <update id="billingagent_updateByPrimaryKey" parameterClass="com.wings.persistence.Billingagent">   
+    update billingagent
+    set idJobSheet = #idJobSheet:INTEGER#,
+      idAgentFee = #idAgentFee:INTEGER#,
+      charge = #charge:DOUBLE#,
+      kurs = #kurs:VARCHAR#,
+      description = #description:VARCHAR#,
+      kursValue = #kursValue:DOUBLE#,
+      descriptionInvoice = #descriptionInvoice:VARCHAR#,
+      oriKurs = #oriKurs:DOUBLE#, 
+      oriWeight = #oriWeight:DOUBLE#, 
+      isTax = #isTax:INTEGER#,
+      isVat = #isVat:INTEGER#,
+      totalTax = #totalTax:DOUBLE#, 
+      totalVat = #totalVat:DOUBLE#
+    where idbillingAgent = #idbillingAgent#
+  </update>
+  
+</sqlMap>

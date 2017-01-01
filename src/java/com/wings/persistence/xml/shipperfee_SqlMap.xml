@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Shipperfee">
+
+  <typeAlias alias="shipperfee" type="com.wings.persistence.Shipperfee"/>
+  
+  <select id="shipperfee_selectByPrimaryKey" resultClass="shipperfee" parameterClass="com.wings.persistence.ShipperfeeKey">  
+    select idShipperFee,
+      description, isTax, aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+        idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from shipperfee
+    where idShipperFee = #idShipperFee#
+  </select>
+
+  <select id="shipperfee_selectByName" resultClass="shipperfee" parameterClass="com.wings.persistence.Shipperfee">  
+    select idShipperFee,
+      description, isTax, aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+        idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from shipperfee
+    where description = #description#
+  </select>
+
+  <select id="shipperfee_selectAll" resultClass="shipperfee" parameterClass="com.wings.persistence.Shipperfee">  
+    select idShipperFee,
+      description, isTax, aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+        idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from shipperfee    
+    where description like #description# 
+    order by description
+  </select>
+  
+  <select id="shipperfee_selectByAI" resultClass="shipperfee" parameterClass="com.wings.persistence.Shipperfee">  
+    select idShipperFee,
+      description, isTax, aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+        idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from shipperfee    
+    where description like #description# 
+          and isAI = 1
+    order by description
+  </select>
+  
+  <select id="shipperfee_selectByAO" resultClass="shipperfee" parameterClass="com.wings.persistence.Shipperfee">  
+    select idShipperFee,
+      description, isTax, aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+        idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from shipperfee    
+    where description like #description# 
+          and isAO = 1
+    order by description
+  </select>
+  
+  
+  <select id="shipperfee_selectBySI" resultClass="shipperfee" parameterClass="com.wings.persistence.Shipperfee">  
+    select idShipperFee,
+      description, isTax, aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+        idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from shipperfee    
+    where description like #description# 
+          and isSI = 1
+    order by description
+  </select>  
+  
+  <select id="shipperfee_selectBySO" resultClass="shipperfee" parameterClass="com.wings.persistence.Shipperfee">  
+    select idShipperFee,
+      description, isTax, aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+        idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from shipperfee    
+    where description like #description# 
+          and isSO = 1
+    order by description
+  </select>
+  
+   <select id="shipperfee_selectByType" resultClass="shipperfee" parameterClass="com.wings.persistence.Shipperfee">  
+    select idShipperFee,
+      description, isTax, aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+        idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from shipperfee    
+    where jobType = #jobType# 
+          and type = #type#
+    order by description
+  </select>
+  
+  <delete id="shipperfee_deleteByPrimaryKey" parameterClass="com.wings.persistence.ShipperfeeKey">   
+    delete from shipperfee
+    where idShipperFee = #idShipperFee#
+  </delete>
+  
+  <insert id="shipperfee_insert" parameterClass="com.wings.persistence.Shipperfee">   
+    insert into shipperfee (description, isTax, aliasName, idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+        idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type) 
+    values (#description:VARCHAR#, #isTax:VARCHAR#, #aliasName:VARCHAR#, #idAccountAI:VARCHAR#,
+      #idAccountAO:VARCHAR#,
+      #idAccountSI:VARCHAR#,
+      #idAccountSO:VARCHAR#,
+       #idAccountCostAI:VARCHAR#,
+        #idAccountCostAO:VARCHAR#,
+        #idAccountCostSI:VARCHAR#,
+        #idAccountCostSO:VARCHAR#,
+        #isAI:VARCHAR#,
+        #isAO:VARCHAR#,
+        #isSI:VARCHAR#,
+        #isSO:VARCHAR#,
+        #category:VARCHAR#,
+        #jobType:VARCHAR#,
+        #type:INTEGER#) 
+  </insert>
+  
+  <update id="shipperfee_updateByPrimaryKey" parameterClass="com.wings.persistence.Shipperfee">    
+    update shipperfee
+    set description = #description:VARCHAR#,
+        isTax = #isTax:VARCHAR#,
+        aliasName = #aliasName:VARCHAR#,
+        idAccountAI = #idAccountAI:VARCHAR#,
+        idAccountAO = #idAccountAO:VARCHAR#,
+        idAccountSI = #idAccountSI:VARCHAR#,
+        idAccountSO = #idAccountSO:VARCHAR#,
+        idAccountCostAI = #idAccountCostAI:VARCHAR#,
+        idAccountCostAO = #idAccountCostAO:VARCHAR#,
+        idAccountCostSI = #idAccountCostSI:VARCHAR#,
+        idAccountCostSO = #idAccountCostSO:VARCHAR#,
+        isAI = #isAI:VARCHAR#,
+        isAO = #isAO:VARCHAR#,
+        isSI = #isSI:VARCHAR#,
+        isSO = #isSO:VARCHAR#,
+        category = #category:VARCHAR#,
+        jobType = #jobType:VARCHAR#,
+        type = #type:INTEGER#
+    where idShipperFee = #idShipperFee#
+  </update>
+</sqlMap>

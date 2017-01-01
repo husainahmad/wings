@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+  <properties resource="com/wings/properties/database.properties"/>
+
+  <transactionManager type="JDBC">
+    <dataSource type="SIMPLE">
+      <property value="${driver}" name="JDBC.Driver"/>
+      <property value="${url}" name="JDBC.ConnectionURL"/>
+      <property value="${username}" name="JDBC.Username"/>
+      <property value="${password}" name="JDBC.Password"/>
+    </dataSource>
+  </transactionManager>
+  
+  <sqlMap resource="com/wings/persistence/xml/agentfee_SqlMap.xml"/>   
+  <sqlMap resource="com/wings/persistence/xml/agents_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/authority_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/billingagent_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/billingshipper_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/consignee_SqlMap.xml"/>
+  
+  <sqlMap resource="com/wings/persistence/xml/debit_SqlMap.xml"/>
+  
+  <sqlMap resource="com/wings/persistence/xml/expensesagent_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/expensesshipper_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/invoice_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/jobsheet_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/jobsheetai_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/jobsheetao_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/jobsheetsi_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/jobsheetso_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/shipper_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/shippingLine_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/shipperfee_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/users_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/jobnumber_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/transporter_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/destination_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/income_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/debitkredit_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/invoicekredit_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/tax_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/perkiraan_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/account_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/account_saldo_SqlMap.xml"/>
+  
+  <sqlMap resource="com/wings/persistence/xml/transactionacc_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/transactionaccdetail_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/batch_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/kursdollar_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/payment_SqlMap.xml"/>
+  <sqlMap resource="com/wings/persistence/xml/cashonhand_SqlMap.xml"/>
+</sqlMapConfig>
+

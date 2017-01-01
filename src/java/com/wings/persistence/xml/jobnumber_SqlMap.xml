@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Jobnumber">
+
+  <typeAlias alias="jobnumberKey" type="com.wings.persistence.JobnumberKey"/> 
+  <typeAlias alias="nextJobnumberKey" type="java.lang.String"/> 
+  
+  <select id="jobnumber_selectMax" resultClass="jobnumberKey" parameterClass="com.wings.persistence.JobnumberKey">   
+    select ifnull(max(idJobNumber),0) as idJobNumber
+    from jobnumber   
+  </select>  
+  
+   <select id="jobnumber_selectNext" resultClass="nextJobnumberKey" parameterClass="com.wings.persistence.JobnumberKey">   
+    SELECT LPAD(max(idJobnumber)+1,5,'0') as nextJobnumberKey FROM jobnumber  
+  </select> 
+  
+  <insert id="jobnumber_insert" parameterClass="com.wings.persistence.JobnumberKey">   
+    insert into jobnumber (idJobNumber) 
+    values (#idJobNumber:INTEGER#) 
+  </insert>
+  
+</sqlMap>

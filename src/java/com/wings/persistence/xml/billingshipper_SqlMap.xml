@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Billingshipper">
+ 
+  <typeAlias alias="billingshipper" type="com.wings.persistence.Billingshipper"/>
+  <typeAlias alias="billingshipperDetail" type="com.wings.persistence.BillingshipperDetail"/>
+  <typeAlias alias="totalCharge" type="java.lang.Double"/>  
+  
+  <select id="billingshipper_selectByPrimaryKey" resultClass="billingshipper" parameterClass="com.wings.persistence.BillingshipperKey">  
+    select idbillingShipper,
+      idJobSheet,
+      idShipperFee,
+      charge,
+      kurs,description
+      ,kursValue, descriptionInvoice,isTax, isVat, totalTax, totalVat
+    from billingshipper
+    where idbillingShipper = #idbillingShipper#
+  </select>
+ 
+  <select id="billingshipper_selectAll" resultClass="billingshipper" parameterClass="com.wings.persistence.BillingshipperKey">  
+    select idbillingShipper,
+      idJobSheet,
+      idShipperFee,
+      charge,
+      kurs,description,kursValue,descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat
+    from billingshipper
+  </select>
+  
+  <select id="billingshipper_selectJobsheetKey" resultClass="billingshipperDetail" parameterClass="com.wings.persistence.JobsheetKey">  
+      select bs.idbillingShipper,
+          bs.idJobSheet,
+          bs.idShipperFee,
+          bs.charge,
+          bs.kurs,
+          sf.aliasName,
+          sf.description as descriptionFee,
+          bs.description as description,
+          bs.kursValue,
+          bs.descriptionInvoice,
+          bs.oriKurs, bs.oriWeight,
+          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category
+        from billingshipper bs
+        left join shipperfee sf
+        on bs.idShipperFee = sf.idShipperFee
+     where bs.idJobSheet = #idJobSheet#
+     order by bs.idbillingShipper
+  </select>
+
+  <select id="billingshipper_selectByJobsheetKeyIDR" resultClass="billingshipperDetail" parameterClass="com.wings.persistence.JobsheetKey">  
+      select bs.idbillingShipper,
+          bs.idJobSheet,
+          bs.idShipperFee,
+          bs.charge,
+          bs.kurs,
+          sf.aliasName,
+          sf.description as descriptionFee,
+          bs.description as description,
+          bs.kursValue,
+          bs.descriptionInvoice,
+          bs.oriKurs, bs.oriWeight,
+          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category
+        from billingshipper bs
+        left join shipperfee sf
+        on bs.idShipperFee = sf.idShipperFee
+     where bs.idJobSheet = #idJobSheet#
+     and bs.kurs = 'IDR'
+     order by bs.idbillingShipper
+  </select>
+
+  <select id="billingshipper_selectByJobsheetKeyUSD" resultClass="billingshipperDetail" parameterClass="com.wings.persistence.JobsheetKey">  
+      select bs.idbillingShipper,
+          bs.idJobSheet,
+          bs.idShipperFee,
+          bs.charge,
+          bs.kurs,
+          sf.aliasName,
+          sf.description as descriptionFee,
+          bs.description as description,
+          bs.kursValue,
+          bs.descriptionInvoice,
+          bs.oriKurs, bs.oriWeight,
+          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category
+        from billingshipper bs
+        left join shipperfee sf
+        on bs.idShipperFee = sf.idShipperFee
+     where bs.idJobSheet = #idJobSheet#
+     and bs.kurs = 'USD'
+     order by bs.idbillingShipper
+  </select>
+  
+  <select id="billingshipper_selectTotalIDRByJobsheetKey" resultClass="totalCharge" parameterClass="com.wings.persistence.JobsheetKey">  
+     select ifnull(sum(charge),0) as totalCharge
+        from billingshipper
+     where idJobSheet = #idJobSheet#
+     and kurs = 'IDR'
+  </select>
+  
+  <select id="billingshipper_selectTotalUSDByJobsheetKey" resultClass="totalCharge" parameterClass="com.wings.persistence.JobsheetKey">  
+     select ifnull(sum(charge),0) as totalCharge
+        from billingshipper
+     where idJobSheet = #idJobSheet#
+     and kurs = 'USD'
+  </select>
+  
+  <select id="billingshipper_selectByJobNo" resultClass="billingshipperDetail" parameterClass="com.wings.persistence.Jobsheet">  
+      select bs.idbillingShipper,
+          bs.idJobSheet,
+          bs.idShipperFee,
+          bs.charge,
+          bs.kurs,
+          sf.aliasName,
+          sf.description as descriptionFee,
+          bs.description as description,
+          bs.kursValue,
+          bs.descriptionInvoice,
+          bs.oriKurs, bs.oriWeight,
+          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category
+        from billingshipper bs
+        left join shipperfee sf
+        on bs.idShipperFee = sf.idShipperFee
+     where bs.idJobSheet in
+    (
+       select j.idJobSheet from jobsheet j where
+       j.jobNo = #jobNo#
+    )
+    order by bs.idbillingShipper
+  </select>
+  
+  <select id="billingshipper_selectTaxJobsheetKey" resultClass="billingshipperDetail" parameterClass="com.wings.persistence.JobsheetKey">  
+      select bs.idbillingShipper,
+          bs.idJobSheet,
+          bs.idShipperFee,
+          bs.charge,
+          bs.kurs,
+          sf.aliasName,
+          sf.description as descriptionFee,
+          bs.description as description,
+          bs.kursValue,
+          bs.descriptionInvoice,
+          bs.oriKurs, bs.oriWeight,
+          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category
+        from billingshipper bs
+        left join shipperfee sf
+        on bs.idShipperFee = sf.idShipperFee
+     where bs.idJobSheet = #idJobSheet#
+     and bs.isTax = 1
+     order by bs.idbillingShipper
+  </select>
+  
+  <delete id="billingshipper_deleteByPrimaryKey" parameterClass="com.wings.persistence.BillingshipperKey"> 
+    delete from billingshipper
+    where idbillingShipper = #idbillingShipper#
+  </delete>
+  
+  <delete id="billingshipper_deleteByJobsheetKey" parameterClass="com.wings.persistence.JobsheetKey"> 
+    delete from billingshipper
+    where idJobSheet = #idJobSheet#
+  </delete>
+  
+  <insert id="billingshipper_insert" parameterClass="com.wings.persistence.Billingshipper">   
+    insert into billingshipper (idJobSheet, idShipperFee, 
+      charge, kurs, description, kursValue, descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat) 
+    values (#idJobSheet:INTEGER#, 
+      #idShipperFee:INTEGER#, #charge:DOUBLE#, #kurs:VARCHAR#, #description:VARCHAR#, 
+      #kursValue:DOUBLE#, #descriptionInvoice:VARCHAR#,
+      #oriKurs:DOUBLE#, #oriWeight:DOUBLE#, #isTax:INTEGER#, #isVat:INTEGER#, #totalTax:DOUBLE#, #totalVat:DOUBLE#) 
+  </insert>
+  
+  <update id="billingshipper_updateByPrimaryKey" parameterClass="com.wings.persistence.Billingshipper">  
+    update billingshipper
+    set idJobSheet = #idJobSheet:INTEGER#,
+      idShipperFee = #idShipperFee:INTEGER#,
+      charge = #charge:DOUBLE#,
+      kurs = #kurs:VARCHAR#,
+      description = #description:VARCHAR#,
+      kursValue = #kursValue:DOUBLE#,
+      descriptionInvoice = #descriptionInvoice:VARCHAR#,
+      oriKurs = #oriKurs:DOUBLE#, 
+      oriWeight = #oriWeight:DOUBLE#,
+      isTax = #isTax:INTEGER#,
+      isVat = #isVat:INTEGER#,
+      totalTax = #totalTax:DOUBLE#, 
+      totalVat = #totalVat:DOUBLE#
+    where idbillingShipper = #idbillingShipper#
+  </update>
+</sqlMap>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+
+<struts-config>
+    <form-beans>
+        <form-bean name="debitForm" type="com.wings.web.struts.forms.DebitForm"/>    
+        <form-bean name="monthYearForm" type="com.wings.web.struts.forms.MonthYearForm"/> 
+    </form-beans>
+  <global-forwards>    
+  </global-forwards>    
+  
+    <action-mappings>        
+        
+        <action path="/debit" type="com.wings.web.struts.actions.SelectDebitAction"
+        name="monthYearForm" scope="session" validate="false">
+            <forward name="list" path="/formDebitIndex.jsp"/>            
+        </action>
+        
+        <action path="/newDebit" type="com.wings.web.struts.actions.NewDebitAction"
+          name="debitForm" scope="request" validate="false" >       
+            <forward name="input" path="/formDebit.jsp"/>    
+            <forward name="form" path="/formDebit.jsp"/>
+        </action>
+        
+        <action path="/insertDebit" type="com.wings.web.struts.actions.InsertDebitAction"
+          name="debitForm" scope="request" validate="true" input="/formDebit.jsp">                  
+            <forward name="form" path="/formDebit.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/findDebit" type="com.wings.web.struts.actions.FindDebitAction"
+          name="debitForm" validate="false" scope="request">                      
+            <forward name="form" path="/formDebit.jsp"/>
+        </action>
+        
+        <action path="/updateDebit" type="com.wings.web.struts.actions.UpdateDebitAction"
+          name="debitForm" scope="request" validate="true" input="/formDebit.jsp">                  
+            <forward name="form" path="/formDebit.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        
+        <action path="/viewDebit" type="com.wings.web.struts.actions.ViewDebitAction"
+          name="debitForm" validate="false" scope="request">                      
+            <forward name="form" path="/formDebit.jsp"/>
+        </action>
+        
+        <action path="/deleteDebit" type="com.wings.web.struts.actions.DeleteDebitAction"
+          name="debitForm" validate="false" scope="request">                      
+            <forward name="view" path="/debit.do"/>
+        </action>
+        
+        <action path="/printDebit" type="com.wings.web.struts.actions.PrintDebitAction"
+          name="debitForm" validate="false" scope="request">                      
+            <forward name="view" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+
+        <action path="/printDebitUSD" type="com.wings.web.struts.actions.PrintDebitUSDAction"
+          name="debitForm" validate="false" scope="request">                      
+            <forward name="view" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+
+        <action path="/newIncome" type="com.wings.web.struts.actions.NewDebitIncomeAction"
+          name="debitForm" validate="false" scope="request">                      
+            <forward name="form" path="/formDebitIncome.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/insertIncome" type="com.wings.web.struts.actions.InsertDebitIncomeAction"
+          name="debitForm" validate="false" scope="request">                      
+            <forward name="form" path="/formDebitIncome.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/viewIncome" type="com.wings.web.struts.actions.ViewDebitIncomeAction"
+          name="debitForm" validate="false" scope="request">                      
+            <forward name="form" path="/formDebitIncome.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/updateIncome" type="com.wings.web.struts.actions.UpdateDebitIncomeAction"
+          name="debitForm" validate="false" scope="request">                      
+            <forward name="form" path="/formDebitIncome.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+    </action-mappings>    
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+    
+
+    <message-resources parameter="com/wings/struts/DebitResource"/>        
+    
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/debit/validation.xml"/>
+    </plug-in>
+  
+</struts-config>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Jobtype">
+
+  <typeAlias alias="jobtype" type="com.wings.persistence.Jobtype"/>
+ 
+  <select id="jobtype_selectByPrimaryKey" resultClass="jobtype" parameterClass="com.wings.persistence.JobtypeKey">  
+    select idJobType,
+      description
+    from jobtype
+    where idJobType = #idJobType#
+  </select>
+
+  <delete id="jobtype_deleteByPrimaryKey" parameterClass="com.wings.persistence.JobtypeKey">  
+    delete from jobtype
+    where idJobType = #idJobType#
+  </delete>
+ 
+  <insert id="jobtype_insert" parameterClass="com.wings.persistence.Jobtype">  
+    insert into jobtype (idJobType, description) 
+    values (#idJobType:VARCHAR#, #description:VARCHAR#) 
+  </insert>
+  
+  <update id="jobtype_updateByPrimaryKey" parameterClass="com.wings.persistence.Jobtype">    
+    update jobtype
+    set description = #description:VARCHAR#
+    where idJobType = #idJobType#
+  </update>
+</sqlMap>

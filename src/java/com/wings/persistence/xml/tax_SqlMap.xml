@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Tax">
+
+  <typeAlias alias="tax" type="com.wings.persistence.Tax"/> 
+  <typeAlias alias="taxDetail" type="com.wings.persistence.TaxDetail"/> 
+  
+  <select id="tax_selectByPrimaryKey" resultClass="tax" parameterClass="com.wings.persistence.TaxKey">    
+    select idTax,
+      idJobSheet,
+      noFaktur,
+      fakturDate,
+      dpp,
+      ppn,
+      pkpDate
+    from tax
+    where idTax = #idTax#
+  </select>
+  
+  <select id="tax_selectByMontlySelection" resultClass="taxDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">    
+    select t.idTax,
+      j.jobNo as jobNo,
+      t.idJobSheet,
+      t.noFaktur,
+      t.fakturDate,
+      t.dpp,
+      t.ppn,
+      t.pkpDate, j.idJobType
+    from tax t
+    right join jobsheet j
+        on j.idJobSheet = t.idJobSheet
+    where month(t.fakturDate) = #month#
+          and year(t.fakturDate) = #year#
+          and j.idJobType = #idJobType#
+    order by t.fakturDate      
+  </select>
+  
+    
+  <delete id="tax_deleteByPrimaryKey" parameterClass="com.wings.persistence.TaxKey">    
+    delete from tax
+    where idTax = #idTax#
+  </delete>
+    
+  <insert id="tax_insert" parameterClass="com.wings.persistence.Tax">   
+    insert into tax (idTax, idJobSheet, noFaktur, fakturDate, dpp, ppn, pkpDate) 
+    values (#idTax:INTEGER#, #idJobSheet:VARCHAR#, #noFaktur:VARCHAR#, 
+      now(), #dpp:DOUBLE#, #ppn:DOUBLE#, #pkpDate:TIMESTAMP#) 
+  </insert>
+  
+  <update id="tax_updateByPrimaryKey" parameterClass="com.wings.persistence.Tax">    
+    update tax
+    set idJobSheet = #idJobSheet:VARCHAR#,
+      noFaktur = #noFaktur:VARCHAR#,
+      fakturDate = #fakturDate:TIMESTAMP#,
+      dpp = #dpp:DOUBLE#,
+      ppn = #ppn:DOUBLE#,
+      pkpDate = #pkpDate:TIMESTAMP#
+    where idTax = #idTax#
+  </update>
+  
+</sqlMap>

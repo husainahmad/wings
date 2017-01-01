@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Agentfee">
+
+  <typeAlias alias="agentfee" type="com.wings.persistence.Agentfee"/>  
+  
+  <select id="agentfee_selectByPrimaryKey" resultClass="agentfee" parameterClass="com.wings.persistence.AgentfeeKey">   
+    select idAgentFee,
+      description,
+      isTax,aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+      idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from agentfee
+    where idAgentFee = #idAgentFee#
+  </select>
+ 
+  <select id="agentfee_selectByName" resultClass="agentfee" parameterClass="com.wings.persistence.Agentfee">   
+    select idAgentFee,
+      description,
+      isTax,aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+      idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from agentfee
+    where description = #description#
+  </select>
+  
+  <select id="agentfee_selectAll" resultClass="agentfee" parameterClass="com.wings.persistence.Agentfee">   
+    select idAgentFee,
+      description,
+      isTax,aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+      idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from agentfee    
+    where description like #description# 
+    order by description
+  </select>
+  
+  <select id="agentfee_selectByAI" resultClass="agentfee" parameterClass="com.wings.persistence.Agentfee">   
+    select idAgentFee,
+      description,
+      isTax,aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+      idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from agentfee    
+    where description like #description# 
+          and isAI = 1
+    order by description
+  </select>
+  
+  <select id="agentfee_selectByAO" resultClass="agentfee" parameterClass="com.wings.persistence.Agentfee">   
+    select idAgentFee,
+      description,
+      isTax,aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+      idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from agentfee    
+    where description like #description# 
+          and isAO = 1
+    order by description
+  </select>
+  
+  <select id="agentfee_selectBySI" resultClass="agentfee" parameterClass="com.wings.persistence.Agentfee">   
+    select idAgentFee,
+      description,
+      isTax,aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+      idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from agentfee    
+    where description like #description# 
+          and isSI = 1
+    order by description
+  </select>
+  
+  <select id="agentfee_selectBySO" resultClass="agentfee" parameterClass="com.wings.persistence.Agentfee">   
+    select idAgentFee,
+      description,
+      isTax,aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+      idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from agentfee    
+    where description like #description# 
+          and isSO = 1
+    order by description
+  </select>
+  
+  <select id="agentfee_selectByJobType" resultClass="agentfee" parameterClass="com.wings.persistence.Agentfee">   
+    select idAgentFee,
+      description,
+      isTax,aliasName,
+      idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,
+      idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type
+    from agentfee    
+    where jobType = #jobType# 
+    and type = #type#
+    order by description
+  </select>
+  
+  <delete id="agentfee_deleteByPrimaryKey" parameterClass="com.wings.persistence.AgentfeeKey">    
+    delete from agentfee
+    where idAgentFee = #idAgentFee#
+  </delete>
+  
+  <insert id="agentfee_insert" parameterClass="com.wings.persistence.Agentfee">    
+    insert into agentfee (description, isTax, aliasName, idAccountAI,
+      idAccountAO,
+      idAccountSI,
+      idAccountSO,idAccountCostAI,
+        idAccountCostAO,
+        idAccountCostSI,
+        idAccountCostSO,
+        isAI,
+        isAO,
+        isSI,
+        isSO,
+        category,
+        jobType,
+        type) 
+    values (#description:VARCHAR#, #isTax:VARCHAR#, #aliasName:VARCHAR#, #idAccountAI:VARCHAR#,
+       #idAccountAO:VARCHAR#,
+       #idAccountSI:VARCHAR#,
+       #idAccountSO:VARCHAR#, 
+       #idAccountCostAI:VARCHAR#,
+        #idAccountCostAO:VARCHAR#,
+        #idAccountCostSI:VARCHAR#,
+        #idAccountCostSO:VARCHAR#,
+        #isAI:VARCHAR#,
+        #isAO:VARCHAR#,
+        #isSI:VARCHAR#,
+        #isSO:VARCHAR#,
+        #category:VARCHAR#,
+        #jobType:VARCHAR#,
+        #type:INTEGER#) 
+  </insert>
+  
+  <update id="agentfee_updateByPrimaryKey" parameterClass="com.wings.persistence.Agentfee">   
+    update agentfee
+    set description = #description:VARCHAR#,
+        isTax = #isTax:VARCHAR#,
+        aliasName = #aliasName:VARCHAR#,
+        idAccountAI = #idAccountAI:VARCHAR#,
+        idAccountAO = #idAccountAO:VARCHAR#,
+        idAccountSI = #idAccountSI:VARCHAR#,
+        idAccountSO = #idAccountSO:VARCHAR#,
+        idAccountCostAI = #idAccountCostAI:VARCHAR#,
+        idAccountCostAO = #idAccountCostAO:VARCHAR#,
+        idAccountCostSI = #idAccountCostSI:VARCHAR#,
+        idAccountCostSO = #idAccountCostSO:VARCHAR#,
+        isAI = #isAI:VARCHAR#,
+        isAO = #isAO:VARCHAR#,
+        isSI = #isSI:VARCHAR#,
+        isSO = #isSO:VARCHAR#,
+        category = #category:VARCHAR#,
+        jobType = #jobType:VARCHAR#,
+        type = #type:INTEGER#
+    where idAgentFee = #idAgentFee#
+  </update>
+</sqlMap>

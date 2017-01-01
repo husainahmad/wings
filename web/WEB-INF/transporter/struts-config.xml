@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+
+<struts-config>
+    <form-beans>
+        <form-bean name="transporterForm" type="com.wings.web.struts.forms.TransporterForm"/>    
+    </form-beans>
+  <global-forwards>    
+  </global-forwards>    
+  
+    <action-mappings>        
+        
+        <action path="/transporter" type="com.wings.web.struts.actions.SelectTransporterAction"
+            name="transporterForm" scope="session" validate="false" >       
+            <forward name="list" path="/formTransporterIndex.jsp"/>            
+        </action>
+        
+        <action path="/newTransporter" type="com.wings.web.struts.actions.NewTransporterAction"
+          name="transporterForm" scope="request" validate="false" >       
+            <forward name="input" path="/formTransporter.jsp"/>    
+            <forward name="form" path="/formTransporter.jsp"/>
+        </action>
+        
+        <action path="/insertTransporter" type="com.wings.web.struts.actions.InsertTransporterAction"
+          name="transporterForm" scope="request" validate="true" input="/formTransporter.jsp">                  
+            <forward name="form" path="/formTransporter.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/findTransporter" type="com.wings.web.struts.actions.FindTransporterAction"
+          name="transporterForm" validate="false" scope="request">                      
+            <forward name="form" path="/formTransporter.jsp"/>
+        </action>
+        
+        <action path="/updateTransporter" type="com.wings.web.struts.actions.UpdateTransporterAction"
+          name="transporterForm" scope="request" validate="true" input="/formTransporter.jsp">                  
+            <forward name="form" path="/formTransporter.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        
+        <action path="/viewTransporter" type="com.wings.web.struts.actions.ViewTransporterAction"
+          name="transporterForm" validate="false" scope="request">                      
+            <forward name="form" path="/formTransporter.jsp"/>
+        </action>
+        
+        <action path="/deleteTransporter" type="com.wings.web.struts.actions.DeleteTransporterAction"
+          name="transporterForm" validate="false" scope="request">                      
+            <forward name="view" path="/transporter.do"/>
+        </action>
+        
+    </action-mappings>    
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+    
+
+    <message-resources parameter="com/wings/struts/TransporterResource"/>        
+    
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/transporter/validation.xml"/>
+    </plug-in>
+  
+</struts-config>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Shipper">
+
+  <typeAlias alias="shipper" type="com.wings.persistence.Shipper"/>
+  
+  <select id="shipper_selectByPrimaryKey" resultClass="shipper" parameterClass="com.wings.persistence.ShipperKey">    
+    select idShipper,
+      name,
+      description,
+      description2,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      idAccountIDR,
+      idAccountUSD
+    from shipper
+    where idShipper = #idShipper#
+  </select>
+
+    <select id="shipper_selectByName" resultClass="shipper" parameterClass="com.wings.persistence.Shipper">    
+    select idShipper,
+      name,
+      description,
+      description2,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      idAccountIDR,
+      idAccountUSD
+    from shipper
+    where name like #name#
+  </select>
+
+  <select id="shipper_selectAll" resultClass="shipper" parameterClass="com.wings.persistence.Shipper">    
+    select idShipper,
+      name,
+      description,
+      description2,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      idAccountIDR,
+      idAccountUSD
+    from shipper
+    where name like #name#
+    order by name    
+  </select>
+  
+  <select id="shipper_selectByIdName" resultClass="shipper" parameterClass="com.wings.persistence.Shipper">    
+    select idShipper,
+      name,
+      description,
+      description2,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      idAccountIDR,
+      idAccountUSD
+    from shipper
+    where name = #name#    
+  </select>
+  
+  <delete id="shipper_deleteByPrimaryKey" parameterClass="com.wings.persistence.ShipperKey">   
+    delete from shipper
+    where idShipper = #idShipper#
+  </delete>
+  
+  <insert id="shipper_insert" parameterClass="com.wings.persistence.Shipper">   
+    insert into shipper (idShipper, name, description, contactPerson, telp, 
+      fax, email, address1, address2, postalCode, city, region, npwp, idAccountIDR, idAccountUSD, description2) 
+    values (#idShipper:VARCHAR#, #name:VARCHAR#, #description:VARCHAR#, 
+      #contactPerson:VARCHAR#, #telp:VARCHAR#, #fax:VARCHAR#, #email:VARCHAR#, 
+      #address1:VARCHAR#, #address2:VARCHAR#, #postalCode:VARCHAR#, 
+      #city:VARCHAR#, #region:VARCHAR#, #npwp:VARCHAR#, #idAccountIDR:VARCHAR#, #idAccountUSD:VARCHAR#, #description2:VARCHAR#) 
+  </insert>
+  
+  <update id="shipper_updateByPrimaryKey" parameterClass="com.wings.persistence.Shipper">   
+    update shipper
+    set name = #name:VARCHAR#,
+      description = #description:VARCHAR#,
+      description2 = #description2:VARCHAR#,
+      contactPerson = #contactPerson:VARCHAR#,
+      telp = #telp:VARCHAR#,
+      fax = #fax:VARCHAR#,
+      email = #email:VARCHAR#,
+      address1 = #address1:VARCHAR#,
+      address2 = #address2:VARCHAR#,
+      postalCode = #postalCode:VARCHAR#,
+      city = #city:VARCHAR#,
+      region = #region:VARCHAR#,
+      npwp = #npwp:VARCHAR#,
+      idAccountIDR = #idAccountIDR:VARCHAR#,
+      idAccountUSD = #idAccountUSD:VARCHAR#
+    where idShipper = #idShipper#
+  </update>
+</sqlMap>

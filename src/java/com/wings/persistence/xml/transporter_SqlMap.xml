@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Transporter">
+
+ <typeAlias alias="transporter" type="com.wings.persistence.Transporter"/>
+ 
+  <select id="transporter_selectByPrimaryKey" resultClass="transporter" parameterClass="com.wings.persistence.TransporterKey">   
+    select idTransporter,
+      name,
+      description,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      idAccountIDR,idAccountUSD
+    from transporter
+    where idTransporter = #idTransporter#
+  </select>
+  
+  <select id="transporter_selectAll" resultClass="transporter" parameterClass="com.wings.persistence.Transporter">   
+    select idTransporter,
+      name,
+      description,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      idAccountIDR,idAccountUSD
+    from transporter    
+    where name like #name#
+    order by name
+  </select>
+  
+  <select id="transporter_selectByName" resultClass="transporter" parameterClass="com.wings.persistence.Transporter">   
+    select idTransporter,
+      name,
+      description,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      idAccountIDR,idAccountUSD
+    from transporter    
+    where name like #name#
+    order by name
+    limit 100
+  </select>
+  
+  <delete id="transporter_deleteByPrimaryKey" parameterClass="com.wings.persistence.TransporterKey">   
+    delete from transporter
+    where idTransporter = #idTransporter#
+  </delete>
+ 
+  <insert id="transporter_insert" parameterClass="com.wings.persistence.Transporter">   
+    insert into transporter (idTransporter, name, description, contactPerson, 
+      telp, fax, email, address1, address2, postalCode, city, region, npwp, idAccountIDR, idAccountUSD) 
+    values (#idTransporter:VARCHAR#, #name:VARCHAR#, #description:VARCHAR#, 
+      #contactPerson:VARCHAR#, #telp:VARCHAR#, #fax:VARCHAR#, #email:VARCHAR#, 
+      #address1:VARCHAR#, #address2:VARCHAR#, #postalCode:VARCHAR#, 
+      #city:VARCHAR#, #region:VARCHAR#, #npwp:VARCHAR#, #idAccountIDR:VARCHAR#,#idAccountUSD:VARCHAR#) 
+  </insert>
+  
+  <update id="transporter_updateByPrimaryKey" parameterClass="com.wings.persistence.Transporter">    
+    update transporter
+    set name = #name:VARCHAR#,
+      description = #description:VARCHAR#,
+      contactPerson = #contactPerson:VARCHAR#,
+      telp = #telp:VARCHAR#,
+      fax = #fax:VARCHAR#,
+      email = #email:VARCHAR#,
+      address1 = #address1:VARCHAR#,
+      address2 = #address2:VARCHAR#,
+      postalCode = #postalCode:VARCHAR#,
+      city = #city:VARCHAR#,
+      region = #region:VARCHAR#,
+      npwp = #npwp:VARCHAR#,
+      idAccountIDR = #idAccountIDR:VARCHAR#,
+      idAccountUSD = #idAccountUSD:VARCHAR#
+    where idTransporter = #idTransporter#
+  </update>
+</sqlMap>

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Debit">
+
+  <typeAlias alias="debit" type="com.wings.persistence.Debit"/>
+  <typeAlias alias="debitDetail" type="com.wings.persistence.DebitDetail"/>
+  <typeAlias alias="debitAIDetail" type="com.wings.persistence.DebitAIDetail"/> 
+  <typeAlias alias="debitAODetail" type="com.wings.persistence.DebitAODetail"/> 
+  <typeAlias alias="debitSIDetail" type="com.wings.persistence.DebitSIDetail"/>
+  <typeAlias alias="debitSODetail" type="com.wings.persistence.DebitSODetail"/>
+  <typeAlias alias="jobType" type="java.lang.String"/> 
+  
+  <select id="debit_selectByPrimaryKey" resultClass="debit" parameterClass="com.wings.persistence.DebitKey">   
+    select idDebit,
+      idJobSheet,
+      debitNumber,
+      debitDate, isPayable, idIncome,payableDate
+    from debit
+    where idDebit = #idDebit#
+    limit 1
+  </select>
+  
+  <select id="debit_selectJobTypeByDebitKey" resultClass="jobType" parameterClass="com.wings.persistence.DebitKey">   
+    select      
+          j.idJobType as jobType          
+    from debit d
+    left join jobsheet j
+          on j.idJobSheet = d.idJobSheet    
+    where  d.idDebit = #idDebit#    
+  </select>
+  
+  <select id="debit_selectMaxDebitNo" resultClass="debit" parameterClass="com.wings.persistence.Debit">   
+    SELECT ifnull(max(convert(substring(debitNumber,4,5),UNSIGNED)),0)+1 as debitNumber FROM debit
+    where year(debitDate) = year(#debitDate#)
+  </select>
+  
+  <select id="debit_selectByIdJobsheet" resultClass="debit" parameterClass="com.wings.persistence.Debit">   
+    select idDebit,
+      idJobSheet,
+      debitNumber,
+      debitDate, isPayable, idIncome,payableDate
+    from debit
+    where idJobSheet = #idJobSheet#
+  </select>
+  
+  <select id="debit_selectByAll" resultClass="debitDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">   
+    select d.idDebit,
+      d.idJobSheet,
+      d.debitNumber,
+      d.debitDate, d.dueDate, d.isPayable, d.idIncome, d.payableDate,
+      j.idJobType as jobType,
+      j.jobNo,
+      i.invoiceNumber,
+      c.name as idConsignee
+    from debit d
+    left join jobsheet j
+        on d.idJobSheet = j.idJobSheet
+    left join invoice i
+        on d.idJobSheet = i.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    where month(d.debitDate) = #month#
+        and year(d.debitDate) = #year#
+        and j.idJobType = #idJobType#
+    order by d.debitDate    
+  </select>
+  
+  <select id="debit_selectAIByDebitKey" resultClass="debitAIDetail" parameterClass="com.wings.persistence.DebitKey">   
+    select d.idDebit,
+          d.idJobSheet,
+          d.debitNumber,
+          d.debitDate,
+          d.dueDate,
+          c.description2 as consigneeName,
+          c.fax as fax,
+          c.address1 as address1,
+          c.address2 as address2,
+          s.description2 as shipperName,
+          j.idJobType as idJobType,
+          j.weightDesc as weightDesc,
+          j.volumeDesc as volumeDesc,
+          j.qtyDesc as qtyDesc,
+          j.jobNo as jobNo,
+          ja.mawb as mawb,
+          ja.hawb as hawb,
+          ja.commodity as commodity,
+          ja.destination as destination,
+          ja.flights as flights,
+          d.payableDate
+    from debit d
+    left join jobsheet j
+        on d.idJobSheet = j.idJobSheet
+    left join jobsheetai ja
+          on j.idJobSheet = ja.idJobSheet      
+    left join consignee c
+          on c.idConsignee = j.idConsignee
+    left join consignee s
+          on s.idConsignee = j.idShipper
+    where  d.idDebit = #idDebit#
+    limit 1
+  </select>  
+  
+  <select id="debit_selectAOByDebitKey" resultClass="debitAODetail" parameterClass="com.wings.persistence.DebitKey">   
+    select d.idDebit,
+          d.idJobSheet,
+          d.debitNumber,
+          d.debitDate,
+          d.dueDate,
+          c.description2 as consigneeName,
+          c.fax as fax,
+          c.address1 as address1,
+          c.address2 as address2,
+          s.description2 as shipperName,
+          j.idJobType as idJobType,
+          j.weightDesc as weightDesc,
+          j.volumeDesc as volumeDesc,
+          j.qtyDesc as qtyDesc,
+          j.jobNo as jobNo,
+          jo.mawb as mawb,
+          jo.hawb as hawb,
+          jo.commodity as commodity,
+          jo.destination as destination,
+          jo.flights as flights,
+          d.payableDate
+    from debit d
+    left join jobsheet j
+        on d.idJobSheet = j.idJobSheet
+    left join jobsheetao jo
+          on j.idJobSheet = jo.idJobSheet
+    left join consignee c
+          on c.idConsignee = j.idConsignee
+    left join consignee s
+          on s.idConsignee = j.idShipper
+    where  d.idDebit = #idDebit#
+    limit 1
+  </select>  
+  
+  <select id="debit_selectSIByDebitKey" resultClass="debitSIDetail" parameterClass="com.wings.persistence.DebitKey">   
+    select d.idDebit,
+          d.idJobSheet,
+          d.debitNumber,
+          d.debitDate,
+          d.dueDate,
+          c.description2 as consigneeName,
+          c.fax as fax,
+          c.address1 as address1,
+          c.address2 as address2,
+          s.description2 as shipperName,
+          j.idJobType as idJobType,
+          j.weightDesc as weightDesc,
+          j.volumeDesc as volumeDesc,
+          j.qtyDesc as qtyDesc,
+          j.jobNo as jobNo,
+          si.termHBL as termHBL,
+          si.commodity as commodity,
+          si.feederVessel as feederVessel,
+          si.origin as origin,
+          d.payableDate
+    from debit d
+    left join jobsheet j
+        on d.idJobSheet = j.idJobSheet
+    left join jobsheetsi si
+          on j.idJobSheet = si.idJobSheet
+    left join consignee c
+          on c.idConsignee = j.idConsignee
+    left join consignee s
+          on s.idConsignee = j.idShipper
+   where  d.idDebit = #idDebit#
+   limit 1
+  </select>  
+  
+  <select id="debit_selectSOByDebitKey" resultClass="debitSODetail" parameterClass="com.wings.persistence.DebitKey">   
+    select d.idDebit,
+          d.idJobSheet,
+          d.debitNumber,
+          d.debitDate,
+          d.dueDate,
+          c.description2 as consigneeName,
+          c.fax as fax,
+          c.address1 as address1,
+          c.address2 as address2,
+          s.description2 as shipperName,
+          j.idJobType as idJobType,
+          j.weightDesc as weightDesc,
+          j.volumeDesc as volumeDesc,
+          j.qtyDesc as qtyDesc,
+          j.jobNo as jobNo,
+          so.termHBL as termHBL,
+          so.commodity as commodity,
+          so.feederVessel as feederVessel,
+          so.destination as destination,
+          d.payableDate
+    from debit d
+    left join jobsheet j
+        on d.idJobSheet = j.idJobSheet
+    left join jobsheetso so
+          on j.idJobSheet = so.idJobSheet
+    left join consignee c
+          on c.idConsignee = j.idConsignee
+    left join consignee s
+          on s.idConsignee = j.idShipper
+    where  d.idDebit = #idDebit#
+    limit 1
+  </select>  
+  
+  <delete id="debit_deleteByPrimaryKey" parameterClass="com.wings.persistence.DebitKey">  
+    delete from debit
+    where idDebit = #idDebit#
+  </delete>
+
+  <delete id="debit_deleteByIdJobSheet" parameterClass="com.wings.persistence.JobsheetKey">  
+    delete from debit
+    where idJobSheet = #idJobSheet#
+  </delete>
+
+  <insert id="debit_insert" parameterClass="com.wings.persistence.Debit">   
+    insert into debit (idJobSheet, debitNumber, debitDate, isPayable, idIncome, dueDate) 
+    values (#idJobSheet:INTEGER#, #debitNumber:VARCHAR#, 
+      #debitDate:TIMESTAMP#, #isPayable:VARCHAR#, #idIncome:INTEGER#, DATE_ADD(#debitDate:TIMESTAMP#,INTERVAL 2 WEEK)) 
+  </insert>
+  
+  <update id="debit_updateByPrimaryKey" parameterClass="com.wings.persistence.Debit">    
+    update debit
+    set idJobSheet = #idJobSheet:INTEGER#,
+      debitNumber = #debitNumber:VARCHAR#,
+      isPayable = #isPayable:VARCHAR#,
+      debitDate = #debitDate:TIMESTAMP#
+    where idDebit = #idDebit#
+  </update>
+  
+  <update id="debit_updatePayableByPrimaryKey" parameterClass="com.wings.persistence.Debit">    
+    update debit
+    set isPayable = #isPayable:VARCHAR#,
+    idIncome = #idIncome:INTEGER#,
+    payableDate = now()
+    where idDebit = #idDebit#
+  </update>
+
+  <update id="debit_updatePayableByDebitNumber" parameterClass="com.wings.persistence.Debit">    
+    update debit
+    set isPayable = 'P',
+    payableDate = now()
+    where debitNumber = #debitNumber#
+  </update>
+  
+</sqlMap>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Income">
+
+ <typeAlias alias="income" type="com.wings.persistence.Income"/>
+ <typeAlias alias="incomeKey" type="com.wings.persistence.IncomeKey"/>
+ 
+  <select id="income_selectByPrimaryKey" resultClass="income" parameterClass="com.wings.persistence.IncomeKey">    
+    select idIncome,
+      revenu,
+      refId,
+      statusDate,kurs
+    from income
+    where idIncome = #idIncome#
+  </select>    
+  
+  <select id="income_select_LAST_INSERT_ID" resultClass="incomeKey" parameterClass="com.wings.persistence.IncomeKey">   
+    SELECT LAST_INSERT_ID() AS idIncome;
+  </select>
+  
+  <delete id="income_deleteByPrimaryKey" parameterClass="com.wings.persistence.IncomeKey">    
+    delete from income
+    where idIncome = #idIncome#
+  </delete>
+  
+   <delete id="income_deleteByRefId" parameterClass="com.wings.persistence.Income">    
+    delete from income
+    where refId = #refId#
+  </delete>
+  
+  <insert id="income_insert" parameterClass="com.wings.persistence.Income">   
+    insert into income (revenu, refId, statusDate,kurs) 
+    values (#revenu:DOUBLE#, #refId:VARCHAR#, 
+      now(), #kurs:VARCHAR#) 
+  </insert>
+  
+  <update id="income_updateByPrimaryKey" parameterClass="com.wings.persistence.Income">    
+    update income
+    set revenu = #revenu:DOUBLE#,      
+      statusDate = now(),
+      kurs = #kurs:VARCHAR#
+    where idIncome = #idIncome#
+  </update>
+  
+</sqlMap>

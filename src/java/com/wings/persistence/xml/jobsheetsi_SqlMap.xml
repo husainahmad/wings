@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Jobsheetsi">
+
+  <typeAlias alias="jobsheetsi" type="com.wings.persistence.Jobsheetsi"/>
+  
+  <select id="jobsheetsi_selectByPrimaryKey" resultClass="jobsheetsi" parameterClass="com.wings.persistence.JobsheetsiKey">  
+    select idJobSheetSI,
+      idJobSheet,
+      shippingLine,
+      feederVessel,
+      mvessel,
+      termMBL,
+      termHBL,
+      origin,
+      ETDOrigin,
+      ETAOrigin,
+      POD,
+      trucking,
+      commodity,
+      customDate,
+      billTo,
+      cnNo,
+      dnNo,
+      billToDebit
+    from jobsheetsi
+    where idJobSheetSI = #idJobSheetSI#
+  </select>
+  
+   <select id="jobsheetsi_selectByIdJobSheet" resultClass="jobsheetsi" parameterClass="com.wings.persistence.Jobsheetsi">  
+    select si.idJobSheetSI,
+      si.idJobSheet,
+      si.shippingLine,
+      si.feederVessel,
+      si.mvessel,
+      si.termMBL,
+      si.termHBL,
+      si.origin,
+      si.ETDOrigin,
+      si.ETAOrigin,
+      si.POD,
+      si.trucking,
+      si.commodity,
+      si.customDate,
+      si.billTo,
+      si.cnNo,
+      si.dnNo,
+      si.billToDebit,
+      ifnull(s.name,'') as shippingLineName
+    from jobsheetsi si
+left join shippingline s
+on si.shippingLine = s.idShippingLine
+    where si.idJobSheet = #idJobSheet#
+    limit 1
+  </select>
+  
+  <select id="jobsheetsi_selectAll" resultClass="jobsheetsi" parameterClass="com.wings.persistence.JobsheetsiKey">  
+    select idJobSheetSI,
+      idJobSheet,
+      shippingLine,
+      feederVessel,
+      mvessel,
+      termMBL,
+      termHBL,
+      origin,
+      ETDOrigin,
+      ETAOrigin,
+      POD,
+      trucking,
+      commodity,
+      customDate,
+      billTo,
+      cnNo,
+      dnNo,
+      billToDebit
+    from jobsheetsi
+  </select>
+  
+  <delete id="jobsheetsi_deleteByPrimaryKey" parameterClass="com.wings.persistence.JobsheetsiKey">   
+    delete from jobsheetsi
+    where idJobSheetSI = #idJobSheetSI#
+  </delete>
+  
+  <delete id="jobsheetsi_deleteByIdJobSheet" parameterClass="com.wings.persistence.JobsheetKey">  
+    delete from jobsheetsi
+    where idJobSheet = #idJobSheet#
+  </delete>
+  
+  <insert id="jobsheetsi_insert" parameterClass="com.wings.persistence.Jobsheetsi">  
+    insert into jobsheetsi (idJobSheet, shippingLine, 
+      feederVessel, mvessel, termMBL, termHBL, origin, ETDOrigin, ETAOrigin, 
+      POD, trucking, commodity, customDate, billTo, cnNo, dnNo, billToDebit) 
+    values (#idJobSheet:INTEGER#, 
+      #shippingLine:VARCHAR#, #feederVessel:VARCHAR#, #mvessel:VARCHAR#, 
+      #termMBL:VARCHAR#, #termHBL:VARCHAR#, #origin:VARCHAR#, 
+      #ETDOrigin:TIMESTAMP#, #ETAOrigin:TIMESTAMP#, #POD:VARCHAR#, 
+      #trucking:VARCHAR#,#commodity:VARCHAR#,#customDate:TIMESTAMP#, 
+      #billTo:VARCHAR#, #cnNo:VARCHAR#, #dnNo:VARCHAR#, #billToDebit:VARCHAR#) 
+  </insert>
+  
+  <update id="jobsheetsi_updateByPrimaryKey" parameterClass="com.wings.persistence.Jobsheetsi">   
+    update jobsheetsi
+    set idJobSheet = #idJobSheet:INTEGER#,
+      shippingLine = #shippingLine:VARCHAR#,
+      feederVessel = #feederVessel:VARCHAR#,
+      mvessel = #mvessel:VARCHAR#,
+      termMBL = #termMBL:VARCHAR#,
+      termHBL = #termHBL:VARCHAR#,
+      origin = #origin:VARCHAR#,
+      ETDOrigin = #ETDOrigin:TIMESTAMP#,
+      ETAOrigin = #ETAOrigin:TIMESTAMP#,
+      POD = #POD:VARCHAR#,
+      trucking = #trucking:VARCHAR#,
+      commodity = #commodity:VARCHAR#,
+      customDate = #customDate:TIMESTAMP#,
+      billTo = #billTo:VARCHAR#,
+      cnNo = #cnNo:VARCHAR#,
+      dnNo = #dnNo:VARCHAR#,
+      billToDebit = #billToDebit:VARCHAR#
+    where idJobSheetSI = #idJobSheetSI#
+  </update>
+</sqlMap>

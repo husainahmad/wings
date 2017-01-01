@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Authority">
+    
+  <typeAlias alias="authority" type="com.wings.persistence.Authority"/>  
+  
+  <select id="authority_selectByPrimaryKey" parameterClass="com.wings.persistence.AuthorityKey" resultClass="authority">
+    select authorityId,
+      description
+    from authority
+    where authorityId = #authorityId#
+  </select>
+  <select id="authority_selectAll" parameterClass="java.util.Map" resultClass="authority">
+    select authorityId,
+      description
+    from authority  
+  </select>
+  <delete id="authority_deleteByPrimaryKey" parameterClass="com.wings.persistence.AuthorityKey">
+    delete from authority
+    where authorityId = #authorityId#
+  </delete>
+  
+  <insert id="authority_insert" parameterClass="com.wings.persistence.Authority">
+    insert into authority (authorityId, description) 
+    values (#authorityId:VARCHAR#, #description:VARCHAR#) 
+  </insert>
+  <update id="authority_updateByPrimaryKey" parameterClass="com.wings.persistence.Authority">
+    update authority
+    set description = #description:VARCHAR#
+    where authorityId = #authorityId#
+  </update>
+ 
+</sqlMap>

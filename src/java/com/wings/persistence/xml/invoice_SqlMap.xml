@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Invoice">
+
+  <typeAlias alias="invoice" type="com.wings.persistence.Invoice"/>
+  <typeAlias alias="invoiceDetail" type="com.wings.persistence.InvoiceDetail"/>
+  <typeAlias alias="jobType" type="java.lang.String"/> 
+  <typeAlias alias="invoiceAIDetail" type="com.wings.persistence.InvoiceAIDetail"/> 
+  <typeAlias alias="invoiceAODetail" type="com.wings.persistence.InvoiceAODetail"/> 
+  <typeAlias alias="invoiceSIDetail" type="com.wings.persistence.InvoiceSIDetail"/>
+  <typeAlias alias="invoiceSODetail" type="com.wings.persistence.InvoiceSODetail"/>
+  
+  <select id="invoice_selectByPrimaryKey" resultClass="invoice" parameterClass="com.wings.persistence.InvoiceKey">   
+    select idInvoice,
+      idJobSheet,
+      invoiceNumber,
+      invoiceDate, isPayable, idIncome,payableDate, dueDate
+    from invoice
+    where idInvoice = #idInvoice#
+    limit 1
+  </select>  
+  
+  <select id="invoice_selectByIdJobsheet" resultClass="invoice" parameterClass="com.wings.persistence.Invoice">   
+    select idInvoice,
+      idJobSheet,
+      invoiceNumber,
+      invoiceDate, isPayable, idIncome,payableDate, dueDate
+    from invoice
+    where idJobSheet = #idJobSheet#
+  </select>      
+
+  <select id="invoice_selectMaxInvoiceNumber" resultClass="invoice" parameterClass="com.wings.persistence.Invoice">   
+    SELECT ifnull(max(convert(substring(invoiceNumber,6,5),UNSIGNED)),0)+1 as invoiceNumber FROM invoice
+    where year(invoiceDate) = year(#invoiceDate#)   
+  </select>  
+  
+  <select id="invoice_selectMaxInvoiceNumberAI" resultClass="invoice" parameterClass="com.wings.persistence.Invoice">   
+    SELECT ifnull(max(convert(substring(invoiceNumber,6,5),UNSIGNED)),0)+1 as invoiceNumber FROM invoice
+    where year(invoiceDate) = year(#invoiceDate#)   
+          and substring(invoiceNumber,5,1) = 2
+  </select>  
+
+  <select id="invoice_selectMaxInvoiceNumberAO" resultClass="invoice" parameterClass="com.wings.persistence.Invoice">   
+    SELECT ifnull(max(convert(substring(invoiceNumber,6,5),UNSIGNED)),0)+1 as invoiceNumber FROM invoice
+    where year(invoiceDate) = year(#invoiceDate#)   
+          and substring(invoiceNumber,5,1) = 1
+  </select>  
+
+  <select id="invoice_selectMaxInvoiceNumberSI" resultClass="invoice" parameterClass="com.wings.persistence.Invoice">   
+    SELECT ifnull(max(convert(substring(invoiceNumber,6,5),UNSIGNED)),0)+1 as invoiceNumber FROM invoice
+    where year(invoiceDate) = year(#invoiceDate#)   
+          and substring(invoiceNumber,5,1) = 3
+  </select>  
+
+  <select id="invoice_selectMaxInvoiceNumberSO" resultClass="invoice" parameterClass="com.wings.persistence.Invoice">   
+    SELECT ifnull(max(convert(substring(invoiceNumber,6,5),UNSIGNED)),0)+1 as invoiceNumber FROM invoice
+    where year(invoiceDate) = year(#invoiceDate#)   
+          and substring(invoiceNumber,5,1) = 4 
+  </select>  
+
+  <select id="invoice_selectMaxInvoiceNumberAIList" resultClass="invoice" parameterClass="com.wings.persistence.Invoice">   
+    SELECT distinct ifnull((convert(substring(invoiceNumber,6,5),UNSIGNED)),0) as invoiceNumber FROM invoice
+    where year(invoiceDate) = year(#invoiceDate#)   
+          and substring(invoiceNumber,5,1) = 2
+    order by invoiceNumber      
+  </select>  
+
+  <select id="invoice_selectMaxInvoiceNumberAOList" resultClass="invoice" parameterClass="com.wings.persistence.Invoice">   
+    SELECT distinct ifnull((convert(substring(invoiceNumber,6,5),UNSIGNED)),0) as invoiceNumber FROM invoice
+    where year(invoiceDate) = year(#invoiceDate#)   
+          and substring(invoiceNumber,5,1) = 1
+    order by invoiceNumber      
+  </select>  
+
+  <select id="invoice_selectMaxInvoiceNumberSIList" resultClass="invoice" parameterClass="com.wings.persistence.Invoice">   
+    SELECT distinct ifnull((convert(substring(invoiceNumber,6,5),UNSIGNED)),0) as invoiceNumber FROM invoice
+    where year(invoiceDate) = year(#invoiceDate#)   
+          and substring(invoiceNumber,5,1) = 3
+    order by invoiceNumber      
+  </select>  
+
+  <select id="invoice_selectMaxInvoiceNumberSOList" resultClass="invoice" parameterClass="com.wings.persistence.Invoice">   
+    SELECT distinct ifnull((convert(substring(invoiceNumber,6,5),UNSIGNED)),0) as invoiceNumber FROM invoice
+    where year(invoiceDate) = year(#invoiceDate#)   
+          and substring(invoiceNumber,5,1) = 4 
+    order by invoiceNumber      
+  </select>  
+
+  
+  <select id="invoice_selectByAll" resultClass="invoiceDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">   
+    select i.idInvoice,
+      i.idJobSheet,
+      i.invoiceNumber,
+      i.invoiceDate, i.dueDate, i.isPayable, i.idIncome, i.payableDate,
+      j.idjobType as jobType,
+      j.jobNo,
+      d.debitNumber,
+      c.name as idConsignee
+    from invoice i
+        left join jobsheet j
+            on i.idJobSheet = j.idJobSheet
+        left join debit d
+            on d.idJobSheet = i.idJobSheet
+        left join consignee c
+            on c.idConsignee = j.idConsignee
+    where month(i.invoiceDate) = #month#
+        and year(i.invoiceDate) = #year#   
+        and j.idjobType = #idJobType#
+    order by i.invoiceDate    
+  </select>  
+  
+  <select id="invoice_selectAIByInvoiceKey" resultClass="invoiceAIDetail" parameterClass="com.wings.persistence.InvoiceKey">   
+    select i.idInvoice as idInvoice,
+          j.idJobSheet as idJobSheet,
+          i.invoiceNumber as invoiceNumber,
+          i.invoiceDate as invoiceDate,
+          i.dueDate,
+          c.description2 as consigneeName,
+          c.fax as fax,
+          c.address1 as address1,
+          c.address2 as address2,
+          s.description2 as shipperName,
+          j.idJobType as idJobType,
+          j.weightDesc as weightDesc,
+          j.volumeDesc as volumeDesc,
+          j.qtyDesc as qtyDesc,
+          j.jobNo as jobNo,
+          ja.mawb as mawb,
+          ja.hawb as hawb,
+          ja.commodity as commodity,
+          ja.destination as destination,
+          ja.flights as flights
+    from invoice i
+    left join jobsheet j
+          on j.idJobSheet = i.idJobSheet
+    left join jobsheetai ja
+          on j.idJobSheet = ja.idJobSheet      
+    left join consignee c
+          on c.idConsignee = j.idConsignee
+    left join consignee s
+          on s.idConsignee = j.idShipper
+    where  i.idInvoice = #idInvoice#
+    limit 1	
+  </select>  
+  
+  <select id="invoice_selectAOByInvoiceKey" resultClass="invoiceAODetail" parameterClass="com.wings.persistence.InvoiceKey">   
+    select i.idInvoice as idInvoice,
+          j.idJobSheet as idJobSheet,
+          i.invoiceNumber as invoiceNumber,
+          i.invoiceDate as invoiceDate,
+          i.dueDate,
+          c.description2 as consigneeName,
+          c.fax as fax,
+          c.address1 as address1,
+          c.address2 as address2,
+          s.description2 as shipperName,
+          j.idJobType as idJobType,
+          j.weightDesc as weightDesc,
+          j.volumeDesc as volumeDesc,
+          j.qtyDesc as qtyDesc,
+          j.jobNo as jobNo,
+          jo.mawb as mawb,
+          jo.hawb as hawb,
+          jo.commodity as commodity,
+          jo.destination as destination,
+          jo.flights as flights
+    from invoice i
+    left join jobsheet j
+          on j.idJobSheet = i.idJobSheet
+    left join jobsheetao jo
+          on j.idJobSheet = jo.idJobSheet
+    left join consignee c
+          on c.idConsignee = j.idConsignee
+    left join consignee s
+          on s.idConsignee = j.idShipper
+    where  i.idInvoice = #idInvoice#
+    limit 1
+  </select>  
+  
+  <select id="invoice_selectSIByInvoiceKey" resultClass="invoiceSIDetail" parameterClass="com.wings.persistence.InvoiceKey">   
+    select i.idInvoice as idInvoice,
+          j.idJobSheet as idJobSheet,
+          i.invoiceNumber as invoiceNumber,
+          i.invoiceDate as invoiceDate,
+          i.dueDate,
+          c.description2 as consigneeName,
+          c.fax as fax,
+          c.address1 as address1,
+          c.address2 as address2,
+          s.description2 as shipperName,
+          j.idJobType as idJobType,
+          j.weightDesc as weightDesc,
+          j.volumeDesc as volumeDesc,
+          j.qtyDesc as qtyDesc,
+          j.jobNo as jobNo,
+          si.commodity as commodity,
+          si.termHBL as termHBL,
+          si.feederVessel as feederVessel,
+          si.origin as origin
+    from invoice i
+    left join jobsheet j
+          on j.idJobSheet = i.idJobSheet
+    left join jobsheetsi si
+          on j.idJobSheet = si.idJobSheet
+    left join consignee c
+          on c.idConsignee = j.idConsignee
+    left join consignee s
+          on s.idConsignee = j.idShipper
+    where  i.idInvoice = #idInvoice#
+    limit 1	
+  </select>  
+  
+  <select id="invoice_selectSOByInvoiceKey" resultClass="invoiceSODetail" parameterClass="com.wings.persistence.InvoiceKey">   
+    select i.idInvoice as idInvoice,
+          j.idJobSheet as idJobSheet,
+          i.invoiceNumber as invoiceNumber,
+          i.invoiceDate as invoiceDate,
+          i.dueDate,
+          c.description2 as consigneeName,
+          c.fax as fax,
+          c.address1 as address1,
+          c.address2 as address2,
+          s.description2 as shipperName,
+          j.idJobType as idJobType,
+          j.weightDesc as weightDesc,
+          j.volumeDesc as volumeDesc,
+          j.qtyDesc as qtyDesc,
+          j.jobNo as jobNo,
+          so.termHBL as termHBL,
+          so.commodity as commodity,
+          so.feederVessel as feederVessel,
+          so.destination as destination
+    from invoice i
+    left join jobsheet j
+          on j.idJobSheet = i.idJobSheet
+    left join jobsheetso so
+          on j.idJobSheet = so.idJobSheet
+    left join consignee c
+          on c.idConsignee = j.idConsignee
+    left join consignee s
+          on s.idConsignee = j.idShipper
+    where  i.idInvoice = #idInvoice#
+    limit 1
+  </select>  
+  
+  <select id="invoice_selectJobTypeByInvoiceKey" resultClass="jobType" parameterClass="com.wings.persistence.InvoiceKey">   
+    select      
+          j.idJobType as jobType          
+    from invoice i
+    left join jobsheet j
+          on j.idJobSheet = i.idJobSheet    
+    where  i.idInvoice = #idInvoice#
+  </select>  
+  
+  <delete id="invoice_deleteByPrimaryKey" parameterClass="com.wings.persistence.InvoiceKey">   
+    delete from invoice
+    where idInvoice = #idInvoice#
+  </delete>
+
+  <delete id="invoice_deleteByIdJobSheet" parameterClass="com.wings.persistence.JobsheetKey">   
+    delete from invoice
+    where idJobSheet = #idJobSheet#
+  </delete>
+
+  <insert id="invoice_insert" parameterClass="com.wings.persistence.Invoice">   
+    insert into invoice (idJobSheet, invoiceNumber, invoiceDate, isPayable, idIncome, dueDate) 
+    values (#idJobSheet:INTEGER#, #invoiceNumber:VARCHAR#, 
+      #invoiceDate:TIMESTAMP#,#isPayable:VARCHAR#,#idIncome:INTEGER#, DATE_ADD(#invoiceDate:TIMESTAMP#,INTERVAL 2 WEEK)) 
+  </insert>
+  
+  <update id="invoice_updateByPrimaryKey" parameterClass="com.wings.persistence.Invoice">  
+    update invoice
+    set idJobSheet = #idJobSheet:INTEGER#,
+      invoiceNumber = #invoiceNumber:VARCHAR#,
+      invoiceDate = #invoiceDate:TIMESTAMP#,
+      isPayable = #isPayable:VARCHAR#
+    where idInvoice = #idInvoice#
+  </update>
+  
+   <update id="invoice_updatePayableByPrimaryKey" parameterClass="com.wings.persistence.Invoice">  
+    update invoice
+    set isPayable = #isPayable:VARCHAR#,
+        idIncome = #idIncome:INTEGER#,
+        payableDate = now()
+    where idInvoice = #idInvoice#
+  </update>
+  
+  <update id="invoice_updatePayableByInvoiceNumber" parameterClass="com.wings.persistence.Invoice">  
+    update invoice
+    set isPayable = 'P',
+        payableDate = now()
+    where invoiceNumber = #invoiceNumber#
+  </update>
+  
+</sqlMap>

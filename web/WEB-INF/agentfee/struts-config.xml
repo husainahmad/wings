@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+
+<struts-config>
+    <form-beans>
+        <form-bean name="agentfeeForm" type="com.wings.web.struts.forms.AgentfeeForm"/>    
+    </form-beans>
+  <global-forwards>    
+  </global-forwards>    
+  
+    <action-mappings>        
+        
+        <action path="/agentfee" type="com.wings.web.struts.actions.SelectAgentfeeAction"
+        name="agentfeeForm" scope="session" validate="false" >
+            <forward name="list" path="/formAgentfeeIndex.jsp"/>            
+        </action>
+        
+        <action path="/newAgentfee" type="com.wings.web.struts.actions.NewAgentfeeAction"
+          name="agentfeeForm" scope="request" validate="false" >       
+            <forward name="input" path="/formAgentfee.jsp"/>    
+            <forward name="form" path="/formAgentfee.jsp"/>
+        </action>
+        
+        <action path="/insertAgentfee" type="com.wings.web.struts.actions.InsertAgentfeeAction"
+          name="agentfeeForm" scope="request" validate="true" input="/formAgentfee.jsp">                  
+            <forward name="form" path="/formAgentfee.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/findAgentfee" type="com.wings.web.struts.actions.FindAgentfeeAction"
+          name="agentfeeForm" validate="false" scope="request">                      
+            <forward name="form" path="/formAgentfee.jsp"/>
+        </action>
+        
+        <action path="/updateAgentfee" type="com.wings.web.struts.actions.UpdateAgentfeeAction"
+          name="agentfeeForm" scope="request" validate="true" input="/formAgentfee.jsp">                  
+            <forward name="form" path="/formAgentfee.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/deleteAgentfee" type="com.wings.web.struts.actions.DeleteAgentfeeAction"
+          name="agentfeeForm" validate="false" scope="request">                      
+            <forward name="view" path="/agentfee.do"/>
+        </action>
+        
+        <action path="/viewAgentfee" type="com.wings.web.struts.actions.ViewAgentfeeAction"
+          name="agentfeeForm" validate="false" scope="request">                      
+            <forward name="form" path="/formAgentfee.jsp"/>
+        </action>
+        
+        <action path="/printAgentDebitFeeAction" type="com.wings.web.struts.actions.PrintAgentDebitFeeAction">
+            <forward name="view" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>  
+        </action>
+        
+    </action-mappings>    
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+    
+
+    <message-resources parameter="com/wings/struts/AgentResource"/>        
+    
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/agents/validation.xml"/>
+    </plug-in>
+  
+</struts-config>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Expensesagent">
+    
+  <typeAlias alias="expensesagent" type="com.wings.persistence.Expensesagent"/>
+  <typeAlias alias="expensesagentDetail" type="com.wings.persistence.ExpensesagentDetail"/>
+  <typeAlias alias="totalCharge" type="java.lang.Double"/>  
+  
+  <select id="expensesagent_selectByPrimaryKey" resultClass="expensesagent" parameterClass="com.wings.persistence.ExpensesagentKey">   
+    select idExpensesAgent,
+      idJobSheet,
+      idAgentFee,
+      charge,
+      kurs,
+      description,
+      kursValue,
+      descriptionInvoice,
+      oriKurs, 
+      oriWeight,
+      isTax,isVat, totalTax, totalVat
+    from expensesagent
+    where idExpensesAgent = #idExpensesAgent#
+  </select>
+ 
+  <select id="expensesagent_selectAll" resultClass="expensesagent" parameterClass="com.wings.persistence.ExpensesagentKey">   
+    select idExpensesAgent,
+      idJobSheet,
+      idAgentFee,
+      charge,
+      kurs,
+      description,
+      kursValue,
+      descriptionInvoice,
+      oriKurs, 
+      oriWeight,
+      isTax, isVat, totalTax, totalVat
+    from expensesagent
+  </select>
+  
+  <select id="expensesagent_selectByJobsheetKey" resultClass="expensesagentDetail" parameterClass="com.wings.persistence.JobsheetKey">   
+    select ea.idExpensesAgent,
+      ea.idJobSheet,
+      ea.idAgentFee,
+      ea.charge,
+      ea.kurs,
+      ea.description,
+      af.aliasName,
+      af.description as descriptionFee,
+      ea.kursValue,
+      ea.descriptionInvoice,
+      ea.oriKurs, 
+      ea.oriWeight,
+      ea.isTax, ea.isVat, ea.totalTax, ea.totalVat, af.category
+    from expensesagent ea
+    left join agentfee af
+        on ea.idAgentFee = af.idAgentFee
+    where ea.idJobSheet = #idJobSheet#
+    order by ea.idExpensesAgent
+  </select>
+  
+  <select id="expensesagent_selectTotalIDRByJobsheetKey" resultClass="totalCharge" parameterClass="com.wings.persistence.JobsheetKey">   
+    select ifnull(sum(charge),0) as totalCharge
+    from expensesagent
+    where idJobSheet = #idJobSheet#
+    and kurs = 'IDR'
+  </select>
+  
+  <select id="expensesagent_selectTotalUSDByJobsheetKey" resultClass="totalCharge" parameterClass="com.wings.persistence.JobsheetKey">   
+    select ifnull(sum(charge),0) as totalCharge
+    from expensesagent
+    where idJobSheet = #idJobSheet#
+    and kurs = 'USD'
+  </select>
+  
+  <select id="expensesagent_selectByJobNo" resultClass="expensesagentDetail" parameterClass="com.wings.persistence.Jobsheet">   
+    select ea.idExpensesAgent,
+      ea.idJobSheet,
+      ea.idAgentFee,
+      ea.charge,
+      ea.kurs,
+      ea.description,
+      af.aliasName,
+      af.description as descriptionFee,
+      ea.kursValue,
+      ea.descriptionInvoice,
+      ea.oriKurs, 
+      ea.oriWeight,
+      ea.isTax, ea.isVat, ea.totalTax, ea.totalVat, af.category
+    from expensesagent ea
+    left join agentfee af
+        on ea.idAgentFee = af.idAgentFee
+    where ea.idJobSheet in
+    (
+       select j.idJobSheet from jobsheet j where
+       j.jobNo = #jobNo#
+    )
+    order by ea.idExpensesAgent
+  </select>
+  
+  <delete id="expensesagent_deleteByPrimaryKey" parameterClass="com.wings.persistence.ExpensesagentKey">  
+    delete from expensesagent
+    where idExpensesAgent = #idExpensesAgent#
+  </delete>  
+  
+  <delete id="expensesagent_deleteByJobsheetKey" parameterClass="com.wings.persistence.JobsheetKey">  
+    delete from expensesagent
+    where idJobSheet = #idJobSheet#
+  </delete>  
+  
+  <insert id="expensesagent_insert" parameterClass="com.wings.persistence.Expensesagent">   
+    insert into expensesagent (idJobSheet, idAgentFee, charge, 
+      kurs, description, kursValue, descriptionInvoice, oriKurs, 
+      oriWeight, isTax, isVat, totalTax, totalVat) 
+    values (#idJobSheet:INTEGER#, 
+      #idAgentFee:INTEGER#, #charge:DOUBLE#, #kurs:VARCHAR#, #description:VARCHAR#, 
+      #kursValue:DOUBLE#, #descriptionInvoice:VARCHAR#,
+      #oriKurs:DOUBLE#, 
+      #oriWeight:DOUBLE#, 
+      #isTax:INTEGER#,
+      #isVat:INTEGER#, #totalTax:DOUBLE#, #totalVat:DOUBLE#) 
+  </insert>
+  
+  <update id="expensesagent_updateByPrimaryKey" parameterClass="com.wings.persistence.Expensesagent">   
+    update expensesagent
+    set idJobSheet = #idJobSheet:INTEGER#,
+      idAgentFee = #idAgentFee:INTEGER#,
+      charge = #charge:DOUBLE#,
+      kurs = #kurs:VARCHAR#,
+      description = #description:VARCHAR#,
+      kursValue = #kursValue:DOUBLE#,
+      descriptionInvoice = #descriptionInvoice:VARCHAR#,
+      oriKurs = #oriKurs:DOUBLE#, 
+      oriWeight = #oriWeight:DOUBLE#,
+      isTax = #isTax:INTEGER#,
+      isVat = #isVat:INTEGER#,
+      totalTax = #totalTax:DOUBLE#, 
+      totalVat = #totalVat:DOUBLE#
+    where idExpensesAgent = #idExpensesAgent#
+  </update>
+</sqlMap>

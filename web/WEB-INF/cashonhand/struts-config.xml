@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+
+<struts-config>
+    <form-beans>
+        <form-bean name="cashonhandForm" type="com.wings.web.struts.forms.CashonhandForm"/>    
+        <form-bean name="monthYearForm" type="com.wings.web.struts.forms.MonthYearForm"/> 
+    </form-beans>
+  <global-forwards>    
+  </global-forwards>    
+  
+    <action-mappings>        
+        
+        <action path="/cashonhand" type="com.wings.web.struts.actions.SelectCashonhandAction"
+            name="monthYearForm" scope="session" validate="false" >
+            <forward name="list" path="/formCashonhandIndex.jsp"/>            
+        </action>
+        
+        <action path="/newCashonhand" type="com.wings.web.struts.actions.NewCashonhandAction"
+          name="cashonhandForm" scope="request" validate="false" >       
+            <forward name="input" path="/formCashonhand.jsp"/>    
+            <forward name="form" path="/formCashonhand.jsp"/>
+        </action>
+        
+        <action path="/insertCashonhand" type="com.wings.web.struts.actions.InsertCashonhandAction"
+          name="cashonhandForm" scope="request" validate="true" input="/formCashonhand.jsp">                  
+            <forward name="form" path="/formCashonhand.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/findCashonhand" type="com.wings.web.struts.actions.FindCashonhandAction"
+          name="cashonhandForm" validate="false" scope="request">                      
+            <forward name="form" path="/formCashonhand.jsp"/>
+        </action>
+        
+        <action path="/updateCashonhand" type="com.wings.web.struts.actions.UpdateCashonhandAction"
+          name="cashonhandForm" scope="request" validate="true" input="/formCashonhand.jsp">                  
+            <forward name="form" path="/formCashonhand.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        
+        <action path="/viewCashonhand" type="com.wings.web.struts.actions.ViewCashonhandAction"
+          name="cashonhandForm" validate="false" scope="request">                      
+            <forward name="form" path="/formCashonhand.jsp"/>
+        </action>
+        
+        <action path="/deleteCashonhand" type="com.wings.web.struts.actions.DeleteCashonhandAction"
+          name="cashonhandForm" validate="false" scope="request">                      
+            <forward name="view" path="/cashonhand.do"/>
+        </action>
+                
+        <action path="/printCashonhand" type="com.wings.web.struts.actions.PrintCashonhandAction">
+            <forward name="view" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>  
+        </action>          
+        
+    </action-mappings>    
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+    
+
+    <message-resources parameter="com/wings/struts/CashonhandResource"/>        
+    
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/agents/validation.xml"/>
+    </plug-in>
+  
+</struts-config>

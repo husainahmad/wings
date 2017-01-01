@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+
+<struts-config>
+    <form-beans>
+        <form-bean name="accountForm" type="com.wings.web.struts.forms.AccountForm"/>    
+    </form-beans>
+  <global-forwards>    
+  </global-forwards>    
+  
+    <action-mappings>        
+        
+        <action path="/account" type="com.wings.web.struts.actions.SelectAccountAction"
+            name="accountForm" scope="session" validate="false" >
+            <forward name="list" path="/formAccountIndex.jsp"/>            
+        </action>
+        
+         <action path="/listAccount" type="com.wings.web.struts.actions.ListAccountAction"
+            name="accountForm" scope="session" validate="false" >
+            <forward name="list" path="/formListAccountIndex.jsp"/>            
+        </action>
+        
+        <action path="/newAccount" type="com.wings.web.struts.actions.NewAccountAction"
+          name="accountForm" scope="request" validate="false" >       
+            <forward name="input" path="/formAccount.jsp"/>    
+            <forward name="form" path="/formAccount.jsp"/>
+        </action>
+        
+        <action path="/insertAccount" type="com.wings.web.struts.actions.InsertAccountAction"
+          name="accountForm" scope="request" validate="true" input="/formAccount.jsp">                  
+            <forward name="form" path="/formAccount.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        <action path="/findAccount" type="com.wings.web.struts.actions.FindAccountAction"
+          name="accountForm" validate="false" scope="request">                      
+            <forward name="form" path="/formAccount.jsp"/>
+        </action>
+        
+        <action path="/updateAccount" type="com.wings.web.struts.actions.UpdateAccountAction"
+          name="accountForm" scope="request" validate="true" input="/formAccount.jsp">                  
+            <forward name="form" path="/formAccount.jsp"/>  
+            <forward name="view" path="/Close.html"/>
+        </action>
+        
+        
+        <action path="/viewAccount" type="com.wings.web.struts.actions.ViewAccountAction"
+          name="accountForm" validate="false" scope="request">                      
+            <forward name="form" path="/formAccount.jsp"/>
+        </action>
+        
+        <action path="/deleteAccount" type="com.wings.web.struts.actions.DeleteAccountAction"
+          name="accountForm" validate="false" scope="request">                      
+            <forward name="view" path="/account.do"/>
+        </action>
+                
+        <action path="/printAccount" type="com.wings.web.struts.actions.PrintAccountAction">
+            <forward name="view" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>  
+        </action>          
+        
+    </action-mappings>    
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+    
+
+    <message-resources parameter="com/wings/struts/AccountResource"/>        
+    
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/agents/validation.xml"/>
+    </plug-in>
+  
+</struts-config>

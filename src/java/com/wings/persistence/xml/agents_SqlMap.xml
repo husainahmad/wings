@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Agents">
+
+ <typeAlias alias="agents" type="com.wings.persistence.Agents"/> 
+  
+  <select id="agents_selectByPrimaryKey" resultClass="agents" parameterClass="com.wings.persistence.AgentsKey">    
+    select idAgent,
+      name,
+      description,
+      description2,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      email2,
+      email3,
+      email4,
+      email5,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      idAccountIDR, idAccountUSD, person2, person3, person4, person5
+    from agents
+    where idAgent = #idAgent#
+  </select>
+  
+  <select id="agents_selectAll" resultClass="agents" parameterClass="com.wings.persistence.Agents">    
+    select idAgent,
+      name,
+      description,
+      description2,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      email2,
+      email3,
+      email4,
+      email5,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      idAccountIDR,idAccountUSD, person2, person3, person4, person5
+    from agents   
+    where name like #name#
+    order by name
+    limit 20
+  </select>
+  
+  <select id="agents_selectByName" resultClass="agents" parameterClass="com.wings.persistence.Agents">    
+    select idAgent,
+      name,
+      description,
+      description2,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      email2,
+      email3,
+      email4,
+      email5,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      idAccountIDR,idAccountUSD, person2, person3, person4, person5
+    from agents   
+    where name like #name#
+    order by name
+    limit 20
+  </select>
+  
+  <delete id="agents_deleteByPrimaryKey" parameterClass="com.wings.persistence.AgentsKey">    
+    delete from agents
+    where idAgent = #idAgent#
+  </delete>
+ 
+  <insert id="agents_insert" parameterClass="com.wings.persistence.Agents">   
+    insert into agents (idAgent, name, description, contactPerson, telp, fax, 
+      email, address1, address2, postalCode, city, region, npwp, email2, email3, email4, email5, idAccountIDR, idAccountUSD,
+      person2, person3, person4, person5, description2) 
+    values (#idAgent:VARCHAR#, #name:VARCHAR#, #description:VARCHAR#, 
+      #contactPerson:VARCHAR#, #telp:VARCHAR#, #fax:VARCHAR#, #email:VARCHAR#, 
+      #address1:VARCHAR#, #address2:VARCHAR#, #postalCode:VARCHAR#, 
+      #city:VARCHAR#, #region:VARCHAR#, #npwp:VARCHAR#, #email2:VARCHAR#, 
+      #email3:VARCHAR#, #email4:VARCHAR#, #email5:VARCHAR#, #idAccountIDR:VARCHAR#,#idAccountUSD:VARCHAR#,
+      #person2:VARCHAR#, #person3:VARCHAR#, #person4:VARCHAR#, #person5:VARCHAR#, #description2:VARCHAR#) 
+  </insert>
+  
+  <update id="agents_updateByPrimaryKey" parameterClass="com.wings.persistence.Agents">   
+    update agents
+    set name = #name:VARCHAR#,
+      description = #description:VARCHAR#,
+      description2 = #description2:VARCHAR#,
+      contactPerson = #contactPerson:VARCHAR#,
+      telp = #telp:VARCHAR#,
+      fax = #fax:VARCHAR#,
+      email = #email:VARCHAR#,
+      address1 = #address1:VARCHAR#,
+      address2 = #address2:VARCHAR#,
+      postalCode = #postalCode:VARCHAR#,
+      city = #city:VARCHAR#,
+      region = #region:VARCHAR#,
+      npwp = #npwp:VARCHAR#,
+      email2 = #email2:VARCHAR#, 
+      email3 = #email3:VARCHAR#, 
+      email4 = #email4:VARCHAR#, 
+      email5 = #email5:VARCHAR#,
+      idAccountIDR = #idAccountIDR:VARCHAR#,
+      idAccountUSD = #idAccountUSD:VARCHAR#,
+      person2 = #person2:VARCHAR#, 
+      person3 = #person3:VARCHAR#, 
+      person4 = #person4:VARCHAR#, 
+      person5 = #person5:VARCHAR#
+    where idAgent = #idAgent#
+  </update>
+</sqlMap>

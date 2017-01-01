@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Debitkredit">
+    
+  <typeAlias alias="debitkredit" type="com.wings.persistence.Debitkredit"/> 
+  
+  <select id="debitkredit_selectByPrimaryKey" resultClass="debitkredit" parameterClass="com.wings.persistence.DebitkreditKey">    
+    select idDebitKredit,
+      idDebit,
+      value,
+      kurs,
+      kreditDate,
+      number
+    from debitkredit
+    where idDebitKredit = #idDebitKredit#
+  </select>
+  
+  <select id="debitkredit_selectByIdDebit" resultClass="debitkredit" parameterClass="com.wings.persistence.Debitkredit">    
+    select idDebitKredit,
+      idDebit,
+      value,
+      kurs,
+      kreditDate,
+      number
+    from debitkredit
+    where idDebit = #idDebit#
+  </select>
+  
+  
+  <delete id="debitkredit_deleteByPrimaryKey" parameterClass="com.wings.persistence.DebitkreditKey">    
+    delete from debitkredit
+    where idDebitKredit = #idDebitKredit#
+  </delete>
+   
+  <delete id="debitkredit_deleteByIdDebit" parameterClass="com.wings.persistence.Debitkredit">    
+    delete from debitkredit
+    where idDebit = #idDebit#
+  </delete>
+   
+  <insert id="debitkredit_insert" parameterClass="com.wings.persistence.Debitkredit">    
+    insert into debitkredit (idDebitKredit, idDebit, value, kurs, kreditDate, 
+      number) 
+    values (#idDebitKredit:INTEGER#, #idDebit:INTEGER#, #value:DOUBLE#, 
+      #kurs:VARCHAR#, #kreditDate:TIMESTAMP#, #number:INTEGER#) 
+  </insert>
+  
+  <update id="debitkredit_updateByPrimaryKey" parameterClass="com.wings.persistence.Debitkredit">   
+    update debitkredit
+    set idDebit = #idDebit:INTEGER#,
+      value = #value:DOUBLE#,
+      kurs = #kurs:VARCHAR#,
+      kreditDate = #kreditDate:TIMESTAMP#,
+      number = #number:INTEGER#
+    where idDebitKredit = #idDebitKredit#
+  </update>
+  
+</sqlMap>

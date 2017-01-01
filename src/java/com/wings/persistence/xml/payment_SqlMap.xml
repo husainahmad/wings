@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Payment">
+
+  <typeAlias alias="payment" type="com.wings.persistence.Payment"/>
+  
+  <select id="payment_selectByPrimaryKey" resultClass="payment" parameterClass="com.wings.persistence.PaymentKey">
+    select idPayment,
+      idCostomer,
+      billTo,
+      billToDebit,
+      invoiceNumber,
+      isInvoice,
+      paymentDate,
+      bank,
+      amount,
+      kurs
+    from payment
+    where idPayment = #idPayment#
+  </select>
+
+  <select id="payment_selectReportPayableCustomer" resultClass="payment" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    select idPayment,
+      idCostomer,
+      billTo,
+      billToDebit,
+      invoiceNumber,
+      isInvoice,
+      paymentDate,
+      bank,
+      amount,
+      kurs
+    from payment
+    where paymentDate between #from# and #to#
+    and idCostomer like #idConsignee#
+    order by idCostomer
+  </select>
+
+  <delete id="payment_deleteByPrimaryKey" parameterClass="com.wings.persistence.PaymentKey">
+    delete from payment
+    where idPayment = #idPayment#
+  </delete>
+  
+  <insert id="payment_insert" parameterClass="com.wings.persistence.Payment">
+    insert into payment (idPayment, idCostomer, billTo, billToDebit, 
+      invoiceNumber, isInvoice, paymentDate, bank, amount, kurs) 
+    values (#idPayment:INTEGER#, #idCostomer:VARCHAR#, #billTo:VARCHAR#, 
+      #billToDebit:VARCHAR#, #invoiceNumber:VARCHAR#, #isInvoice:VARCHAR#, 
+      #paymentDate:TIMESTAMP#, #bank:VARCHAR#, #amount:DOUBLE#, #kurs:VARCHAR#) 
+  </insert>
+  
+  <update id="payment_updateByPrimaryKey" parameterClass="com.wings.persistence.Payment">
+    update payment
+    set idCostomer = #idCostomer:VARCHAR#,
+      billTo = #billTo:VARCHAR#,
+      billToDebit = #billToDebit:VARCHAR#,
+      invoiceNumber = #invoiceNumber:VARCHAR#,
+      isInvoice = #isInvoice:VARCHAR#,
+      paymentDate = #paymentDate:TIMESTAMP#,
+      bank = #bank:VARCHAR#,
+      amount = #amount:DOUBLE#,
+      kurs = #kurs:VARCHAR#
+    where idPayment = #idPayment#
+  </update>
+  
+</sqlMap>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Consignee">
+
+  <typeAlias alias="consignee" type="com.wings.persistence.Consignee"/>
+  
+  <select id="consignee_selectByPrimaryKey" resultClass="consignee" parameterClass="com.wings.persistence.ConsigneeKey">  
+    select idConsignee,
+      name,
+      description,
+      description2,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      nppkp,
+      idAccountIDR,
+      idAccountUSD
+    from consignee
+    where idConsignee = #idConsignee#
+  </select>
+ 
+  <select id="consignee_selectByName" resultClass="consignee" parameterClass="com.wings.persistence.Consignee">  
+    select idConsignee,
+      name,
+      description,
+      description2,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      nppkp,
+      idAccountIDR,
+      idAccountUSD
+    from consignee
+    where name like #name#
+  </select>
+  
+  <select id="consignee_selectAll" resultClass="consignee" parameterClass="com.wings.persistence.Consignee">  
+    select idConsignee,
+      name,
+      description,
+      description2,
+      contactPerson,
+      telp,
+      fax,
+      email,
+      address1,
+      address2,
+      postalCode,
+      city,
+      region,
+      npwp,
+      nppkp,
+      idAccountIDR,
+      idAccountUSD
+    from consignee  
+    where name like #name#
+    order by name
+  </select>
+  
+  <delete id="consignee_deleteByPrimaryKey" parameterClass="com.wings.persistence.ConsigneeKey">   
+    delete from consignee
+    where idConsignee = #idConsignee#
+  </delete>
+  
+  <insert id="consignee_insert" parameterClass="com.wings.persistence.Consignee">  
+    insert into consignee (idConsignee, name, description, contactPerson, telp, 
+      fax, email, address1, address2, postalCode, city, region, npwp, nppkp, idAccountIDR, idAccountUSD, description2) 
+    values (#idConsignee:VARCHAR#, #name:VARCHAR#, #description:VARCHAR#, 
+      #contactPerson:VARCHAR#, #telp:VARCHAR#, #fax:VARCHAR#, #email:VARCHAR#, 
+      #address1:VARCHAR#, #address2:VARCHAR#, #postalCode:VARCHAR#, 
+      #city:VARCHAR#, #region:VARCHAR#, #npwp:VARCHAR#, #nppkp:VAECHAR#, #idAccountIDR:VARCHAR#, 
+      #idAccountUSD:VARCHAR#, #description2:VARCHAR#) 
+  </insert>
+  <update id="consignee_updateByPrimaryKey" parameterClass="com.wings.persistence.Consignee">  
+    update consignee
+    set name = #name:VARCHAR#,
+      description = #description:VARCHAR#,
+      description2 = #description2:VARCHAR#,
+      contactPerson = #contactPerson:VARCHAR#,
+      telp = #telp:VARCHAR#,
+      fax = #fax:VARCHAR#,
+      email = #email:VARCHAR#,
+      address1 = #address1:VARCHAR#,
+      address2 = #address2:VARCHAR#,
+      postalCode = #postalCode:VARCHAR#,
+      city = #city:VARCHAR#,
+      region = #region:VARCHAR#,
+      npwp = #npwp:VARCHAR#,
+      nppkp = #nppkp:VARCHAR#,
+      idAccountIDR = #idAccountIDR:VARCHAR#,
+      idAccountUSD = #idAccountUSD:VARCHAR#
+    where idConsignee = #idConsignee#
+  </update>
+</sqlMap>

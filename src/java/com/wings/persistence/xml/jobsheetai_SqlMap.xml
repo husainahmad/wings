@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Jobsheetai">
+
+  <typeAlias alias="jobsheetai" type="com.wings.persistence.Jobsheetai"/>
+  
+  <select id="jobsheetai_selectByPrimaryKey" resultClass="jobsheetai" parameterClass="com.wings.persistence.JobsheetaiKey">  
+    select idJobSheetAI,
+      idJobSheet,
+      dnNo,
+      destination,
+      flights,
+      cntFlight,
+      freightTerm,
+      agentTo,
+      operationStaff,
+      telpColoader,
+      faxColoader,
+      picColoader,
+      mawb,
+      hawb,
+      epte,
+      pibNo,
+      dimention,
+      pickupCargo,
+      commodity,
+      billTo,
+      cnNo,
+      billToDebit
+    from jobsheetai
+    where idJobSheetAI = #idJobSheetAI#
+  </select>
+ 
+  <select id="jobsheetai_selectByIdJobSheet" resultClass="jobsheetai" parameterClass="com.wings.persistence.Jobsheetai">  
+    select idJobSheetAI,
+      idJobSheet,
+      dnNo,
+      destination,
+      flights,
+      cntFlight,
+      freightTerm,
+      agentTo,
+      operationStaff,
+      telpColoader,
+      faxColoader,
+      picColoader,
+      mawb,
+      hawb,
+      epte,
+      pibNo,
+      dimention,
+      pickupCargo,
+      commodity,
+      billTo,
+      cnNo,
+      billToDebit
+    from jobsheetai
+    where idJobSheet = #idJobSheet#
+    limit 1
+  </select>
+  
+  <select id="jobsheetai_selectAll" resultClass="jobsheetai" parameterClass="com.wings.persistence.JobsheetaiKey">  
+    select idJobSheetAI,
+      idJobSheet,
+      dnNo,
+      destination,
+      flights,
+      cntFlight,
+      freightTerm,
+      agentTo,
+      operationStaff,
+      telpColoader,
+      faxColoader,
+      picColoader,
+      mawb,
+      hawb,
+      epte,
+      pibNo,
+      dimention,
+      pickupCargo,
+      commodity,
+      billTo,
+      cnNo,
+      billToDebit
+    from jobsheetai
+  </select>
+  
+  <delete id="jobsheetai_deleteByPrimaryKey" parameterClass="com.wings.persistence.JobsheetaiKey"> 
+    delete from jobsheetai
+    where idJobSheetAI = #idJobSheetAI#
+  </delete>   
+  
+   <delete id="jobsheetai_deleteByIdJobSheet" parameterClass="com.wings.persistence.JobsheetKey">  
+    delete from jobsheetai
+    where idJobSheet = #idJobSheet#
+  </delete>
+  
+  <insert id="jobsheetai_insert" parameterClass="com.wings.persistence.Jobsheetai"> 
+    insert into jobsheetai (idJobSheet, dnNo, destination, 
+      flights, cntFlight, freightTerm, agentTo, operationStaff, telpColoader, 
+      faxColoader, picColoader, mawb, hawb, epte, pibNo, dimention, 
+      pickupCargo,commodity, billTo, cnNo, billToDebit) 
+    values (#idJobSheet:INTEGER#, #dnNo:VARCHAR#, 
+      #destination:VARCHAR#, #flights:VARCHAR#, #cntFlight:VARCHAR#, 
+      #freightTerm:VARCHAR#, #agentTo:VARCHAR#, #operationStaff:VARCHAR#, 
+      #telpColoader:VARCHAR#, #faxColoader:VARCHAR#, #picColoader:VARCHAR#, 
+      #mawb:VARCHAR#, #hawb:VARCHAR#, #epte:VARCHAR#, #pibNo:VARCHAR#, 
+      #dimention:VARCHAR#, #pickupCargo:VARCHAR#,#commodity:VARCHAR#, #billTo:VARCHAR#, #cnNo:VARCHAR#, #billToDebit:VARCHAR#) 
+  </insert>
+  
+  <update id="jobsheetai_updateByPrimaryKey" parameterClass="com.wings.persistence.Jobsheetai">   
+    update jobsheetai
+    set idJobSheet = #idJobSheet:INTEGER#,
+      dnNo = #dnNo:VARCHAR#,
+      destination = #destination:VARCHAR#,
+      flights = #flights:VARCHAR#,
+      cntFlight = #cntFlight:VARCHAR#,
+      freightTerm = #freightTerm:VARCHAR#,
+      agentTo = #agentTo:VARCHAR#,
+      operationStaff = #operationStaff:VARCHAR#,
+      telpColoader = #telpColoader:VARCHAR#,
+      faxColoader = #faxColoader:VARCHAR#,
+      picColoader = #picColoader:VARCHAR#,
+      mawb = #mawb:VARCHAR#,
+      hawb = #hawb:VARCHAR#,
+      epte = #epte:VARCHAR#,
+      pibNo = #pibNo:VARCHAR#,
+      dimention = #dimention:VARCHAR#,
+      pickupCargo = #pickupCargo:VARCHAR#,
+      commodity = #commodity:VARCHAR#,
+      billTo = #billTo:VARCHAR#,
+      cnNo = #cnNo:VARCHAR#,
+      billToDebit = #billToDebit:VARCHAR#
+    where idJobSheetAI = #idJobSheetAI#
+  </update>
+  
+  
+  
+</sqlMap>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Cashonhand" >
+  <typeAlias alias="cashonhand" type="com.wings.persistence.Cashonhand"/>
+    
+  <select id="cashonhand_selectByPrimaryKey" resultClass="cashonhand" parameterClass="com.wings.persistence.Cashonhand" >
+    select idCashOnHand, idAccount, type, description, amtIDR, amtUSD, amt2USD, amt2IDR, remark,
+      transDate
+    from cashonhand
+    where idCashOnHand = #idCashOnHand:INTEGER#
+  </select>
+  <select id="cashonhand_selectByAll" resultClass="cashonhand" parameterClass="com.wings.persistence.Cashonhand" >
+    select idCashOnHand, idAccount, type, description, amtIDR, amtUSD, amt2USD, amt2IDR, remark,
+      transDate
+    from cashonhand
+  </select>
+  <delete id="cashonhand_deleteByPrimaryKey" parameterClass="com.wings.persistence.Cashonhand" >
+    delete from cashonhand
+    where idCashOnHand = #idCashOnHand:INTEGER#
+  </delete>
+  <insert id="cashonhand_insert" parameterClass="com.wings.persistence.Cashonhand" >
+    insert into cashonhand (idCashOnHand, idAccount, type, description, amtIDR, amtUSD, amt2USD,
+      amt2IDR, remark, transDate)
+    values (#idCashOnHand:INTEGER#, #idAccount:INTEGER#, #type:VARCHAR#, #description:VARCHAR#,
+      #amtIDR:DOUBLE#, #amtUSD:DOUBLE#, #amt2USD:DOUBLE#, #amt2IDR:DOUBLE#, #remark:VARCHAR#,
+      #transDate:TIMESTAMP#)
+  </insert>
+  <update id="cashonhand_updateByPrimaryKey" parameterClass="com.wings.persistence.Cashonhand" >
+    update cashonhand
+    set idAccount = #idAccount:INTEGER#,
+      type = #type:VARCHAR#,
+      description = #description:VARCHAR#,
+      amtIDR = #amtIDR:DOUBLE#,
+      amtUSD = #amtUSD:DOUBLE#,
+      amt2USD = #amt2USD:DOUBLE#,
+      amt2IDR = #amt2IDR:DOUBLE#,
+      remark = #remark:VARCHAR#,
+      transDate = #transDate:TIMESTAMP#
+    where idCashOnHand = #idCashOnHand:INTEGER#
+  </update>
+</sqlMap>

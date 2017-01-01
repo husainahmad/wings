@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Kursdollar">
+
+  <typeAlias alias="kursdollar" type="com.wings.persistence.Kursdollar"/>
+  
+  <select id="kursdollar_selectByPrimaryKey" resultClass="kursdollar" parameterClass="com.wings.persistence.KursdollarKey">
+    select idKursDollar,
+      changeDate,
+      value
+    from kursdollar
+    where idKursDollar = #idKursDollar#
+  </select>
+  
+  
+  <select id="kursdollar_selectByAll" resultClass="kursdollar" parameterClass="com.wings.persistence.KursdollarKey">
+    select idKursDollar,
+      changeDate,
+      value
+    from kursdollar
+  </select>
+  
+  <select id="kursdollar_selectByLastKurs" resultClass="kursdollar" parameterClass="com.wings.persistence.Kursdollar">
+    SELECT * FROM kursdollar k order by k.idKursDollar desc limit 1
+  </select>
+  
+  <delete id="kursdollar_deleteByPrimaryKey" parameterClass="com.wings.persistence.KursdollarKey">
+    delete from kursdollar
+    where idKursDollar = #idKursDollar#
+  </delete>
+  
+  <insert id="kursdollar_insert" parameterClass="com.wings.persistence.Kursdollar">
+    insert into kursdollar (changeDate, value) 
+    values (#changeDate:TIMESTAMP#, #value:DOUBLE#) 
+  </insert>
+  
+  <update id="kursdollar_updateByPrimaryKey" parameterClass="com.wings.persistence.Kursdollar">
+    update kursdollar
+    set changeDate = #changeDate:TIMESTAMP#,
+      value = #value:DOUBLE#
+    where idKursDollar = #idKursDollar#
+  </update>
+  
+</sqlMap>

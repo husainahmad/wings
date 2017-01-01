@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Destination">
+
+  <typeAlias alias="destination" type="com.wings.persistence.Destination"/>
+  
+  <select id="destination_selectByPrimaryKey" resultClass="destination" parameterClass="com.wings.persistence.DestinationKey">  
+    select idDestination,
+      name
+    from destination
+    where idDestination = #idDestination#
+  </select>
+  
+  <select id="destination_selectAll" resultClass="destination" parameterClass="com.wings.persistence.Destination">  
+    select idDestination,
+      name
+    from destination   
+    where name like #name#
+    order by name
+  </select>
+  
+  <select id="destination_selectByName" resultClass="destination" parameterClass="com.wings.persistence.Destination">  
+    select idDestination,
+      name
+    from destination   
+    where name like #name#
+    order by name
+  </select>
+  
+  <delete id="destination_deleteByPrimaryKey" parameterClass="com.wings.persistence.DestinationKey">    
+    delete from destination
+    where idDestination = #idDestination#
+  </delete>
+  
+  <insert id="destination_insert" parameterClass="com.wings.persistence.Destination">    
+    insert into destination (idDestination, name) 
+    values (#idDestination:VARCHAR#, #name:VARCHAR#) 
+  </insert>
+  
+  <update id="destination_updateByPrimaryKey" parameterClass="com.wings.persistence.Destination">    
+    update destination
+    set name = #name:VARCHAR#
+    where idDestination = #idDestination#
+  </update>
+  
+</sqlMap>

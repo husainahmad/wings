@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Transactionaccdetail">
+
+  <typeAlias alias="transactionaccdetail" type="com.wings.persistence.Transactionaccdetail"/>
+  <typeAlias alias="transactionaccDetail" type="com.wings.persistence.TransactionDetail"/>
+  
+  <typeAlias alias="inUrut" type="java.lang.Integer"/>
+  
+  <select id="transactionaccdetail_selectByPrimaryKey" resultClass="transactionaccdetail" parameterClass="com.wings.persistence.Transactionaccdetail">
+    select idTransactionAccDetail,
+      idTransactionAcc,
+      noBatch,
+      noUrut,
+      inUrut,
+      batchDesc,
+      transactionDate,
+      noVoucher,
+      voucherDesc,
+      idAccount,
+      description,
+      kurs,
+      debit,
+      kredit,
+      jobNo,
+      tglTutupBuku, kursValue
+    from transactionaccdetail
+    where idTransactionAccDetail = #idTransactionAccDetail#
+  </select>
+  
+  <select id="transactionaccdetail_selectByTransactionAccKey" resultClass="transactionaccdetail" parameterClass="com.wings.persistence.TransactionaccKey">
+    select idTransactionAccDetail,
+        idTransactionAcc,
+      noBatch,
+      noUrut,
+      inUrut,
+      batchDesc,
+      transactionDate,
+      noVoucher,
+      voucherDesc,
+      idAccount,
+      description,
+      kurs,
+      debit,
+      kredit,
+      jobNo,
+      tglTutupBuku, kursValue,
+      groupid
+    from transactionaccdetail
+    where idTransactionAcc = #idTransactionAcc#
+  </select>
+        
+  <delete id="transactionaccdetail_deleteByPrimaryKey" parameterClass="com.wings.persistence.Transactionaccdetail">
+    delete from transactionaccdetail
+    where idTransactionAccDetail = #idTransactionAccDetail#
+  </delete>
+  
+  <delete id="transactionaccdetail_deleteByJobNo" parameterClass="com.wings.persistence.Transactionaccdetail">
+    delete from transactionaccdetail
+    where jobNo = #jobNo#
+  </delete>
+  
+  <insert id="transactionaccdetail_insert" parameterClass="com.wings.persistence.Transactionaccdetail">
+    insert into transactionaccdetail (idTransactionAcc, noBatch, noUrut, batchDesc, 
+      transactionDate, noVoucher, voucherDesc, idAccount, description, kurs, 
+      debit, kredit, jobNo, tglTutupBuku, inUrut, kursValue, groupid) 
+      values
+      (#idTransactionAcc:INTEGER#, #noBatch:VARCHAR#, #noUrut:VARCHAR#, 
+      #batchDesc:VARCHAR#, #transactionDate:TIMESTAMP#, #noVoucher:VARCHAR#, 
+      #voucherDesc:VARCHAR#, #idAccount:VARCHAR#, #description:VARCHAR#, 
+      #kurs:VARCHAR#, #debit:DOUBLE#, #kredit:DOUBLE#, #jobNo:VARCHAR#, 
+      LAST_DAY(#tglTutupBuku:TIMESTAMP#),#inUrut:INTEGER#, #kursValue:DOUBLE#,#groupid:VARCHAR#           
+      ) 
+  </insert>
+  
+  <update id="transactionaccdetail_updateByPrimaryKey" parameterClass="com.wings.persistence.Transactionaccdetail">
+    update transactionaccdetail
+    set 
+      idTransactionAcc = #idTransactionAcc:INTEGER#,
+      noBatch = #noBatch:VARCHAR#,
+      noUrut = #noUrut:VARCHAR#,
+      inUrut = #inUrut:INTEGER#,
+      batchDesc = #batchDesc:VARCHAR#,
+      transactionDate = #transactionDate:TIMESTAMP#,
+      noVoucher = #noVoucher:VARCHAR#,
+      voucherDesc = #voucherDesc:VARCHAR#,
+      idAccount = #idAccount:VARCHAR#,
+      description = #description:VARCHAR#,
+      kurs = #kurs:VARCHAR#,
+      debit = #debit:DOUBLE#,
+      kredit = #kredit:DOUBLE#,
+      jobNo = #jobNo:VARCHAR#,
+      tglTutupBuku = #tglTutupBuku:TIMESTAMP#,
+      kursValue = #kursValue:DOUBLE#,
+      groupid = #groupid:VARCHAR#,
+    where idTransactionAccDetail = #idTransactionAccDetail#
+  </update>
+  
+</sqlMap>

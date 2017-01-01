@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Expensesshipper">
+
+ <typeAlias alias="expensesshipper" type="com.wings.persistence.Expensesshipper"/>
+ <typeAlias alias="expensesshipperDetail" type="com.wings.persistence.ExpensesshipperDetail"/>
+ <typeAlias alias="totalCharge" type="java.lang.Double"/>  
+ 
+  <select id="expensesshipper_selectByPrimaryKey" resultClass="expensesshipper" parameterClass="com.wings.persistence.ExpensesshipperKey">  
+    select idExpensesShipper,
+      idJobSheet,
+      idShipperFee,
+      charge,
+      kurs,
+      description,
+      kursValue,
+      descriptionInvoice,
+      oriKurs, 
+      oriWeight,
+      isTax,
+      isVat, totalTax, totalVat
+    from expensesshipper
+    where idExpensesShipper = #idExpensesShipper#
+  </select>
+  
+  <select id="expensesshipper_selectAll" resultClass="expensesshipper" parameterClass="com.wings.persistence.ExpensesshipperKey">  
+    select idExpensesShipper,
+      idJobSheet,
+      idShipperFee,
+      charge,
+      kurs,
+      description,
+      kursValue,
+      descriptionInvoice,
+      oriKurs, 
+      oriWeight,
+      isTax,
+      isVat, totalTax, totalVat
+    from expensesshipper
+  </select>
+  
+   <select id="expensesshipper_selectByJobSheetKey" resultClass="expensesshipperDetail" parameterClass="com.wings.persistence.JobsheetKey">  
+    select es.idExpensesShipper,
+      es.idJobSheet,
+      es.idShipperFee,
+      es.charge,
+      es.kurs,
+      sf.aliasName,
+      sf.description as descriptionFee,
+      es.description,
+      es.kursValue,
+      es.descriptionInvoice,
+      es.oriKurs, 
+      es.oriWeight,
+      es.isTax, es.isVat, es.totalTax, es.totalVat, sf.category
+    from expensesshipper es
+     left join shipperfee sf
+        on es.idShipperFee = sf.idShipperFee
+    where es.idJobSheet = #idJobSheet#
+    order by es.idExpensesShipper
+  </select>
+ 
+  <select id="expensesshipper_selectTotalIDRByJobSheetKey" resultClass="totalCharge" parameterClass="com.wings.persistence.JobsheetKey">  
+    select ifnull(sum(charge),0) as totalCharge
+    from expensesshipper
+    where idJobSheet = #idJobSheet#
+    and kurs = 'IDR'
+  </select>
+  
+  <select id="expensesshipper_selectTotalUSDByJobSheetKey" resultClass="totalCharge" parameterClass="com.wings.persistence.JobsheetKey">  
+    select ifnull(sum(charge),0) as totalCharge
+    from expensesshipper
+    where idJobSheet = #idJobSheet#
+    and kurs = 'USD'
+  </select>
+  
+  <select id="expensesshipper_selectByJobNo" resultClass="expensesshipperDetail" parameterClass="com.wings.persistence.Jobsheet">  
+    select es.idExpensesShipper,
+      es.idJobSheet,
+      es.idShipperFee,
+      es.charge,
+      es.kurs,
+      sf.aliasName,
+      sf.description as descriptionFee,
+      es.description,
+      es.kursValue,
+      es.descriptionInvoice,
+      es.oriKurs, 
+      es.oriWeight,
+      es.isTax,
+      es.isVat,
+      es.totalTax, es.totalVat, sf.category
+    from expensesshipper es
+     left join shipperfee sf
+        on es.idShipperFee = sf.idShipperFee
+    where es.idJobSheet in
+    (
+       select j.idJobSheet from jobsheet j where
+       j.jobNo = #jobNo#
+    )
+    order by es.idExpensesShipper
+  </select>
+ 
+  <delete id="expensesshipper_deleteByPrimaryKey" parameterClass="com.wings.persistence.ExpensesshipperKey"> 
+    delete from expensesshipper
+    where idExpensesShipper = #idExpensesShipper#
+  </delete>
+ 
+  <delete id="expensesshipper_deleteByJobsheetKey" parameterClass="com.wings.persistence.JobsheetKey"> 
+    delete from expensesshipper
+    where idJobSheet = #idJobSheet#
+  </delete>
+  
+  <insert id="expensesshipper_insert" parameterClass="com.wings.persistence.Expensesshipper">  
+    insert into expensesshipper (idJobSheet, idShipperFee, 
+      charge, kurs, description, kursValue, descriptionInvoice, oriKurs, 
+      oriWeight, isTax, isVat, totalTax, totalVat) 
+    values (#idJobSheet:INTEGER#, 
+      #idShipperFee:INTEGER#, #charge:DOUBLE#, #kurs:VARCHAR#, #description:VARCHAR#, 
+      #kursValue:DOUBLE#, #descriptionInvoice:VARCHAR#,
+      #oriKurs:DOUBLE#, #oriWeight:DOUBLE#, #isTax:INTEGER#, #isVat:INTEGER#, #totalTax:DOUBLE#, #totalVat:DOUBLE#) 
+  </insert>
+  
+  <update id="expensesshipper_updateByPrimaryKey" parameterClass="com.wings.persistence.Expensesshipper">  
+    update expensesshipper
+    set idJobSheet = #idJobSheet:INTEGER#,
+      idShipperFee = #idShipperFee:INTEGER#,
+      charge = #charge:DOUBLE#,
+      kurs = #kurs:VARCHAR#,
+      description = #description:VARCHAR#,
+      kursValue = #kursValue:DOUBLE#,
+      descriptionInvoice = #descriptionInvoice:VARCHAR#,
+      oriKurs = #oriKurs:DOUBLE#, 
+      oriWeight = #oriWeight:DOUBLE#,
+      isTax = #isTax:INTEGER#,
+      isVat = #isVat:INTEGER#,
+      totalTax = #totalTax:DOUBLE#, 
+      totalVat = #totalVat:DOUBLE#
+    where idExpensesShipper = #idExpensesShipper#
+  </update>
+  
+</sqlMap>

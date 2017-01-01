@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Jobsheetao">
+
+ <typeAlias alias="jobsheetao" type="com.wings.persistence.Jobsheetao"/>
+ 
+  <select id="jobsheetao_selectByPrimaryKey" resultClass="jobsheetao" parameterClass="com.wings.persistence.JobsheetaoKey">   
+    select idJobSheetAO,
+      idJobSheet,
+      dnNo,
+      destination,
+      flights,
+      cntFlight,
+      freightTerm,
+      bookingTo,
+      operationStaff,
+      telpColoader,
+      faxColoader,
+      picColoader,
+      mawb,
+      hawb,
+      epte,
+      pibNo,
+      dimention,
+      pickupCargo,
+      commodity,
+      billTo,
+      cnNo,
+      billToDebit
+    from jobsheetao
+    where idJobSheetAO = #idJobSheetAO#
+  </select>
+  
+  <select id="jobsheetao_selectByIdJobSheet" resultClass="jobsheetao" parameterClass="com.wings.persistence.Jobsheetao">   
+    select idJobSheetAO,
+      idJobSheet,
+      dnNo,
+      destination,
+      flights,
+      cntFlight,
+      freightTerm,
+      bookingTo,
+      operationStaff,
+      telpColoader,
+      faxColoader,
+      picColoader,
+      mawb,
+      hawb,
+      epte,
+      pibNo,
+      dimention,
+      pickupCargo,
+      commodity,
+      billTo,
+      cnNo,
+      billToDebit
+    from jobsheetao
+    where idJobSheet = #idJobSheet#
+    limit 1
+  </select>
+  
+  <select id="jobsheetao_selectAll" resultClass="jobsheetao" parameterClass="com.wings.persistence.JobsheetaoKey">   
+    select idJobSheetAO,
+      idJobSheet,
+      dnNo,
+      destination,
+      flights,
+      cntFlight,
+      freightTerm,
+      bookingTo,
+      operationStaff,
+      telpColoader,
+      faxColoader,
+      picColoader,
+      mawb,
+      hawb,
+      epte,
+      pibNo,
+      dimention,
+      pickupCargo,
+      commodity,
+      billTo,
+      cnNo,
+      billToDebit
+    from jobsheetao
+  </select>
+  
+  <delete id="jobsheetao_deleteByPrimaryKey" parameterClass="com.wings.persistence.JobsheetaoKey">
+    delete from jobsheetao
+    where idJobSheetAO = #idJobSheetAO#
+  </delete>
+  
+   <delete id="jobsheetao_deleteByIdJobSheet" parameterClass="com.wings.persistence.JobsheetKey">  
+    delete from jobsheetao
+    where idJobSheet = #idJobSheet#
+  </delete>
+  
+  <insert id="jobsheetao_insert" parameterClass="com.wings.persistence.Jobsheetao">  
+    insert into jobsheetao (idJobSheet, dnNo, destination, 
+      flights, cntFlight, freightTerm, bookingTo, operationStaff, telpColoader, 
+      faxColoader, picColoader, mawb, hawb, epte, pibNo, dimention, 
+      pickupCargo,commodity, billTo, cnNo, billToDebit) 
+    values (#idJobSheet:INTEGER#, #dnNo:VARCHAR#, 
+      #destination:VARCHAR#, #flights:VARCHAR#, #cntFlight:VARCHAR#, 
+      #freightTerm:VARCHAR#, #bookingTo:VARCHAR#, #operationStaff:VARCHAR#, 
+      #telpColoader:VARCHAR#, #faxColoader:VARCHAR#, #picColoader:VARCHAR#, 
+      #mawb:VARCHAR#, #hawb:VARCHAR#, #epte:VARCHAR#, #pibNo:VARCHAR#, 
+      #dimention:VARCHAR#, #pickupCargo:VARCHAR#,#commodity:VARCHAR#, #billTo:VARCHAR#, #cnNo:VARCHAR#, #billToDebit:VARCHAR#) 
+  </insert>
+  
+  <update id="jobsheetao_updateByPrimaryKey" parameterClass="com.wings.persistence.Jobsheetao">   
+    update jobsheetao
+    set idJobSheet = #idJobSheet:INTEGER#,
+      dnNo = #dnNo:VARCHAR#,
+      destination = #destination:VARCHAR#,
+      flights = #flights:VARCHAR#,
+      cntFlight = #cntFlight:VARCHAR#,
+      freightTerm = #freightTerm:VARCHAR#,
+      bookingTo = #bookingTo:VARCHAR#,
+      operationStaff = #operationStaff:VARCHAR#,
+      telpColoader = #telpColoader:VARCHAR#,
+      faxColoader = #faxColoader:VARCHAR#,
+      picColoader = #picColoader:VARCHAR#,
+      mawb = #mawb:VARCHAR#,
+      hawb = #hawb:VARCHAR#,
+      epte = #epte:VARCHAR#,
+      pibNo = #pibNo:VARCHAR#,
+      dimention = #dimention:VARCHAR#,
+      pickupCargo = #pickupCargo:VARCHAR#,
+      commodity = #commodity:VARCHAR#,
+      billTo = #billTo:VARCHAR#,
+      cnNo = #cnNo:VARCHAR#,
+      billToDebit = #billToDebit:VARCHAR#
+    where idJobSheetAO = #idJobSheetAO#
+  </update>
+</sqlMap>
