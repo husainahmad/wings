@@ -293,7 +293,7 @@
                         <td width="5"></td>   
                         <td>CMB</td>
 			<td>                            
-                            <html:text name="jobsheetaiDetailForm" property="cmb" size="35"onkeydown="if(event.keyCode==13) event.keyCode=9;"/>                            
+                            <html:text name="jobsheetaiDetailForm" property="cmb" size="35" onkeydown="if(event.keyCode==13)event.keyCode=9;"/>                            
                         </td>                                                               
                      </tr>
                      <tr>
