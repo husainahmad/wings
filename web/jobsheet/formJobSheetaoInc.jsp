@@ -852,6 +852,18 @@
                                     </tr>
                                     <tr>
                                         <td>
+                                            VAT 1 %
+                                        </td>                                        
+                                        <td width="5"></td>                                        
+                                        <td>      
+                                            <input type="text" id="totalVatUSDAsString" name="totalVatUSDAsString" size="35" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                        </td>
+                                        <td>
+                                                <input type="text" id="totalVatIDRAsString" name="totalVatIDRAsString" size="35" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
                                             Total 
                                         </td>                                        
                                         <td width="5"></td>                                        
