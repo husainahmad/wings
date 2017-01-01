@@ -495,12 +495,12 @@
                                         </td>                                        
                                         <td width="5"></td>                                        
                                         <td>      
-                                            <input type="text" id="totalBillingUSDAsString" name="totalBillingUSDAsString" size="35" style="text-align: right;" value="<bean:write name="jobsheetsiDetailForm" property="totalBillingUSD" format="#,###,###.##"/>" onkeydown="if(event.keyCode==13) event.keyCode=9;">
-                                            <html:hidden name="jobsheetsiDetailForm" property="totalBillingUSD" styleId="totalBillingUSD"/>                                                       
+                                            <input type="text" id="totalBillingUSDAsString" name="totalBillingUSDAsString" size="35" style="text-align: right;" value="<bean:write name="jobsheetsoDetailForm" property="totalBillingUSD" format="#,###,###.##"/>" onkeydown="if(event.keyCode==13) event.keyCode=9;">
+                                            <html:hidden name="jobsheetsoDetailForm" property="totalBillingUSD" styleId="totalBillingUSD"/>                                                       
                                         </td>
                                         <td>
-                                            <input type="text" id="totalBillingIDRAsString" name="totalBillingIDRAsString" size="35" style="text-align: right;" value="<bean:write name="jobsheetsiDetailForm" property="totalBillingIDR" format="#,###,###.##"/>" onkeydown="if(event.keyCode==13) event.keyCode=9;">
-                                            <html:hidden name="jobsheetsiDetailForm" property="totalBillingIDR" styleId="totalBillingIDR"/>
+                                            <input type="text" id="totalBillingIDRAsString" name="totalBillingIDRAsString" size="35" style="text-align: right;" value="<bean:write name="jobsheetsoDetailForm" property="totalBillingIDR" format="#,###,###.##"/>" onkeydown="if(event.keyCode==13) event.keyCode=9;">
+                                            <html:hidden name="jobsheetsoDetailForm" property="totalBillingIDR" styleId="totalBillingIDR"/>
                                         </td>
                                     </tr>  
                                     <tr>
@@ -509,12 +509,12 @@
                                         </td>                                        
                                         <td width="5"></td>                                        
                                             <td>      
-                                                <input type="text" id="totalExpensesUSDAsString" name="totalExpensesUSDAsString" size="35" style="text-align: right;" value="<bean:write name="jobsheetsiDetailForm" property="totalExpensesUSD" format="#,###,###.##"/>" onkeydown="if(event.keyCode==13) event.keyCode=9;">
-                                            <html:hidden name="jobsheetsiDetailForm" property="totalExpensesUSD" styleId="totalExpensesUSD"/>                                                       
+                                                <input type="text" id="totalExpensesUSDAsString" name="totalExpensesUSDAsString" size="35" style="text-align: right;" value="<bean:write name="jobsheetsoDetailForm" property="totalExpensesUSD" format="#,###,###.##"/>" onkeydown="if(event.keyCode==13) event.keyCode=9;">
+                                            <html:hidden name="jobsheetsoDetailForm" property="totalExpensesUSD" styleId="totalExpensesUSD"/>                                                       
                                         </td>
                                         <td>
-                                            <input type="text" id="totalExpensesIDRAsString" name="totalExpensesIDRAsString" size="35" style="text-align: right;" value="<bean:write name="jobsheetsiDetailForm" property="totalExpensesIDR" format="#,###,###.##"/>" onkeydown="if(event.keyCode==13) event.keyCode=9;">
-                                            <html:hidden name="jobsheetsiDetailForm" property="totalExpensesIDR" styleId="totalExpensesIDR"/>
+                                            <input type="text" id="totalExpensesIDRAsString" name="totalExpensesIDRAsString" size="35" style="text-align: right;" value="<bean:write name="jobsheetsoDetailForm" property="totalExpensesIDR" format="#,###,###.##"/>" onkeydown="if(event.keyCode==13) event.keyCode=9;">
+                                            <html:hidden name="jobsheetsoDetailForm" property="totalExpensesIDR" styleId="totalExpensesIDR"/>
                                         </td>
                                     </tr>  
                                     <tr>
@@ -532,7 +532,7 @@
                                         </td>                                        
                                         <td width="5"></td>                                        
                                             <td>      
-                                            <html:text name="jobsheetsiDetailForm" property="jaminan" size="35" maxlength="35" style="text-align: right;"  onkeydown="if(event.keyCode==13) event.keyCode=9;"/>
+                                            <html:text name="jobsheetsoDetailForm" property="jaminan" size="35" maxlength="35" style="text-align: right;"  onkeydown="if(event.keyCode==13) event.keyCode=9;"/>
                                         </td>
                                         <td>
 
@@ -544,7 +544,7 @@
                                         </td>                                        
                                         <td width="5"></td>                                        
                                             <td >
-                                            <html:text name="jobsheetsiDetailForm" property="remark" size="35" maxlength="35" onkeydown="if(event.keyCode==13) event.keyCode=9;"/>
+                                            <html:text name="jobsheetsoDetailForm" property="remark" size="35" maxlength="35" onkeydown="if(event.keyCode==13) event.keyCode=9;"/>
                                         </td>
                                         <td>                                                        
                                         </td>
