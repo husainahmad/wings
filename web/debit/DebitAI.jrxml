@@ -849,7 +849,7 @@
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="265"  isSplitAllowed="true" >
+			<band height="165"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="0"
