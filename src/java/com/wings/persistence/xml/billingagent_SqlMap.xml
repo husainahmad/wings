@@ -13,7 +13,7 @@
       idAgentFee,
       charge,
       kurs, description,
-      kursValue, descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat
+      kursValue, descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat, isTax2, totalTax2
     from billingagent
     where idbillingAgent = #idbillingAgent#
   </select>
@@ -24,7 +24,7 @@
       idAgentFee,
       charge,
       kurs,description,
-      kursValue, descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat
+      kursValue, descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat, isTax2, totalTax2
     from billingagent    
   </select>
   
@@ -39,7 +39,7 @@
       ba.description,
       ba.kursValue,
       ba.descriptionInvoice,
-      ba.oriKurs, ba.oriWeight, ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category
+      ba.oriKurs, ba.oriWeight, ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category, ba.isTax2, ba.totalTax2
     from billingagent ba
         left join agentfee af
         on ba.idAgentFee = af.idAgentFee
@@ -59,7 +59,7 @@
       ba.kursValue,
       ba.descriptionInvoice,
       ba.oriKurs, ba.oriWeight,
-      ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category
+      ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category, ba.isTax2, ba.totalTax2
     from billingagent ba
         left join agentfee af
         on ba.idAgentFee = af.idAgentFee
@@ -80,7 +80,7 @@
       ba.kursValue,
       ba.descriptionInvoice,
       ba.oriKurs, ba.oriWeight,
-      ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category
+      ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category, ba.isTax2, ba.totalTax2
     from billingagent ba
         left join agentfee af
         on ba.idAgentFee = af.idAgentFee
@@ -114,7 +114,7 @@
       ba.description,
       ba.kursValue,
       ba.descriptionInvoice, ba.oriKurs, ba.oriWeight,
-      ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category
+      ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category, ba.isTax2, ba.totalTax2
     from billingagent ba
         left join agentfee af
         on ba.idAgentFee = af.idAgentFee
@@ -138,7 +138,7 @@
       ba.description,
       ba.kursValue,
       ba.descriptionInvoice, ba.oriKurs, ba.oriWeight,
-      ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category
+      ba.isTax, ba.isVat, ba.totalTax, ba.totalVat, af.category, ba.isTax2, ba.totalTax2
     from billingagent ba
         left join agentfee af
         on ba.idAgentFee = af.idAgentFee
@@ -161,10 +161,10 @@
   
   <insert id="billingagent_insert" parameterClass="com.wings.persistence.Billingagent">  
     insert into billingagent (idJobSheet, idAgentFee, charge, 
-      kurs, description, kursValue, descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat) 
+      kurs, description, kursValue, descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat, isTax2, totalTax2) 
     values (#idJobSheet:INTEGER#, 
       #idAgentFee:INTEGER#, #charge:DOUBLE#, #kurs:VARCHAR#, #description:VARCHAR#, 
-      #kursValue:DOUBLE#, #descriptionInvoice:VARCHAR#, #oriKurs:DOUBLE#, #oriWeight:DOUBLE#, #isTax:INTEGER#, #isVat:INTEGER#, #totalTax:DOUBLE#, #totalVat:DOUBLE#) 
+      #kursValue:DOUBLE#, #descriptionInvoice:VARCHAR#, #oriKurs:DOUBLE#, #oriWeight:DOUBLE#, #isTax:INTEGER#, #isVat:INTEGER#, #totalTax:DOUBLE#, #totalVat:DOUBLE#, #isTax2:INTEGER#, #totalTax2:DOUBLE#) 
   </insert>
   
   <update id="billingagent_updateByPrimaryKey" parameterClass="com.wings.persistence.Billingagent">   
@@ -181,7 +181,9 @@
       isTax = #isTax:INTEGER#,
       isVat = #isVat:INTEGER#,
       totalTax = #totalTax:DOUBLE#, 
-      totalVat = #totalVat:DOUBLE#
+      totalVat = #totalVat:DOUBLE#,
+      isTax2 = #isTax:INTEGER#,
+      totalTax2 = #totalTax:DOUBLE#
     where idbillingAgent = #idbillingAgent#
   </update>
   

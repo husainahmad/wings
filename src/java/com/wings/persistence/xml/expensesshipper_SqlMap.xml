@@ -19,7 +19,7 @@
       oriKurs, 
       oriWeight,
       isTax,
-      isVat, totalTax, totalVat
+      isVat, totalTax, totalVat, isTax2, totalTax2
     from expensesshipper
     where idExpensesShipper = #idExpensesShipper#
   </select>
@@ -36,7 +36,7 @@
       oriKurs, 
       oriWeight,
       isTax,
-      isVat, totalTax, totalVat
+      isVat, totalTax, totalVat, isTax2, totalTax2
     from expensesshipper
   </select>
   
@@ -53,7 +53,7 @@
       es.descriptionInvoice,
       es.oriKurs, 
       es.oriWeight,
-      es.isTax, es.isVat, es.totalTax, es.totalVat, sf.category
+      es.isTax, es.isVat, es.totalTax, es.totalVat, es.isTax2, es.totalTax2, sf.category
     from expensesshipper es
      left join shipperfee sf
         on es.idShipperFee = sf.idShipperFee
@@ -90,7 +90,7 @@
       es.oriWeight,
       es.isTax,
       es.isVat,
-      es.totalTax, es.totalVat, sf.category
+      es.totalTax, es.totalVat, es.isTax2, es.totalTax2, sf.category
     from expensesshipper es
      left join shipperfee sf
         on es.idShipperFee = sf.idShipperFee
@@ -115,11 +115,11 @@
   <insert id="expensesshipper_insert" parameterClass="com.wings.persistence.Expensesshipper">  
     insert into expensesshipper (idJobSheet, idShipperFee, 
       charge, kurs, description, kursValue, descriptionInvoice, oriKurs, 
-      oriWeight, isTax, isVat, totalTax, totalVat) 
+      oriWeight, isTax, isVat, totalTax, totalVat, isTax2, totalTax2) 
     values (#idJobSheet:INTEGER#, 
       #idShipperFee:INTEGER#, #charge:DOUBLE#, #kurs:VARCHAR#, #description:VARCHAR#, 
       #kursValue:DOUBLE#, #descriptionInvoice:VARCHAR#,
-      #oriKurs:DOUBLE#, #oriWeight:DOUBLE#, #isTax:INTEGER#, #isVat:INTEGER#, #totalTax:DOUBLE#, #totalVat:DOUBLE#) 
+      #oriKurs:DOUBLE#, #oriWeight:DOUBLE#, #isTax:INTEGER#, #isVat:INTEGER#, #totalTax:DOUBLE#, #totalVat:DOUBLE#, #isTax2:INTEGER#, #totalTax2:DOUBLE#) 
   </insert>
   
   <update id="expensesshipper_updateByPrimaryKey" parameterClass="com.wings.persistence.Expensesshipper">  
@@ -136,7 +136,9 @@
       isTax = #isTax:INTEGER#,
       isVat = #isVat:INTEGER#,
       totalTax = #totalTax:DOUBLE#, 
-      totalVat = #totalVat:DOUBLE#
+      totalVat = #totalVat:DOUBLE#,
+      isTax2 = #isTax2:INTEGER#, 
+      totalTax2 = #totalTax2:DOUBLE#
     where idExpensesShipper = #idExpensesShipper#
   </update>
   

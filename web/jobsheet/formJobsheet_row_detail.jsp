@@ -31,6 +31,9 @@
                                         <td width="25%" align="center">
                                             PPH23
                                         </td>
+                                         <td width="25%" align="center">
+                                            VAT 1%
+                                        </td>
                                         <td width="25%" align="center">
                                             Action
                                         </td>                         
@@ -86,8 +89,9 @@
                                                         </select>
                                                     </td> 
                                                     <td width="25%"><input type="text" name="billingAgentKursValueDebit<%=i%>" id="billingAgentKursValueDebit<%=i%>" value="<bean:write name="billAgent" property="kursValue" format="#,###,###.##"/>" size="10" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                    <td width="25%"><input type="checkbox" name="billingAgentTaxDebit<%=i%>" id="billingAgentTaxDebit<%=i%>" value="1" <%=billingagent.getIsTax().intValue()>0 ? " checked " : ""%> onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                    <td width="25%"><input type="checkbox" name="billingAgentVatDebit<%=i%>" id="billingAgentVatDebit<%=i%>" value="1" <%=billingagent.getIsVat().intValue()>0 ? " checked " : ""%> onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
+                                                    <td width="25%"><input type="checkbox" name="billingAgentTaxDebit<%=i%>" id="billingAgentTaxDebit<%=i%>" value="1" <%=billingagent.getIsTax().intValue()>0 ? " checked " : ""%> onkeydown="if(event.keyCode==13) event.keyCode=9;" onchange="countBilling()"/></td>
+                                                    <td width="25%"><input type="checkbox" name="billingAgentVatDebit<%=i%>" id="billingAgentVatDebit<%=i%>" value="1" <%=billingagent.getIsVat().intValue()>0 ? " checked " : ""%> onkeydown="if(event.keyCode==13) event.keyCode=9;" onchange="countBilling()"/></td>
+                                                    <td width="25%"><input type="checkbox" name="billingAgentTax2Debit<%=i%>" id="billingAgentTax2Debit<%=i%>" value="1" <%=billingagent.getIsTax2().intValue()>0 ? " checked " : ""%> onkeydown="if(event.keyCode==13) event.keyCode=9;" onchange="countBilling()"/></td>
                                                     <td width="25%">
                                                         &nbsp;<input type="button" value="$" onclick="convertToDollarOrRupiah('billingAgentKursValueDebit<%=i%>','billingAgentChargeDebit<%=i%>','billingAgentKursDebit<%=i%>')" >
                                                     </td>                                                        
@@ -140,6 +144,9 @@
                                             PPH23
                                         </td>
                                         <td width="25%" align="center">
+                                            VAT 1%
+                                        </td> 
+                                        <td width="25%" align="center">
                                             Action
                                         </td>     
                                     </tr>                                                                        
@@ -191,8 +198,9 @@
                                                             </select>
                                                         </td> 
                                                         <td width="25%"><input type="text" name="billingAgentKursValueInvoice<%=i%>" id="billingAgentKursValueInvoice<%=i%>" value="<bean:write name="billShipper" property="kursValue" format="#,###,###.##"/>" size="10" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                        <td width="25%"><input type="checkbox" name="billingAgentTaxInvoice<%=i%>" id="billingAgentTaxInvoice<%=i%>" value="1" <%=billS.getIsTax().intValue() >0 ? " checked " : ""%> onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                        <td width="25%"><input type="checkbox" name="billingAgentVatInvoice<%=i%>" id="billingAgentVatInvoice<%=i%>" value="1" <%=billS.getIsVat().intValue() >0 ? " checked " : ""%> onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
+                                                        <td width="25%"><input type="checkbox" name="billingAgentTaxInvoice<%=i%>" id="billingAgentTaxInvoice<%=i%>" value="1" <%=billS.getIsTax().intValue() >0 ? " checked " : ""%> onkeydown="if(event.keyCode==13) event.keyCode=9;" onchange="countBilling()"/></td>
+                                                        <td width="25%"><input type="checkbox" name="billingAgentVatInvoice<%=i%>" id="billingAgentVatInvoice<%=i%>" value="1" <%=billS.getIsVat().intValue() >0 ? " checked " : ""%> onkeydown="if(event.keyCode==13) event.keyCode=9;" onchange="countBilling()"/></td>
+                                                        <td width="25%"><input type="checkbox" name="billingAgentTax2Invoice<%=i%>" id="billingAgentTax2Invoice<%=i%>" value="1" <%=billS.getIsTax2().intValue() >0 ? " checked " : ""%> onkeydown="if(event.keyCode==13) event.keyCode=9;" onchange="countBilling()"/></td>
                                                         <td width="25%">
                                                             &nbsp;<input type="button" value="$" onclick="convertToDollarOrRupiah('billingAgentKursValueInvoice<%=i%>','billingAgentChargeInvoice<%=i%>','billingAgentKursInvoice<%=i%>')" >
                                                         </td>

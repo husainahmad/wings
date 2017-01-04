@@ -24,20 +24,25 @@ function countBilling() {
     var billacchd = "billingAgentChargeDebit";
     var kurs = "billingAgentKursDebit";
     
-    var tax = "billingAgentTaxDebit";
-    var vat = "billingAgentVatDebit";
+    var param_tax = "billingAgentTaxDebit";
+    var param_vat = "billingAgentVatDebit";
+    var param_tax2 = "billingAgentTax2Debit";
     
     var pas1 = "";
     var pas2 = "";
     var tax1 = "";
     var vat1 = "";
+    var tax2 = "";
+    
     var totalIDR = 0;
     var totalUSD = 0;
     var totalDPPIDR = 0;
-    var totalPPHIDR =0;
+    var totalPPHIDR = 0;
+    var totalDPP2IDR = 0;
     
     var totalDPPUSD = 0;
     var totalPPHUSD =0;
+    var totalDPP2USD =0;
     
     for (i=1; i<=dacountbaDebit+5; i++) {
         try {
@@ -48,8 +53,10 @@ function countBilling() {
             pas1 = document.getElementById(pas1).value;     
             pas1 = pas1.toString().replace(/\$|\,/g,'');
             
-            tax1 = document.getElementById(tax+i);  
-            vat1 = document.getElementById(vat+i);  
+            tax1 = document.getElementById(param_tax+i);  
+            vat1 = document.getElementById(param_vat+i);  
+            
+            tax2 = document.getElementById(param_tax2+i);  
             
             if (pas2=="IDR") {
                 totalIDR+=parseFloat(pas1);    
@@ -62,6 +69,11 @@ function countBilling() {
                     console.log('vat checked');
                     totalPPHIDR += parseFloat(pas1);
                 } 
+                
+                if (tax2.checked) {
+                    console.log('checked tax2');
+                    totalDPP2IDR += parseFloat(pas1);
+                } 
             } else {
                 totalUSD+=parseFloat(pas1);    
                 if (tax1.checked) {
@@ -73,7 +85,14 @@ function countBilling() {
                     console.log('vat checked');
                     totalPPHUSD += parseFloat(pas1);
                 } 
+                
+                if (tax2.checked) {
+                    console.log('checked tax 2');
+                    totalDPP2USD += parseFloat(pas1);
+                }
             }
+            
+            console.log(totalDPPIDR);
         } catch (e) {
         }                                                                               
     }
@@ -131,28 +150,33 @@ function countBilling() {
     }
     
     var vatIDR = totalDPPIDR * 0.10;
+    var vat2IDR = totalDPP2IDR * 0.01;
     var pph23IDR = totalPPHIDR * 0.02;
     
     var vatUSD = totalDPPUSD * 0.10;
+    var vat2USD = totalDPP2USD * 0.01;
     var pph23USD = totalPPHUSD * 0.02;
     
-    document.getElementById("totalDPPUSDAsString").value = formatCurrency(totalDPPUSD + totalPPHUSD);
-    document.getElementById("totalDPPIDRAsString").value = formatCurrency(totalDPPIDR + totalPPHIDR);
-    
+    document.getElementById("totalDPPUSDAsString").value = formatCurrency(totalDPPUSD);
+    document.getElementById("totalDPPIDRAsString").value = formatCurrency(totalDPPIDR);
+          
     document.getElementById("totalVatUSDAsString").value = formatCurrency(vatUSD);
     document.getElementById("totalVatIDRAsString").value = formatCurrency(vatIDR);
-        
-    document.getElementById("subTotalBillingUSDAsString").value = formatCurrency(totalUSD + vatUSD);    
-    document.getElementById("subTotalBillingIDRAsString").value = formatCurrency(totalIDR + vatIDR);
+    
+    document.getElementById("totalVat2USDAsString").value = formatCurrency(vat2USD);
+    document.getElementById("totalVat2IDRAsString").value = formatCurrency(vat2IDR);
+    
+    document.getElementById("subTotalBillingUSDAsString").value = formatCurrency(totalUSD + vatUSD + vat2USD);    
+    document.getElementById("subTotalBillingIDRAsString").value = formatCurrency(totalIDR + vatIDR + vat2IDR);
     
     document.getElementById("totalPPHUSDAsString").value = formatCurrency(pph23USD);
     document.getElementById("totalPPHIDRAsString").value = formatCurrency(pph23IDR);
     
-    document.getElementById("totalBillingUSDAsString").value = formatCurrency((totalUSD + vatUSD) - pph23USD);
-    document.getElementById("totalBillingIDRAsString").value = formatCurrency((totalIDR + vatIDR) - pph23IDR);
+    document.getElementById("totalBillingUSDAsString").value = formatCurrency((totalUSD + vatUSD + vat2USD) - pph23USD);
+    document.getElementById("totalBillingIDRAsString").value = formatCurrency((totalIDR + vatIDR + vat2IDR) - pph23IDR);
     
-    document.getElementById("totalBillingUSD").value = ((totalUSD + vatUSD) - pph23USD);
-    document.getElementById("totalBillingIDR").value = ((totalIDR + vatIDR) - pph23IDR);
+    document.getElementById("totalBillingUSD").value = ((totalUSD + vatUSD + vat2USD) - pph23USD);
+    document.getElementById("totalBillingIDR").value = ((totalIDR + vatIDR + vat2IDR) - pph23IDR);
         
     
 //    document.getElementById("totalBillingIDRAsString").value = formatCurrency(totalIDR - (totalTaxIDR+totalVatIDR));
@@ -321,27 +345,27 @@ function countExpenses() {
             
             if (pas2=="IDR") {
                 totalIDR+=parseFloat(pas1);       
-                if (tax1.checked) {
-                    console.log('checked');
-                    totalTaxIDR += parseFloat(pas1);
-                } 
-
-                if (vat1.checked) {
-                    console.log('vat checked');
-                    totalVatIDR += parseFloat(pas1);
-                    
-                } 
+//                if (tax1.checked) {
+//                    console.log('checked');
+//                    totalTaxIDR += parseFloat(pas1);
+//                } 
+//
+//                if (vat1.checked) {
+//                    console.log('vat checked');
+//                    totalVatIDR += parseFloat(pas1);
+//                    
+//                } 
             } else {
                 totalUSD+=parseFloat(pas1);                                             
-                if (tax1.checked) {
-                    console.log('checked');
-                    totalTaxUSD += parseFloat(pas1);
-                } 
-
-                if (vat1.checked) {
-                    console.log('vat checked');
-                    totalVatUSD += parseFloat(pas1);
-                } 
+//                if (tax1.checked) {
+//                    console.log('checked');
+//                    totalTaxUSD += parseFloat(pas1);
+//                } 
+//
+//                if (vat1.checked) {
+//                    console.log('vat checked');
+//                    totalVatUSD += parseFloat(pas1);
+//                } 
             }
         } catch (e) {
         }                                                                               

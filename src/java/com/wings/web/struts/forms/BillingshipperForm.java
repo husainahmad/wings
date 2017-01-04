@@ -45,6 +45,8 @@ public class BillingshipperForm extends ActionForm {
    private java.lang.Integer _isVat = new Integer(0);
    private java.lang.Double _totalTax = null;
    private java.lang.Double _totalVat = null;
+   private java.lang.Integer _isTax2 = new Integer(0);
+   private java.lang.Double _totalTax2 = null;
    /**
     * Standard constructor.
     */
@@ -336,5 +338,33 @@ public class BillingshipperForm extends ActionForm {
      */
     public void setTotalVat(java.lang.Double totalVat) {
         this._totalVat = totalVat;
+    }
+
+    /**
+     * @return the _isTax2
+     */
+    public java.lang.Integer getIsTax2() {
+        return _isTax2;
+    }
+
+    /**
+     * @param _isTax2 the _isTax2 to set
+     */
+    public void setIsTax2(java.lang.Integer _isTax2) {
+        this._isTax2 = _isTax2;
+    }
+
+    /**
+     * @return the _totalTax2
+     */
+    public java.lang.Double getTotalTax2() {
+        return _totalTax2;
+    }
+
+    /**
+     * @param _totalTax2 the _totalTax2 to set
+     */
+    public void setTotalTax2(java.lang.Double _totalTax2) {
+        this._totalTax2 = _totalTax2;
     }
 }

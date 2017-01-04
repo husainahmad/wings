@@ -345,14 +345,17 @@ public final class PrintJobsheetsiAction extends Action {
         parameters.put("cnIDR", jobsheetForm.getCreditNoteIDR());
         parameters.put("cnUSD", jobsheetForm.getCreditNoteUSD());
         
-        parameters.put("vatIDR", new Double(jobsheetForm.getVatIDR().doubleValue()));
-        parameters.put("pphIDR", new Double(jobsheetForm.getPphIDR().doubleValue()));
+        parameters.put("vatIDR", new Double(jobsheetForm.getVatIDR() == null ? 0.0 : jobsheetForm.getVatIDR().doubleValue()));
+        parameters.put("pphIDR", new Double(jobsheetForm.getPphIDR() == null ? 0.0 : jobsheetForm.getPphIDR().doubleValue()));
         
-        parameters.put("vatUSD", new Double(jobsheetForm.getVatUSD().doubleValue()));
-        parameters.put("pphUSD", new Double(jobsheetForm.getPphUSD().doubleValue()));        
+        parameters.put("vatUSD", new Double(jobsheetForm.getVatUSD() == null ? 0.0 : jobsheetForm.getVatUSD().doubleValue()));
+        parameters.put("pphUSD", new Double(jobsheetForm.getPphUSD() == null ? 0.0 : jobsheetForm.getPphUSD().doubleValue()));        
         
-        parameters.put("dppIDR", new Double(jobsheetForm.getDppIDR().doubleValue()));
-        parameters.put("dppUSD", new Double(jobsheetForm.getDppUSD().doubleValue()));     
+        parameters.put("dppIDR", new Double(jobsheetForm.getDppIDR() == null ? 0.0 : jobsheetForm.getDppIDR().doubleValue()));
+        parameters.put("dppUSD", new Double(jobsheetForm.getDppUSD() == null ? 0.0 : jobsheetForm.getDppUSD().doubleValue()));        
+        
+        parameters.put("dppIDR2", new Double(jobsheetForm.getDppIDR2()== null ? 0.0 : jobsheetForm.getDppIDR2().doubleValue()));
+        parameters.put("vatIDR2", new Double(jobsheetForm.getVatIDR2() == null ? 0.0 : jobsheetForm.getVatIDR2().doubleValue()));     
         
         try {
             double refundIDR = 0.0;

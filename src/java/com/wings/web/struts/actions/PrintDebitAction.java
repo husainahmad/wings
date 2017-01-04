@@ -54,8 +54,10 @@ public final class PrintDebitAction extends Action {
    private double totalBillingUSD = 0.0;
    private double totalExpensesIDR = 0.0;
    private double totalExpensesUSD = 0.0; 
-   private double totalTax = 0.0;
-   private double totalVat = 0.0;
+   private double totalDPP = 0.0;   
+   
+   private double totalDPPVat = 0.0;
+   private double totalDPP2 = 0.0;
    public ActionForward execute(
       ActionMapping mapping,
       ActionForm form,
@@ -68,8 +70,9 @@ public final class PrintDebitAction extends Action {
         totalBillingUSD = 0.0;
         totalExpensesIDR = 0.0;
         totalExpensesUSD = 0.0; 
-        totalTax = 0.0;
-        totalVat = 0.0;
+        totalDPP = 0.0;
+        totalDPPVat = 0.0;
+        totalDPP2 = 0.0;
         try                        
         {
             DebitForm debitForm = new DebitForm();
@@ -105,17 +108,17 @@ public final class PrintDebitAction extends Action {
         DecimalFormat indMoneyFormat = new DecimalFormat("###,###");
         parameters.put("subTotalBillingIDR", indMoneyFormat.format(totalBillingIDR));
         
-        totalVat = totalVat * 0.10;
-        parameters.put("totalVat", indMoneyFormat.format(totalVat));
+        totalDPP = totalDPP * 0.10;
+        parameters.put("totalVat", indMoneyFormat.format(totalDPP));
         
-        totalBillingIDR += totalVat;
+        totalBillingIDR += (totalDPP + (totalDPP2 * 0.01));
         
         parameters.put("totalBillingIDRAfterVat", indMoneyFormat.format(totalBillingIDR));
         
-        totalTax = totalTax * 0.02;
-        parameters.put("totalTax", indMoneyFormat.format(totalTax));
+        totalDPPVat = totalDPPVat * 0.02;
+        parameters.put("totalTax", indMoneyFormat.format(totalDPPVat));
         
-        totalBillingIDR = totalBillingIDR-totalTax;
+        totalBillingIDR = totalBillingIDR-totalDPPVat;
         parameters.put("grandTotal", indMoneyFormat.format(totalBillingIDR));
         
         parameters.put("strTotalBillingIDR", i.convert(String.valueOf(totalBillingIDR)).toUpperCase() + " RUPIAH");
@@ -674,10 +677,15 @@ public final class PrintDebitAction extends Action {
                 }                       
                 
                 if (ba.getIsTax().intValue()>0) {
-                    totalTax+=ba.getCharge().doubleValue();
+                    totalDPP+=ba.getCharge().doubleValue();
                 }
+                
+                if (ba.getIsTax2().intValue()>0) {
+                    totalDPP2+=ba.getCharge().doubleValue();
+                }  
+                
                 if (ba.getIsVat().intValue()>0) {
-                    totalVat+=ba.getCharge().doubleValue();
+                    totalDPPVat+=ba.getCharge().doubleValue();
                 }  
                 
                 valueOfTable[i][4] = ba.getDescriptionFee();

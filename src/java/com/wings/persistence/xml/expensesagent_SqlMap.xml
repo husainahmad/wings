@@ -18,7 +18,7 @@
       descriptionInvoice,
       oriKurs, 
       oriWeight,
-      isTax,isVat, totalTax, totalVat
+      isTax,isVat, totalTax, totalVat, isTax2, totalTax2
     from expensesagent
     where idExpensesAgent = #idExpensesAgent#
   </select>
@@ -34,7 +34,7 @@
       descriptionInvoice,
       oriKurs, 
       oriWeight,
-      isTax, isVat, totalTax, totalVat
+      isTax, isVat, totalTax, totalVat, isTax2, totalTax2
     from expensesagent
   </select>
   
@@ -51,7 +51,7 @@
       ea.descriptionInvoice,
       ea.oriKurs, 
       ea.oriWeight,
-      ea.isTax, ea.isVat, ea.totalTax, ea.totalVat, af.category
+      ea.isTax, ea.isVat, ea.totalTax, ea.totalVat, ea.isTax2, ea.totalTax2, af.category
     from expensesagent ea
     left join agentfee af
         on ea.idAgentFee = af.idAgentFee
@@ -86,7 +86,7 @@
       ea.descriptionInvoice,
       ea.oriKurs, 
       ea.oriWeight,
-      ea.isTax, ea.isVat, ea.totalTax, ea.totalVat, af.category
+      ea.isTax, ea.isVat, ea.totalTax, ea.totalVat, ea.isTax2, ea.totalTax2, af.category
     from expensesagent ea
     left join agentfee af
         on ea.idAgentFee = af.idAgentFee
@@ -111,14 +111,14 @@
   <insert id="expensesagent_insert" parameterClass="com.wings.persistence.Expensesagent">   
     insert into expensesagent (idJobSheet, idAgentFee, charge, 
       kurs, description, kursValue, descriptionInvoice, oriKurs, 
-      oriWeight, isTax, isVat, totalTax, totalVat) 
+      oriWeight, isTax, isVat, totalTax, totalVat, isTax2, totalTax2) 
     values (#idJobSheet:INTEGER#, 
       #idAgentFee:INTEGER#, #charge:DOUBLE#, #kurs:VARCHAR#, #description:VARCHAR#, 
       #kursValue:DOUBLE#, #descriptionInvoice:VARCHAR#,
       #oriKurs:DOUBLE#, 
       #oriWeight:DOUBLE#, 
       #isTax:INTEGER#,
-      #isVat:INTEGER#, #totalTax:DOUBLE#, #totalVat:DOUBLE#) 
+      #isVat:INTEGER#, #totalTax:DOUBLE#, #totalVat:DOUBLE#, #isTax2:INTEGER#,#totalTax2:DOUBLE#) 
   </insert>
   
   <update id="expensesagent_updateByPrimaryKey" parameterClass="com.wings.persistence.Expensesagent">   
@@ -135,7 +135,9 @@
       isTax = #isTax:INTEGER#,
       isVat = #isVat:INTEGER#,
       totalTax = #totalTax:DOUBLE#, 
-      totalVat = #totalVat:DOUBLE#
+      totalVat = #totalVat:DOUBLE#,
+      isTax2 = #isTax2:INTEGER#,
+      totalTax2 = #totalTax2:DOUBLE#
     where idExpensesAgent = #idExpensesAgent#
   </update>
 </sqlMap>

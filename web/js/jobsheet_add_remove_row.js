@@ -38,6 +38,7 @@ function addbaDebit() {
     var cell7 = new_row.insertCell(6);
     var cell8 = new_row.insertCell(7);
     var cell9 = new_row.insertCell(8);
+    var cell10 = new_row.insertCell(9);
                 
     // Add some text to the new cells:
     cell1.innerHTML = "<select name=\"billingidAgentFeeDebit"+dacountbaDebit+"\" id=\"billingidAgentFeeDebit"+dacountbaDebit+"\" onkeydown=\"if(event.keyCode==13) event.keyCode=9;\">"+
@@ -53,7 +54,8 @@ function addbaDebit() {
     cell6.innerHTML = "<input type=\"text\" name=\"billingAgentKursValueDebit"+dacountbaDebit+"\" id=\"billingAgentKursValueDebit"+dacountbaDebit+"\" onBlur=\"this.value=formatCurrency(this.value);\" value=\"" + kursDollar + "\" style=\"text-align:right;\" size=\"10\" onkeydown=\"if(event.keyCode==13) event.keyCode=9;\"/>";
     cell7.innerHTML = "<input type=\"checkbox\" name=\"billingAgentTaxDebit"+dacountbaDebit+"\" id=\"billingAgentTaxDebit"+dacountbaDebit+"\" value=\"1\" onchange=\"countBilling()\" style=\"text-align:right;\" size=\"10\" onkeydown=\"if(event.keyCode==13) event.keyCode=9;\"/>";
     cell8.innerHTML = "<input type=\"checkbox\" name=\"billingAgentVatDebit"+dacountbaDebit+"\" id=\"billingAgentVatDebit"+dacountbaDebit+"\" value=\"1\" onchange=\"countBilling()\" style=\"text-align:right;\" size=\"10\" onkeydown=\"if(event.keyCode==13) event.keyCode=9;\"/>";
-    cell9.innerHTML = "<input type=\"button\" value=\"$\" onclick=\"convertToDollarOrRupiah('" + kursValue + "','" + chargeDebit + "','" + kurs + "')\" >";               
+    cell9.innerHTML = "<input type=\"checkbox\" name=\"billingAgentTax2Debit"+dacountbaDebit+"\" id=\"billingAgentTax2Debit"+dacountbaDebit+"\" value=\"1\" onchange=\"countBilling()\" style=\"text-align:right;\" size=\"10\" onkeydown=\"if(event.keyCode==13) event.keyCode=9;\"/>";
+    cell10.innerHTML = "<input type=\"button\" value=\"$\" onclick=\"convertToDollarOrRupiah('" + kursValue + "','" + chargeDebit + "','" + kurs + "')\" >";               
 }
             
 function subtractbaInvoice() {                
@@ -100,7 +102,7 @@ function addbaInvoice() {
     var cell7 = new_row.insertCell(6);
     var cell8 = new_row.insertCell(7);
     var cell9 = new_row.insertCell(8);
-                
+    var cell10 = new_row.insertCell(9);            
     // Add some text to the new cells:
     cell1.innerHTML = "<select name=\"billingidAgentFeeInvoice"+dacountbaInvoice+"\" id=\"billingidAgentFeeInvoice"+dacountbaInvoice+"\" onkeydown=\"if(event.keyCode==13) event.keyCode=9;\">"+
     getDataInvoice() +
@@ -115,7 +117,8 @@ function addbaInvoice() {
     cell6.innerHTML = "<input type=\"text\" name=\"billingAgentKursValueInvoice"+dacountbaInvoice+"\" id=\"billingAgentKursValueInvoice"+dacountbaInvoice+"\" onBlur=\"this.value=formatCurrency(this.value);\" value=\"" + kursDollar + "\" style=\"text-align: right;\" size=\"10\" onkeydown=\"if(event.keyCode==13) event.keyCode=9;\"/>";
     cell7.innerHTML = "<input type=\"checkbox\" name=\"billingAgentTaxInvoice"+dacountbaInvoice+"\" id=\"billingAgentTaxInvoice"+dacountbaInvoice+"\" value=\"1\" onchange =\"countBilling()\"  style=\"text-align:right;\" size=\"10\" onkeydown=\"if(event.keyCode==13) event.keyCode=9;\"/>";
     cell8.innerHTML = "<input type=\"checkbox\" name=\"billingAgentVatInvoice"+dacountbaInvoice+"\" id=\"billingAgentVatInvoice"+dacountbaInvoice+"\" value=\"1\" onchange =\"countBilling()\"  style=\"text-align:right;\" size=\"10\" onkeydown=\"if(event.keyCode==13) event.keyCode=9;\"/>";
-    cell9.innerHTML = "<input type=\"button\" value=\"$\" onclick=\"convertToDollarOrRupiah('" + kursValue + "','" + chargeDebit + "','" + kurs + "')\" >";
+    cell9.innerHTML = "<input type=\"checkbox\" name=\"billingAgentTax2Invoice"+dacountbaInvoice+"\" id=\"billingAgentTax2Invoice"+dacountbaInvoice+"\" value=\"1\" onchange =\"countBilling()\"  style=\"text-align:right;\" size=\"10\" onkeydown=\"if(event.keyCode==13) event.keyCode=9;\"/>";
+    cell10.innerHTML = "<input type=\"button\" value=\"$\" onclick=\"convertToDollarOrRupiah('" + kursValue + "','" + chargeDebit + "','" + kurs + "')\" >";
 }
 function selectFocus(objectIn) {                
     document.getElementById(objectIn).focus();

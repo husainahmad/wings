@@ -407,6 +407,9 @@
                                         PPH23
                                     </td> 
                                     <td width="25%" align="center">
+                                        VAT 1 %
+                                    </td> 
+                                    <td width="25%" align="center">
                                         Action
                                     </td>                         
                                 </tr>                                                                   
@@ -465,6 +468,7 @@
                                                 <td width="25%"><input type="text" name="billingAgentKursValueDebit<%=i%>"id="billingAgentKursValueDebit<%=i%>"  value="<bean:write name="billAgent" property="kursValue" format="#,###,###.##"/>" size="10" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                 <td width="25%"><input type="checkbox" name="billingAgentTaxDebit<%=i%>" id="billingAgentTaxDebit<%=i%>" value="<bean:write name="billAgent" property="isTax" />" <%=billingagent.getIsTax().intValue()>0 ? " checked " : ""%> size="10" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                 <td width="25%"><input type="checkbox" name="billingAgentVatDebit<%=i%>" id="billingAgentVatDebit<%=i%>" value="<bean:write name="billAgent" property="isVat" />" <%=billingagent.getIsVat().intValue()>0 ? " checked " : ""%> size="10" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
+                                                <td width="25%"><input type="checkbox" name="billingAgentTax2Debit<%=i%>" id="billingAgentTax2Debit<%=i%>" value="<bean:write name="billAgent" property="isVat" />" <%=billingagent.getIsVat().intValue()>0 ? " checked " : ""%> size="10" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                 <td>&nbsp;<input type="button" value="$" onclick="convertToDollarOrRupiah('billingAgentKursValueDebit<%=i%>','billingAgentChargeDebit<%=i%>','billingAgentKursDebit<%=i%>')" > </td>
                                             </tr>
                                         </logic:iterate>   
@@ -518,7 +522,10 @@
                                         </td>       
                                             <td width="25%" align="center">
                                             PPH23
-                                        </td>       
+                                        </td>     
+                                        <td width="25%" align="center">
+                                            VAT 1%
+                                        </td>
                                         <td width="25%" align="center">
                                             Action
                                         </td>                         
@@ -575,6 +582,7 @@
                                                     <td width="25%"><input type="text" name="billingAgentKursValueInvoice<%=i%>" id="billingAgentKursValueInvoice<%=i%>" value="<bean:write name="billShipper" property="kursValue" format="#,###,###.##"/>" size="10" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                     <td width="25%"><input type="checkbox" name="billingAgentTaxInvoice<%=i%>" id="billingAgentTaxInvoice<%=i%>" value="<bean:write name="billShipper" property="isTax" />" <%=billS.getIsTax().intValue()>0 ? " checked " : ""%>  onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                     <td width="25%"><input type="checkbox" name="billingAgentVatInvoice<%=i%>" id="billingAgentVatInvoice<%=i%>" value="<bean:write name="billShipper" property="isVat" />" <%=billS.getIsVat().intValue()>0 ? " checked " : ""%>  onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
+                                                    <td width="25%"><input type="checkbox" name="billingAgentTax2Invoice<%=i%>" id="billingAgentTax2Invoice<%=i%>" value="<bean:write name="billShipper" property="isVat" />" <%=billS.getIsVat().intValue()>0 ? " checked " : ""%>  onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                     <td>&nbsp;<input type="button" value="$" onclick="convertToDollarOrRupiah('billingAgentKursValueInvoice<%=i%>','billingAgentChargeInvoice<%=i%>','billingAgentKursInvoice<%=i%>')" >  </td>
                                                 </tr>                                                                                          
                                              </logic:iterate>  
@@ -856,10 +864,10 @@
                                         </td>                                        
                                         <td width="5"></td>                                        
                                         <td>      
-                                            <input type="text" id="totalVatUSDAsString" name="totalVatUSDAsString" size="35" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                            <input type="text" id="totalVat2USDAsString" name="totalVat2USDAsString" size="35" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
                                         </td>
                                         <td>
-                                                <input type="text" id="totalVatIDRAsString" name="totalVatIDRAsString" size="35" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                                <input type="text" id="totalVat2IDRAsString" name="totalVat2IDRAsString" size="35" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
                                         </td>
                                     </tr>
                                     <tr>

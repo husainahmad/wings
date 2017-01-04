@@ -377,7 +377,7 @@
                                                         USD
                                                     </td>
                                                     <td>
-                                                        IDR
+                                                        IDR 
                                                     </td>
                                                 </tr>  
                                                 <tr>
@@ -410,10 +410,10 @@
                                                     </td>                                        
                                                     <td width="5"></td>                                        
                                                     <td>      
-                                                        <input type="text" id="totalVatUSDAsString" name="totalVatUSDAsString" size="35" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                                        <input type="text" id="totalVat2USDAsString" name="totalVat2USDAsString" size="35" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
                                                     </td>
                                                     <td>
-                                                         <input type="text" id="totalVatIDRAsString" name="totalVatIDRAsString" size="35" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                                         <input type="text" id="totalVat2IDRAsString" name="totalVat2IDRAsString" size="35" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -517,8 +517,8 @@
          </tr>   
                 
          <script>
-             document.addEventListener("DOMContentLoaded", function(event) { 
-                 countBilling();
-                 countExpenses();
-             });
+             $(document).ready(function() {
+                countBilling();
+                countExpenses();
+              });            
          </script>    

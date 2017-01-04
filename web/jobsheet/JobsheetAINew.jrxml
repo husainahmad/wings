@@ -1093,7 +1093,7 @@
 					<textElement verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
 					</textElement>
-				<text><![CDATA[VAT]]></text>
+				<text><![CDATA[VAT + VAT 1%]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

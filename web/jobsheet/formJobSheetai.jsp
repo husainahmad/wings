@@ -22,6 +22,7 @@
       <script type="text/javascript" src="<%=request.getContextPath()%>/js/ajaxtags-1.2-beta2.js"></script>
       <script type="text/javascript" src="<%=request.getContextPath()%>/Javascript/jsLib.js"></script>
       
+      <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.10.2.js"></script>
       
      <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/ajaxtags.css" />
      <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/site.css" />

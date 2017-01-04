@@ -13,7 +13,7 @@
       idShipperFee,
       charge,
       kurs,description
-      ,kursValue, descriptionInvoice,isTax, isVat, totalTax, totalVat
+      ,kursValue, descriptionInvoice,isTax, isVat, totalTax, totalVat, isTax2, totalTax2
     from billingshipper
     where idbillingShipper = #idbillingShipper#
   </select>
@@ -23,7 +23,7 @@
       idJobSheet,
       idShipperFee,
       charge,
-      kurs,description,kursValue,descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat
+      kurs,description,kursValue,descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat, isTax2, totalTax2
     from billingshipper
   </select>
   
@@ -39,7 +39,7 @@
           bs.kursValue,
           bs.descriptionInvoice,
           bs.oriKurs, bs.oriWeight,
-          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category
+          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category, bs.isTax2, bs.totalTax2
         from billingshipper bs
         left join shipperfee sf
         on bs.idShipperFee = sf.idShipperFee
@@ -59,7 +59,7 @@
           bs.kursValue,
           bs.descriptionInvoice,
           bs.oriKurs, bs.oriWeight,
-          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category
+          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category, bs.isTax2, bs.totalTax2
         from billingshipper bs
         left join shipperfee sf
         on bs.idShipperFee = sf.idShipperFee
@@ -80,7 +80,7 @@
           bs.kursValue,
           bs.descriptionInvoice,
           bs.oriKurs, bs.oriWeight,
-          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category
+          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category, bs.isTax2, bs.totalTax2
         from billingshipper bs
         left join shipperfee sf
         on bs.idShipperFee = sf.idShipperFee
@@ -115,7 +115,7 @@
           bs.kursValue,
           bs.descriptionInvoice,
           bs.oriKurs, bs.oriWeight,
-          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category
+          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category, bs.isTax2, bs.totalTax2
         from billingshipper bs
         left join shipperfee sf
         on bs.idShipperFee = sf.idShipperFee
@@ -139,7 +139,7 @@
           bs.kursValue,
           bs.descriptionInvoice,
           bs.oriKurs, bs.oriWeight,
-          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category
+          bs.isTax, bs.isVat, bs.totalTax, bs.totalVat, sf.category, bs.isTax2, bs.totalTax2
         from billingshipper bs
         left join shipperfee sf
         on bs.idShipperFee = sf.idShipperFee
@@ -160,11 +160,11 @@
   
   <insert id="billingshipper_insert" parameterClass="com.wings.persistence.Billingshipper">   
     insert into billingshipper (idJobSheet, idShipperFee, 
-      charge, kurs, description, kursValue, descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat) 
+      charge, kurs, description, kursValue, descriptionInvoice, oriKurs, oriWeight, isTax, isVat, totalTax, totalVat, isTax2, totalTax2) 
     values (#idJobSheet:INTEGER#, 
       #idShipperFee:INTEGER#, #charge:DOUBLE#, #kurs:VARCHAR#, #description:VARCHAR#, 
       #kursValue:DOUBLE#, #descriptionInvoice:VARCHAR#,
-      #oriKurs:DOUBLE#, #oriWeight:DOUBLE#, #isTax:INTEGER#, #isVat:INTEGER#, #totalTax:DOUBLE#, #totalVat:DOUBLE#) 
+      #oriKurs:DOUBLE#, #oriWeight:DOUBLE#, #isTax:INTEGER#, #isVat:INTEGER#, #totalTax:DOUBLE#, #totalVat:DOUBLE#, #isTax2:INTEGER#, #totalTax2:DOUBLE#) 
   </insert>
   
   <update id="billingshipper_updateByPrimaryKey" parameterClass="com.wings.persistence.Billingshipper">  
@@ -181,7 +181,9 @@
       isTax = #isTax:INTEGER#,
       isVat = #isVat:INTEGER#,
       totalTax = #totalTax:DOUBLE#, 
-      totalVat = #totalVat:DOUBLE#
+      totalVat = #totalVat:DOUBLE#,
+      isTax2 = #isTax:INTEGER#,
+      totalTax = #totalTax:DOUBLE#
     where idbillingShipper = #idbillingShipper#
   </update>
 </sqlMap>

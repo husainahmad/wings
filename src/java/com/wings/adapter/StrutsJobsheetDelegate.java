@@ -134,6 +134,9 @@ public class StrutsJobsheetDelegate {
       jobsheetForm.setDppIDR(jobsheet.getDppIDR());
       jobsheetForm.setDppUSD(jobsheet.getDppUSD());
       
+      jobsheetForm.setDppIDR2(jobsheet.getDppIDR2());
+      jobsheetForm.setVatIDR2(jobsheet.getVatIDR2());
+      
       return jobsheetForm;
    }
 

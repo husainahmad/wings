@@ -55,7 +55,9 @@
       vatUSD,
       pphUSD,
       dppIDR,
-      dppUSD 
+      dppUSD,
+      dppIDR2,
+      vatIDR2       
     from jobsheet j
     where j.idJobSheet = #idJobSheet#
   </select>   
@@ -101,7 +103,9 @@
       vatUSD,
       pphUSD,
       dppIDR,
-      dppUSD
+      dppUSD,
+      dppIDR2,
+      vatIDR2
     from jobsheet j
     where j.jobNo = #jobNo#
   </select>   
@@ -154,7 +158,9 @@
       vatUSD,
       pphUSD,
       dppIDR,
-      dppUSD
+      dppUSD,
+      dppIDR2,
+      vatIDR2
     from jobsheet
   </select>
   
@@ -3363,7 +3369,9 @@ where v.idJobsheet in (
       vatUSD = #vatUSD:DOUBLE#,
       pphUSD = #pphUSD:DOUBLE#,
       dppIDR = #dppIDR:DOUBLE#,
-      dppUSD = #dppUSD:DOUBLE#      
+      dppUSD = #dppUSD:DOUBLE#,
+      dppIDR2 = #dppIDR2:DOUBLE#,
+      vatIDR2 = #vatIDR2:DOUBLE#            
     where idJobSheet = #idJobSheet#
   </update>
   

@@ -60,7 +60,10 @@ public class JobsheetForm extends ActionForm {
        
    private java.lang.Double _dppIDR;
    private java.lang.Double _dppUSD;
-    
+   
+   private java.lang.Double _dppIDR2;
+   private java.lang.Double _vatIDR2;
+   
    /**
     * Standard constructor.
     */
@@ -591,6 +594,34 @@ public class JobsheetForm extends ActionForm {
      */
     public void setDppUSD(java.lang.Double dppUSD) {
         this._dppUSD = dppUSD;
+    }
+
+    /**
+     * @return the _dppIDR2
+     */
+    public java.lang.Double getDppIDR2() {
+        return _dppIDR2;
+    }
+
+    /**
+     * @param _dppIDR2 the _dppIDR2 to set
+     */
+    public void setDppIDR2(java.lang.Double _dppIDR2) {
+        this._dppIDR2 = _dppIDR2;
+    }
+
+    /**
+     * @return the _vatIDR2
+     */
+    public java.lang.Double getVatIDR2() {
+        return _vatIDR2;
+    }
+
+    /**
+     * @param _vatIDR2 the _vatIDR2 to set
+     */
+    public void setVatIDR2(java.lang.Double _vatIDR2) {
+        this._vatIDR2 = _vatIDR2;
     }
     
 }

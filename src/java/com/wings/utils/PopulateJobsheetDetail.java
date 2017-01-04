@@ -75,6 +75,7 @@ public class PopulateJobsheetDetail {
       String oriWeightStr;
       String ows;
       String billingAgentTaxDebit;
+      String billingAgentTax2Debit;
       String billingAgentVatDebit;
       
       double totalBillingDebit = 0.0;  
@@ -91,6 +92,7 @@ public class PopulateJobsheetDetail {
           oriKursStr = "billingAgentOriKursDebit"+i;
           oriWeightStr = "billingAgentOriWeightDebit"+i;
           billingAgentTaxDebit = "billingAgentTaxDebit"+i;
+          billingAgentTax2Debit = "billingAgentTax2Debit"+i;
           billingAgentVatDebit = "billingAgentVatDebit"+i;
           
           billingagent = new BillingagentForm();
@@ -158,6 +160,13 @@ public class PopulateJobsheetDetail {
                   } catch (Exception ex) {                     
                   }                  
               }
+              billingagent.setIsTax2(new Integer("0"));
+              if (request.getParameter(billingAgentTax2Debit)!=null) { 
+                  try {
+                      billingagent.setIsTax2(new Integer(request.getParameter(billingAgentTax2Debit)));
+                  } catch (Exception ex) {                     
+                  }                  
+              }
               billingagent.setIsVat(new Integer("0"));
               if (request.getParameter(billingAgentVatDebit)!=null) { 
                   try {
@@ -193,8 +202,9 @@ public class PopulateJobsheetDetail {
       String ows;
       Shipperfee shipperfee = null;
       String billingAgentTaxInvoice;
+      String billingAgentTax2Invoice;
       String billingAgentVatInvoice;
-      double totalBillingInvoice = 0.0;
+      //double totalBillingInvoice = 0.0;
       boolean isInvoiceAda = false;
       for (int i=1; i<dacountbaDebit+1; i++) {
           
@@ -206,7 +216,8 @@ public class PopulateJobsheetDetail {
           kursValue = "billingAgentKursValueInvoice"+i;
           oriKursStr = "billingAgentOriKursInvoice"+i;
           oriWeightStr = "billingAgentOriWeightInvoice"+i;
-          billingAgentTaxInvoice = "billingAgentTaxInvoice" +i;
+          billingAgentTaxInvoice = "billingAgentTaxInvoice" +i; 
+          billingAgentTax2Invoice = "billingAgentTax2Invoice" +i; //billingAgentTax2Invoice
           billingAgentVatInvoice = "billingAgentVatInvoice" +i;
           
           billingshipper = new BillingshipperForm();
@@ -264,7 +275,7 @@ public class PopulateJobsheetDetail {
               billingshipper.setDescription(request.getParameter(desc));
               billingshipper.setDescriptionInvoice(request.getParameter(desc2));
               billingshipper.setKurs(request.getParameter(kurs));
-              totalBillingInvoice+= billingshipper.getCharge().doubleValue();
+              //totalBillingInvoice+= billingshipper.getCharge().doubleValue();
               
               billingshipper.setIsTax(new Integer("0"));
               if (request.getParameter(billingAgentTaxInvoice)!=null) { 
@@ -273,6 +284,13 @@ public class PopulateJobsheetDetail {
                   } catch (Exception ex) {                      
                   }                  
               }
+              billingshipper.setIsTax2(new Integer("0"));
+              if (request.getParameter(billingAgentTax2Invoice)!=null) { 
+                  try {
+                      billingshipper.setIsTax2(new Integer(request.getParameter(billingAgentTax2Invoice)));
+                  } catch (Exception ex) {                      
+                  }                  
+              }                                    
               billingshipper.setIsVat(new Integer("0"));
               if (request.getParameter(billingAgentVatInvoice)!=null) { 
                   try {
@@ -518,13 +536,17 @@ public class PopulateJobsheetDetail {
          List baDebitList = PopulateJobsheetDetail.populateBillingAgentDebit(request, jobsheetKey.getIdJobSheet(), agentfeeList);
          BillingagentForm billingagent = null;         
          
-         double totalDPPAgent = 0.0;
-         double totalPPHAgent = 0.0;
+         double totalDPPAgent = 0.0; //total nilai dari nilai yang di ceklist
+         double totalPPHAgent = 0.0;  //2% dari DPP //VAT 10% dari DPP
+         double totalDPP2Agent = 0.0; //total nilai checklist tax 1%
          
          for (int i=0; i<baDebitList.size(); i++) {             
              billingagent = (BillingagentForm)baDebitList.get(i);
              if (billingagent.getIsTax().intValue()==1) {
                  totalDPPAgent = totalDPPAgent + billingagent.getCharge().doubleValue();
+             }
+             if (billingagent.getIsTax2().intValue()==1) {
+                 totalDPP2Agent = totalDPP2Agent + billingagent.getCharge().doubleValue();
              }
              if (billingagent.getIsVat().intValue()==1) {
                  totalPPHAgent = totalPPHAgent + billingagent.getCharge().doubleValue();
@@ -541,18 +563,17 @@ public class PopulateJobsheetDetail {
          transactionaccForm.setJobNo(jobsheetForm.getJobNo());         
          // make sure there is no same data // new format
          com.wings.adapter.StrutsTransactionaccDelegate.removeByJobNo(transactionaccForm);
-         
-                                   
-         List baInvoiceList = PopulateJobsheetDetail.populateBillingAgentInvoice(request, jobsheetKey.getIdJobSheet(), shipperfeeList);
-         
-//         double totalTaxShipper = 0.0;
-//         double totalVatShipper = 0.0;
+                                            
+         List baInvoiceList = PopulateJobsheetDetail.populateBillingAgentInvoice(request, jobsheetKey.getIdJobSheet(), shipperfeeList);         
          
          BillingshipperForm billingshipper = null;
          for (int i=0; i<baInvoiceList.size(); i++) {
              billingshipper = (BillingshipperForm)baInvoiceList.get(i);             
              if (billingshipper.getIsTax().intValue()==1) {
                  totalDPPAgent = totalDPPAgent + billingshipper.getCharge().doubleValue();
+             }
+             if (billingshipper.getIsTax2().intValue()==1) {
+                 totalDPP2Agent = totalDPP2Agent + billingshipper.getCharge().doubleValue();
              }
              if (billingshipper.getIsVat().intValue()==1) {
                  totalPPHAgent = totalPPHAgent + billingshipper.getCharge().doubleValue();
@@ -561,68 +582,41 @@ public class PopulateJobsheetDetail {
          }
          
          double vatAgent = totalDPPAgent * 0.10;
-         double pph23Agent = totalPPHAgent * 0.02;   
+         vatAgent += totalDPP2Agent * 0.01; // pajak 1%
          
-//         jobsheetForm.setBillTaxIDR(new Double(totalDPPAgent));
-//         jobsheetForm.setBillVatIDR(new Double(totalPPHAgent));
-//         
-//         jobsheetForm.setExpTaxIDR(new Double(totalTaxShipper));
-//         jobsheetForm.setExpVatIDR(new Double(totalVatShipper));         
+         double pph23Agent = totalPPHAgent * 0.02;   
          
          List expDebitList = PopulateJobsheetDetail.populateExpensesAgentDebit(request, jobsheetKey.getIdJobSheet(), agentfeeList);
          
          ExpensesagentForm expensesagent = null;
          transactionaccForm = null;
-         
-//         double exTotalTaxAgent = 0.0;
-//         double exTotalVatAgent = 0.0;
-         
+                  
          for (int i=0; i<expDebitList.size(); i++) {
              expensesagent = (ExpensesagentForm)expDebitList.get(i);             
-//             if (expensesagent.getIsTax().intValue()==1) {
-//                 exTotalTaxAgent = exTotalTaxAgent + expensesagent.getCharge().doubleValue();
-//             }
-//             if (expensesagent.getIsTax().intValue()==1) {
-//                 exTotalVatAgent = exTotalVatAgent + expensesagent.getCharge().doubleValue();
-//             }
              expensesagent = com.wings.adapter.StrutsExpensesagentDelegate.create(expensesagent);                          
-         }
-                
-//         exTotalTaxAgent = exTotalTaxAgent * 0.02;
-//         exTotalVatAgent = exTotalVatAgent * 0.10;
+         }                
          
          List expInvoiceList = PopulateJobsheetDetail.populateExpensesAgentInvoice(request, jobsheetKey.getIdJobSheet(), shipperfeeList);
          
          ExpensesshipperForm expensesshipper = null;
          transactionaccForm = null;
-         
-//         double exTotalTaxShipper = 0.0;
-//         double exTotalVatShipper = 0.0;
-         
+                  
          for (int i=0; i<expInvoiceList.size(); i++) {
-             expensesshipper = (ExpensesshipperForm)expInvoiceList.get(i);
-             
-//             if (expensesshipper.getIsTax().intValue()==1) {
-//                 exTotalTaxShipper = exTotalTaxShipper + expensesshipper.getCharge().doubleValue();
-//             }
-//             if (expensesagent.getIsTax().intValue()==1) {
-//                 exTotalVatShipper = exTotalVatShipper + expensesshipper.getCharge().doubleValue();
-//             }             
+             expensesshipper = (ExpensesshipperForm)expInvoiceList.get(i);             
              expensesshipper = com.wings.adapter.StrutsExpensesshipperDelegate.create(expensesshipper);             
-         }
+         }         
          
-//         exTotalTaxShipper = exTotalTaxShipper * 0.02;
-//         exTotalVatShipper = exTotalVatShipper * 0.10;
-         
-
          jobsheetForm.setVatIDR(new Double(vatAgent));
          jobsheetForm.setPphIDR(new Double(pph23Agent));         
          
          jobsheetForm.setVatUSD(new Double(0.0));
          jobsheetForm.setPphUSD(new Double(0.0));         
          
-         jobsheetForm.setDppIDR(new Double(totalDPPAgent + totalPPHAgent));
+         jobsheetForm.setDppIDR(new Double(totalDPPAgent));        
          jobsheetForm.setDppUSD(new Double(0.0));         
+         
+         jobsheetForm.setDppIDR2(new Double(totalDPP2Agent)); 
+         jobsheetForm.setVatIDR2(new Double(totalDPP2Agent * 0.01)); 
          
          com.wings.adapter.StrutsJobsheetDelegate.updateTaxVat(jobsheetForm);
          
