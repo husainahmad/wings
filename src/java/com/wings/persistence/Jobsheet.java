@@ -99,7 +99,10 @@ public class Jobsheet extends JobsheetKey {
     
     private Double dppIDR;
     private Double dppUSD;
-        
+    
+    private Double dppIDR2;
+    private Double vatIDR2;
+   
     public String getJobNo() {
         return jobNo;
     }
@@ -755,6 +758,34 @@ public class Jobsheet extends JobsheetKey {
      */
     public void setDppUSD(Double dppUSD) {
         this.dppUSD = dppUSD;
+    }
+
+    /**
+     * @return the dppIDR2
+     */
+    public Double getDppIDR2() {
+        return dppIDR2;
+    }
+
+    /**
+     * @param dppIDR2 the dppIDR2 to set
+     */
+    public void setDppIDR2(Double dppIDR2) {
+        this.dppIDR2 = dppIDR2;
+    }
+
+    /**
+     * @return the vatIDR2
+     */
+    public Double getVatIDR2() {
+        return vatIDR2;
+    }
+
+    /**
+     * @param vatIDR2 the vatIDR2 to set
+     */
+    public void setVatIDR2(Double vatIDR2) {
+        this.vatIDR2 = vatIDR2;
     }
     
 }

@@ -25,7 +25,8 @@ public class Expensesshipper extends ExpensesshipperKey {
     private Integer isVat;
     private Double totalTax;
     private Double totalVat;
-    
+    private Integer isTax2;
+    private Double totalTax2;
     public Integer getIdJobSheet() {
         return idJobSheet;
     }
@@ -160,5 +161,33 @@ public class Expensesshipper extends ExpensesshipperKey {
      */
     public void setTotalVat(Double totalVat) {
         this.totalVat = totalVat;
+    }
+
+    /**
+     * @return the isTax2
+     */
+    public Integer getIsTax2() {
+        return isTax2;
+    }
+
+    /**
+     * @param isTax2 the isTax2 to set
+     */
+    public void setIsTax2(Integer isTax2) {
+        this.isTax2 = isTax2;
+    }
+
+    /**
+     * @return the totalTax2
+     */
+    public Double getTotalTax2() {
+        return totalTax2;
+    }
+
+    /**
+     * @param totalTax2 the totalTax2 to set
+     */
+    public void setTotalTax2(Double totalTax2) {
+        this.totalTax2 = totalTax2;
     }
 }
