@@ -54,10 +54,10 @@ public final class PrintDebitAction extends Action {
    private double totalBillingUSD = 0.0;
    private double totalExpensesIDR = 0.0;
    private double totalExpensesUSD = 0.0; 
-   private double totalDPP = 0.0;   
    
-   private double totalDPPVat = 0.0;
-   private double totalDPP2 = 0.0;
+   private double totalTax = 0.0;
+   private double totalTax2 = 0.0;
+   private double totalPPH = 0.0;
    public ActionForward execute(
       ActionMapping mapping,
       ActionForm form,
@@ -70,9 +70,10 @@ public final class PrintDebitAction extends Action {
         totalBillingUSD = 0.0;
         totalExpensesIDR = 0.0;
         totalExpensesUSD = 0.0; 
-        totalDPP = 0.0;
-        totalDPPVat = 0.0;
-        totalDPP2 = 0.0;
+        totalTax = 0.0;
+        totalTax2 = 0.0;
+        totalPPH = 0.0;
+        
         try                        
         {
             DebitForm debitForm = new DebitForm();
@@ -108,17 +109,18 @@ public final class PrintDebitAction extends Action {
         DecimalFormat indMoneyFormat = new DecimalFormat("###,###");
         parameters.put("subTotalBillingIDR", indMoneyFormat.format(totalBillingIDR));
         
-        totalDPP = totalDPP * 0.10;
-        parameters.put("totalVat", indMoneyFormat.format(totalDPP));
-        
-        totalBillingIDR += (totalDPP + (totalDPP2 * 0.01));
+        totalPPH = totalPPH * 0.02;
+        parameters.put("totalPPH", indMoneyFormat.format(totalPPH));
+                
+        totalTax = totalTax * 0.10;
+        totalTax2 = totalTax2 * 0.01;
+        parameters.put("totalTax", indMoneyFormat.format(totalTax));
+        parameters.put("totalTax2", indMoneyFormat.format(totalTax2));
+        totalBillingIDR += (totalTax+totalTax2);
         
         parameters.put("totalBillingIDRAfterVat", indMoneyFormat.format(totalBillingIDR));
         
-        totalDPPVat = totalDPPVat * 0.02;
-        parameters.put("totalTax", indMoneyFormat.format(totalDPPVat));
-        
-        totalBillingIDR = totalBillingIDR-totalDPPVat;
+        totalBillingIDR = totalBillingIDR-totalPPH;
         parameters.put("grandTotal", indMoneyFormat.format(totalBillingIDR));
         
         parameters.put("strTotalBillingIDR", i.convert(String.valueOf(totalBillingIDR)).toUpperCase() + " RUPIAH");
@@ -674,19 +676,17 @@ public final class PrintDebitAction extends Action {
                     valueOfTable[i][2] = ba.getCharge();
                     valueOfTable[i][3] = new Double(0.0);
                     totalBillingUSD=totalBillingUSD+ba.getCharge().doubleValue();
-                }                       
+                }                                                      
                 
                 if (ba.getIsTax().intValue()>0) {
-                    totalDPP+=ba.getCharge().doubleValue();
+                    totalTax+=ba.getCharge().doubleValue();
                 }
-                
                 if (ba.getIsTax2().intValue()>0) {
-                    totalDPP2+=ba.getCharge().doubleValue();
-                }  
-                
+                    totalTax2+=ba.getCharge().doubleValue();
+                }
                 if (ba.getIsVat().intValue()>0) {
-                    totalDPPVat+=ba.getCharge().doubleValue();
-                }  
+                    totalPPH+=ba.getCharge().doubleValue();
+                }    
                 
                 valueOfTable[i][4] = ba.getDescriptionFee();
                 valueOfTable[i][5] = ba.getCategory();

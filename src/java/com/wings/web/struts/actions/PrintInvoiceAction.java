@@ -55,7 +55,8 @@ public final class PrintInvoiceAction extends Action {
    private double totalExpensesIDR = 0.0;
    private double totalExpensesUSD = 0.0; 
    private double totalTax = 0.0;
-   private double totalVat = 0.0;
+   private double totalTax2 = 0.0;
+   private double totalPPH = 0.0;
    
    public ActionForward execute(
       ActionMapping mapping,
@@ -71,7 +72,8 @@ public final class PrintInvoiceAction extends Action {
         totalExpensesIDR = 0.0;
         totalExpensesUSD = 0.0; 
         totalTax = 0.0;
-        totalVat = 0.0;
+        totalTax2 = 0.0;
+        totalPPH = 0.0;
         try                        
         {
             InvoiceForm invoiceForm = new InvoiceForm();
@@ -236,17 +238,18 @@ public final class PrintInvoiceAction extends Action {
         DecimalFormat indMoneyFormat = new DecimalFormat("###,###");
         parameters.put("subTotalBillingIDR", indMoneyFormat.format(totalBillingIDR));
         
-        totalVat = totalVat * 0.10;
-        parameters.put("totalVat", indMoneyFormat.format(totalVat));
-        
-        totalBillingIDR += totalVat;
+        totalPPH = totalPPH * 0.02;
+        parameters.put("totalPPH", indMoneyFormat.format(totalPPH));
+                
+        totalTax = totalTax * 0.10;
+        totalTax2 = totalTax2 * 0.01;
+        parameters.put("totalTax", indMoneyFormat.format(totalTax));
+        parameters.put("totalTax2", indMoneyFormat.format(totalTax2));
+        totalBillingIDR += (totalTax+totalTax2);
         
         parameters.put("totalBillingIDRAfterVat", indMoneyFormat.format(totalBillingIDR));
         
-        totalTax = totalTax * 0.02;
-        parameters.put("totalTax", indMoneyFormat.format(totalTax));
-        
-        totalBillingIDR = totalBillingIDR-totalTax;
+        totalBillingIDR = totalBillingIDR-totalPPH;
         parameters.put("grandTotal", indMoneyFormat.format(totalBillingIDR));
         
         parameters.put("strTotalBillingIDR", i.convert(String.valueOf(totalBillingIDR)).toUpperCase() + " RUPIAH");
@@ -682,8 +685,11 @@ public final class PrintInvoiceAction extends Action {
                 if (bs.getIsTax().intValue()>0) {
                     totalTax+=bs.getCharge().doubleValue();
                 }
+                if (bs.getIsTax2().intValue()>0) {
+                    totalTax2+=bs.getCharge().doubleValue();
+                }
                 if (bs.getIsVat().intValue()>0) {
-                    totalVat+=bs.getCharge().doubleValue();
+                    totalPPH+=bs.getCharge().doubleValue();
                 }    
                 
                 valueOfTable[i][4] = bs.getDescriptionFee();

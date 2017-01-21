@@ -48,7 +48,7 @@ public final class PrintMonthlySalesSOAction extends Action {
             List list = this.getHandlingReportDetailSummary(request);
             Object[][] dtReport = this.parseListToArray(list);
                                                 
-            
+            JasperCompileManager.compileReportToFile(context.getRealPath("/reports/MonthlySalesSO.jrxml")); 
             String reportFileName = context.getRealPath("/reports/MonthlySalesSO.jasper");
             File reportFile = new File(reportFileName);
             if (!reportFile.exists()) {                
@@ -187,9 +187,10 @@ public final class PrintMonthlySalesSOAction extends Action {
                                     ms.setOutgoingRefundUS(jobDetail.getRefundUS());
                                     ms.setRefundAgentIDR(jobDetail.getRefundIDR());
                                     ms.setRefundAgentUSD(jobDetail.getRefundUSD());
-                                    ms.setOutgoingTax(new Double(jobDetail.getBsTax().doubleValue()+jobDetail.getBaTax().doubleValue()));
+                                    ms.setOutgoingTax(jobDetail.getVatIDR());
                                     ms.setPag(jobDetail.getPag());
                                     ms.setBsPPH(jobDetail.getBsPPH());
+                                    ms.setVatIDR2(jobDetail.getVatIDR2());
                                 }
                             } else if (j==qrList.size()-1) {
                                 ms.setIrow("N");
@@ -202,7 +203,7 @@ public final class PrintMonthlySalesSOAction extends Action {
                                 ms.setOutgoingRefundUS(jobDetail.getRefundUS());
                                 ms.setRefundAgentIDR(jobDetail.getRefundIDR());
                                 ms.setRefundAgentUSD(jobDetail.getRefundUSD());
-                                ms.setOutgoingTax(new Double(jobDetail.getBsTax().doubleValue()+jobDetail.getBaTax().doubleValue()));
+                                ms.setOutgoingTax(jobDetail.getVatIDR());
                                 ms.setPag(jobDetail.getPag());
                                 remark = jobDetail.getRemark().split(",");
                                 try {
@@ -217,6 +218,8 @@ public final class PrintMonthlySalesSOAction extends Action {
                                 }                                
                                 
                                 ms.setBsPPH(jobDetail.getBsPPH());
+                                ms.setVatIDR2(jobDetail.getVatIDR2());
+                                
                             } else {
                                 ms.setIrow("2");
                                 ms.setInumber(nList.get(0).toString());
@@ -271,7 +274,7 @@ public final class PrintMonthlySalesSOAction extends Action {
     
    private Object[][] parseListToArray(List list) {        
         
-        Object[][] valueOfTable = new Object[list.size()][28];  
+        Object[][] valueOfTable = new Object[list.size()][29];  
         MonthlySales ms = null;     
         Double tax = null;
         Double totalExpensesIDR = null;
@@ -309,6 +312,8 @@ public final class PrintMonthlySalesSOAction extends Action {
                    valueOfTable[i][25] = new Double(0.0);
                    valueOfTable[i][26] = ms.getOutgoingRefundUS();
                    valueOfTable[i][27] = ms.getBsPPH();
+                   valueOfTable[i][28] = ms.getVatIDR2();
+                   
                } else if (ms.getIrow().equalsIgnoreCase("K")) {                   
                    valueOfTable[i][8] = null;
                    valueOfTable[i][9] = null;//jobsheetDetail.getTotalBillingUSD();
@@ -330,6 +335,7 @@ public final class PrintMonthlySalesSOAction extends Action {
                    valueOfTable[i][25] = ms.getCreditNoteUSD();
                    valueOfTable[i][26] = null;    
                    valueOfTable[i][27] = null;
+                   valueOfTable[i][28] = null;
                } else {
                    valueOfTable[i][10] = null;//ms.getOutgoingUSD();//ms.get;
                    valueOfTable[i][11] = null;//ms.getOutgoingIDR();//jobsheetDetail.getTotalExpensesUSD();   
@@ -349,6 +355,7 @@ public final class PrintMonthlySalesSOAction extends Action {
                    valueOfTable[i][25] = new Double(0.0);
                    valueOfTable[i][26] = null;
                    valueOfTable[i][27] = null;
+                   valueOfTable[i][28] = null;
                }                                             
             }
         } catch (Exception e) {

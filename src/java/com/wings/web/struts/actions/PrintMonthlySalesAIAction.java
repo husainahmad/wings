@@ -47,12 +47,11 @@ public final class PrintMonthlySalesAIAction extends Action {
             List list = this.getHandlingReportDetailSummary(request);
             Object[][] dtReport = this.parseListToArray(list);
             
+            JasperCompileManager.compileReportToFile(context.getRealPath("/reports/MonthlySalesAI.jrxml"));
             String reportFileName = context.getRealPath("/reports/MonthlySalesAI.jasper");
             File reportFile = new File(reportFileName);
-            if (!reportFile.exists()) {                   
-                JasperCompileManager.compileReportToFile(context.getRealPath("/reports/MonthlySalesAI.jrxml"));
-                reportFile = new File(reportFileName);
-            }
+            if (!reportFile.exists())
+                    throw new JRRuntimeException("File jasper not found. The report design must be compiled first.");            
             
             Map parameters = new HashMap();            
             
@@ -113,7 +112,7 @@ public final class PrintMonthlySalesAIAction extends Action {
                 try {
                     JobsheetDetail jobDetail = (JobsheetDetail)globalList.get(i);
                     
-                    q.parse("select distinct inumber, totalIDR, totalUSD, shipper, consignee, agent,billTo, billToDebit from com.wings.persistence.JobsheetDetail where jobNo = '"+jobDetail.getJobNo()+"' ");
+                    q.parse("select distinct inumber, totalIDR, totalUSD, shipper, consignee, agent,billTo, billToDebit, vatIDR, pphIDR, vatIDR2 from com.wings.persistence.JobsheetDetail where jobNo = '"+jobDetail.getJobNo()+"' ");
                     QueryResults qr2 = q.execute (iList);            
                     List qrList = qr2.getResults();
                     MonthlySales ms = null;                                        
@@ -124,7 +123,11 @@ public final class PrintMonthlySalesAIAction extends Action {
                             ms = new MonthlySales();
                             ms.setFlights(jobDetail.getFlights());
                             ms.setGroupingBy(jobDetail.getFlights()+jobDetail.getJobNo());
-                               
+                            
+                            Double totalIncomingIDR = new Double(0.0);
+                            
+                            Double totalOutgoingIDR = new Double(0.0);
+                            
                             if (nList.get(0).toString().contains("DN/")) {
                                 if (nList.get(7).toString().equalsIgnoreCase("1")) {
                                     ms.setCustomer(nList.get(5).toString());
@@ -171,39 +174,64 @@ public final class PrintMonthlySalesAIAction extends Action {
                                     ms.setRemark(jobDetail.getRemark());
                                 }                                
                                 ms.setInumber(nList.get(0).toString());
-                                ms.setIncomingIDR(new Double(nList.get(1).toString()));
+                                totalIncomingIDR = new Double(0.0);
+                                totalIncomingIDR = new Double(new Double(nList.get(1).toString()).doubleValue() + 
+                                                                    new Double(nList.get(8).toString()).doubleValue() +
+                                                                    new Double(nList.get(10).toString()).doubleValue());
+                                ms.setIncomingIDR(totalIncomingIDR);
                                 ms.setIncomingUSD(new Double(nList.get(2).toString()));
                                 
                                 if (j==qrList.size()-1) {                                                                      
                                     
                                     ms.setIrow("N");
                                     ms.setInumber(nList.get(0).toString());
-                                    ms.setIncomingIDR(new Double(nList.get(1).toString()));
+                                    totalIncomingIDR = new Double(0.0);
+                                    totalIncomingIDR = new Double(new Double(nList.get(1).toString()).doubleValue() + 
+                                                                    new Double(nList.get(8).toString()).doubleValue() +
+                                                                    new Double(nList.get(10).toString()).doubleValue());
+                                    ms.setIncomingIDR(totalIncomingIDR);
                                     ms.setIncomingUSD(new Double(nList.get(2).toString()));
-                                    ms.setOutgoingIDR(new Double(jobDetail.getTotalExpensesIDR().doubleValue()));
+                                    
+                                    totalOutgoingIDR = new Double(0.0);
+                                    totalOutgoingIDR = new Double(jobDetail.getTotalExpensesIDR().doubleValue() - 
+                                                                    new Double(nList.get(8).toString()).doubleValue() -
+                                                                    new Double(nList.get(10).toString()).doubleValue());
+                                    
+                                    ms.setOutgoingIDR(totalOutgoingIDR);
                                     ms.setOutgoingUSD(jobDetail.getTotalExpensesUSD());
                                     ms.setOutgoingRefund(jobDetail.getRefund());
                                     ms.setOutgoingRefundUS(jobDetail.getRefundUS());
                                     ms.setOutgoingRefundIDR(jobDetail.getRefundIDR());
                                     ms.setOutgoingRefundUSD(jobDetail.getRefundUSD());
-                                    ms.setOutgoingTax(new Double(jobDetail.getBsTax().doubleValue()+jobDetail.getBaTax().doubleValue()));
+                                    ms.setOutgoingTax(jobDetail.getVatIDR());
                                     ms.setPag(jobDetail.getPag());
                                     ms.setRefundAgentIDR(jobDetail.getRefundIDR());
                                     ms.setRefundAgentUSD(jobDetail.getRefundUSD());
-                                    ms.setBsPPH(jobDetail.getBsPPH());                                    
+                                    ms.setBsPPH(jobDetail.getBsPPH());    
+                                    ms.setVatIDR2(jobDetail.getVatIDR2());
                                 }
                             } else if (j==qrList.size()-1) {                                                                                                                                    
                                 ms.setIrow("N");
                                 ms.setInumber(nList.get(0).toString());
-                                ms.setIncomingIDR(new Double(nList.get(1).toString()));
+                                totalIncomingIDR = new Double(0.0);
+                                totalIncomingIDR = new Double(new Double(nList.get(1).toString()).doubleValue() + 
+                                                                    new Double(nList.get(8).toString()).doubleValue() +
+                                                                    new Double(nList.get(10).toString()).doubleValue());
+                                ms.setIncomingIDR(totalIncomingIDR);
                                 ms.setIncomingUSD(new Double(nList.get(2).toString()));
-                                ms.setOutgoingIDR(new Double(jobDetail.getTotalExpensesIDR().doubleValue()));
+                                totalOutgoingIDR = new Double(0.0);
+                                totalOutgoingIDR = new Double(jobDetail.getTotalExpensesIDR().doubleValue() - 
+                                                                new Double(nList.get(8).toString()).doubleValue() -
+                                                                new Double(nList.get(10).toString()).doubleValue());
+
+                                ms.setOutgoingIDR(totalOutgoingIDR);
+
                                 ms.setOutgoingUSD(jobDetail.getTotalExpensesUSD());
                                 ms.setOutgoingRefund(jobDetail.getRefund());
                                 ms.setOutgoingRefundUS(jobDetail.getRefundUS());
                                 ms.setOutgoingRefundIDR(jobDetail.getRefundIDR());
                                 ms.setOutgoingRefundUSD(jobDetail.getRefundUSD());
-                                ms.setOutgoingTax(new Double(jobDetail.getBsTax().doubleValue()+jobDetail.getBaTax().doubleValue()));
+                                ms.setOutgoingTax(jobDetail.getVatIDR());
                                 remark = jobDetail.getRemark().split(",");
                                 try {
                                     if (jobDetail.getRemark().split(",").length>j) {
@@ -219,11 +247,16 @@ public final class PrintMonthlySalesAIAction extends Action {
                                 ms.setRefundAgentIDR(jobDetail.getRefundIDR());
                                 ms.setRefundAgentUSD(jobDetail.getRefundUSD());
                                 ms.setBsPPH(jobDetail.getBsPPH());
-                                
+                                ms.setVatIDR2(jobDetail.getVatIDR2());
                             } else {
                                 ms.setIrow("2");
                                 ms.setInumber(nList.get(0).toString());
-                                ms.setIncomingIDR(new Double(nList.get(1).toString()));
+                                totalIncomingIDR = new Double(0.0);
+                                totalIncomingIDR = new Double(new Double(nList.get(1).toString()).doubleValue() + 
+                                                                    new Double(nList.get(8).toString()).doubleValue() +
+                                                                    new Double(nList.get(10).toString()).doubleValue());
+                                ms.setIncomingIDR(totalIncomingIDR);
+                                    
                                 ms.setIncomingUSD(new Double(nList.get(2).toString()));
                                 remark = jobDetail.getRemark().split(",");
                                 try {
@@ -272,7 +305,7 @@ public final class PrintMonthlySalesAIAction extends Action {
     
    private Object[][] parseListToArray(List list) {        
         
-        Object[][] valueOfTable = new Object[list.size()][28];  
+        Object[][] valueOfTable = new Object[list.size()][29];  
         MonthlySales ms = null;     
         Double tax = null;
         Double totalExpensesIDR = null;
@@ -310,6 +343,7 @@ public final class PrintMonthlySalesAIAction extends Action {
                    valueOfTable[i][25] = new Double(0.0);
                    valueOfTable[i][26] = ms.getOutgoingRefundUS();
                    valueOfTable[i][27] = ms.getBsPPH();
+                   valueOfTable[i][28] = ms.getVatIDR2();
                } else if (ms.getIrow().equalsIgnoreCase("K")) {                   
                    valueOfTable[i][8] = null;
                    valueOfTable[i][9] = null;//jobsheetDetail.getTotalBillingUSD();
@@ -331,6 +365,7 @@ public final class PrintMonthlySalesAIAction extends Action {
                    valueOfTable[i][25] = ms.getCreditNoteUSD();
                    valueOfTable[i][26] = null;
                    valueOfTable[i][27] = null;
+                   valueOfTable[i][28] = null;
                } else {
                    valueOfTable[i][10] = null;//ms.getOutgoingUSD();//ms.get;
                    valueOfTable[i][11] = null;//ms.getOutgoingIDR();//jobsheetDetail.getTotalExpensesUSD();   
@@ -350,6 +385,7 @@ public final class PrintMonthlySalesAIAction extends Action {
                    valueOfTable[i][25] = new Double(0.0);
                    valueOfTable[i][26] = null;
                    valueOfTable[i][27] = null;
+                   valueOfTable[i][28] = null;
                }                                             
             }
         } catch (Exception e) {

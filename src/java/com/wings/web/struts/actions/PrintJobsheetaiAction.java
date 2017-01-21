@@ -487,7 +487,9 @@ public final class PrintJobsheetaiAction extends Action {
         parameters.put("dppUSD", new Double(jobsheetForm.getDppUSD() == null ? 0.0 : jobsheetForm.getDppUSD().doubleValue()));        
         
         parameters.put("dppIDR2", new Double(jobsheetForm.getDppIDR2()== null ? 0.0 : jobsheetForm.getDppIDR2().doubleValue()));
-        parameters.put("vatIDR2", new Double(jobsheetForm.getVatIDR2() == null ? 0.0 : jobsheetForm.getVatIDR2().doubleValue()));        
+        parameters.put("vat2IDR", new Double(jobsheetForm.getVatIDR2() == null ? 0.0 : jobsheetForm.getVatIDR2().doubleValue()));        
+        
+        parameters.put("vat2USD", new Double(0.0));        
         
         parameters.put("cmb", jobsheetForm.getCmb());
         
