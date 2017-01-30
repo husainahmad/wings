@@ -6,9 +6,9 @@
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Landscape"
-		 pageWidth="1417"
+		 pageWidth="1474"
 		 pageHeight="1008"
-		 columnWidth="1401"
+		 columnWidth="1458"
 		 columnSpacing="0"
 		 leftMargin="8"
 		 rightMargin="8"
@@ -56,6 +56,7 @@
 	<field name="creditNoteUSD" class="java.lang.Double"/>
 	<field name="hidRefundUS" class="java.lang.Double"/>
 	<field name="bsPPH" class="java.lang.Double"/>
+	<field name="hidVatIDR2" class="java.lang.Double"/>
 
 	<variable name="subTotalRefundAgentIDR" class="java.lang.Double" resetType="Group" resetGroup="FlightsGouping" calculation="Sum">
 		<variableExpression><![CDATA[$F{hidRefundAgentIDR}]]></variableExpression>
@@ -101,6 +102,10 @@
 		<variableExpression><![CDATA[$F{hidTax}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
+	<variable name="subTotalTax2" class="java.lang.Double" resetType="Group" resetGroup="FlightsGouping" calculation="Sum">
+		<variableExpression><![CDATA[$F{hidVatIDR2}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
+	</variable>
 	<variable name="subTotalOutgoingIDR" class="java.lang.Double" resetType="Group" resetGroup="FlightsGouping" calculation="Sum">
 		<variableExpression><![CDATA[$F{hidOutgoingIDR}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
@@ -110,7 +115,10 @@
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="subTotalOutgoingTaxIDR" class="java.lang.Double" resetType="None" calculation="Nothing">
-		<variableExpression><![CDATA[new Double($V{subTotalOutgoingIDR}.doubleValue()-$V{subTotalOutgoingTax}.doubleValue()-$V{subTotalOutgoingRefund}.doubleValue())]]></variableExpression>
+		<variableExpression><![CDATA[new Double($V{subTotalOutgoingIDR}.doubleValue()
+-$V{subTotalOutgoingTax}.doubleValue()
+-$V{subTotalTax2}.doubleValue()                    
+-$V{subTotalOutgoingRefund}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="subTotalPPH" class="java.lang.Double" resetType="Group" resetGroup="FlightsGouping" calculation="Sum">
@@ -121,16 +129,21 @@
 		<variableExpression><![CDATA[new Double($V{totalIncomingUSD}.doubleValue()-(
 $V{subTotalOutgoingUSD}.doubleValue()+
 $V{subTotalRefundAgentUSD}.doubleValue()+
+$V{subTotalRefundAgentUSD}.doubleValue()+
+$V{subTotalCreditNoteUSD}.doubleValue()+
 $V{subTotalOutgoingRefundUS}.doubleValue()))]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="subTotalProfitIDR" class="java.lang.Double" resetType="Group" resetGroup="FlightsGouping" calculation="Nothing">
 		<variableExpression><![CDATA[new Double($V{totalIncomingIDR}.doubleValue()-
-$V{subTotalOutgoingTaxIDR}.doubleValue()-
+$V{subTotalOutgoingIDR}.doubleValue()-
 $V{subTotalOutgoingRefund}.doubleValue()-
 $V{subTotalOutgoingTax}.doubleValue()-
+$V{subTotalTax2}.doubleValue()-
+$V{subTotalPPH}.doubleValue()-
 $V{subTotalCreditNoteIDR}.doubleValue()-
-$V{totTProfitIDR}.doubleValue())]]></variableExpression>
+$V{subTotalRefundAgentIDR}.doubleValue())
+]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="subTotalPag" class="java.lang.Double" resetType="Group" resetGroup="FlightsGouping" calculation="Sum">
@@ -149,31 +162,31 @@ $V{totTProfitIDR}.doubleValue())]]></variableExpression>
 		<variableExpression><![CDATA[new Double($F{incomingIDR}.doubleValue()-$F{outgoingIDR}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
-	<variable name="totalRefund" class="java.lang.Double" resetType="Report" calculation="Sum">
+	<variable name="totalRefund" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
 		<variableExpression><![CDATA[$V{subTotalOutgoingRefund}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
-	<variable name="totalRefundAgentIDR" class="java.lang.Double" resetType="Report" calculation="Sum">
+	<variable name="totalRefundAgentIDR" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
 		<variableExpression><![CDATA[$V{subTotalRefundAgentIDR}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
-	<variable name="totalRefundAgentUSD" class="java.lang.Double" resetType="Report" calculation="Sum">
+	<variable name="totalRefundAgentUSD" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
 		<variableExpression><![CDATA[$V{subTotalRefundAgentUSD}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
-	<variable name="totalTax" class="java.lang.Double" resetType="Report" calculation="Sum">
+	<variable name="totalTax" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
 		<variableExpression><![CDATA[$V{subTotalOutgoingTax}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
-	<variable name="totalPPH" class="java.lang.Double" resetType="Report" calculation="Sum">
+	<variable name="totalPPH" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
 		<variableExpression><![CDATA[$F{bsPPH}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
-	<variable name="totalProfitIDR" class="java.lang.Double" resetType="Report" calculation="Sum">
+	<variable name="totalProfitIDR" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
 		<variableExpression><![CDATA[$V{subTotalProfitIDR}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
-	<variable name="totalProfitUSD" class="java.lang.Double" resetType="Report" calculation="Sum">
+	<variable name="totalProfitUSD" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
 		<variableExpression><![CDATA[$V{subTotalProfitUSD}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
@@ -185,11 +198,11 @@ $V{totTProfitIDR}.doubleValue())]]></variableExpression>
 		<variableExpression><![CDATA[$F{incomingUSD}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
-	<variable name="sumTotalOutgoingIDR" class="java.lang.Double" resetType="Report" calculation="Sum">
+	<variable name="sumTotalOutgoingIDR" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
 		<variableExpression><![CDATA[$V{subTotalOutgoingTaxIDR}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
-	<variable name="sumTotalOutgoingUSD" class="java.lang.Double" resetType="Report" calculation="Sum">
+	<variable name="sumTotalOutgoingUSD" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
 		<variableExpression><![CDATA[$F{hidOutgoingUSD}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
@@ -235,7 +248,7 @@ $V{totalTax}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="totProfitUSDKurs" class="java.lang.Double" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[new Double(  ($V{totProfitIDRX}.doubleValue()) /($P{Kurs}.doubleValue()) )]]></variableExpression>
+		<variableExpression><![CDATA[new Double(  ($V{totalProfitIDR}.doubleValue()) /($P{Kurs}.doubleValue()) )]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="totTProfitUSD" class="java.lang.Double" resetType="Report" calculation="Nothing">
@@ -255,26 +268,16 @@ $V{totalTax}.doubleValue())]]></variableExpression>
 		<variableExpression><![CDATA[new java.lang.Double($V{totTProfitUSD}.doubleValue()+$V{totTProfitUSDKurs}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
-	<variable name="subTotalProfitIDR2" class="java.lang.Double" resetType="Group" resetGroup="FlightsGouping" calculation="Nothing">
-		<variableExpression><![CDATA[new Double(
-$V{totalIncomingIDR}.doubleValue()-(
-$V{subTotalOutgoingTaxIDR}.doubleValue()+
-$V{subTotalOutgoingRefund}.doubleValue()+
-$V{subTotalOutgoingTax}.doubleValue()+
-$V{subTotalPPH}.doubleValue()+
-$V{subTotalRefundAgentIDR}.doubleValue()))]]></variableExpression>
-		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
-	</variable>
-	<variable name="totalRefundUS" class="java.lang.Double" resetType="Report" calculation="Sum">
+	<variable name="totalRefundUS" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
 		<variableExpression><![CDATA[$V{subTotalOutgoingRefundUS}]]></variableExpression>
-		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
-	</variable>
-	<variable name="totProfitIDRX" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[$V{subTotalProfitIDR2}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="pphUSD" class="java.lang.Double" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[new Double(0.0)]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
+	</variable>
+	<variable name="totalTax2" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
+		<variableExpression><![CDATA[new Double($V{subTotalTax2}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 
@@ -459,7 +462,7 @@ $V{subTotalRefundAgentIDR}.doubleValue()))]]></variableExpression>
 					<reportElement
 						x="1000"
 						y="0"
-						width="50"
+						width="40"
 						height="10"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -470,7 +473,7 @@ $V{subTotalRefundAgentIDR}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1090"
+						x="1120"
 						y="0"
 						width="60"
 						height="10"
@@ -483,7 +486,7 @@ $V{subTotalRefundAgentIDR}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1150"
+						x="1180"
 						y="0"
 						width="60"
 						height="10"
@@ -492,11 +495,11 @@ $V{subTotalRefundAgentIDR}.doubleValue()))]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{subTotalProfitIDR2}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{subTotalProfitIDR}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="1320"
+						x="1350"
 						y="0"
 						width="80"
 						height="10"
@@ -535,7 +538,7 @@ $V{subTotalRefundAgentIDR}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1210"
+						x="1240"
 						y="0"
 						width="50"
 						height="10"
@@ -548,7 +551,7 @@ $V{subTotalRefundAgentIDR}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1260"
+						x="1290"
 						y="0"
 						width="60"
 						height="10"
@@ -574,7 +577,7 @@ $V{subTotalRefundAgentIDR}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1050"
+						x="1080"
 						y="0"
 						width="40"
 						height="10"
@@ -584,6 +587,19 @@ $V{subTotalRefundAgentIDR}.doubleValue()))]]></variableExpression>
 						<font size="6"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{subTotalPPH}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1040"
+						y="0"
+						width="40"
+						height="10"
+						key="textField-40"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{subTotalTax2}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -598,7 +614,7 @@ $V{subTotalRefundAgentIDR}.doubleValue()))]]></variableExpression>
 					<reportElement
 						x="0"
 						y="0"
-						width="1400"
+						width="1430"
 						height="40"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -613,7 +629,7 @@ MONTHLY SALES OF AIR EXPORT
 					<reportElement
 						x="0"
 						y="40"
-						width="1400"
+						width="1430"
 						height="20"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -624,7 +640,7 @@ MONTHLY SALES OF AIR EXPORT
 				</textField>
 				<staticText>
 					<reportElement
-						x="1090"
+						x="1120"
 						y="60"
 						width="120"
 						height="10"
@@ -637,7 +653,7 @@ MONTHLY SALES OF AIR EXPORT
 				</staticText>
 				<staticText>
 					<reportElement
-						x="1210"
+						x="1240"
 						y="60"
 						width="110"
 						height="10"
@@ -650,7 +666,7 @@ MONTHLY SALES OF AIR EXPORT
 				</staticText>
 				<staticText>
 					<reportElement
-						x="1320"
+						x="1350"
 						y="60"
 						width="80"
 						height="10"
@@ -663,7 +679,7 @@ MONTHLY SALES OF AIR EXPORT
 				</staticText>
 				<staticText>
 					<reportElement
-						x="1090"
+						x="1120"
 						y="70"
 						width="120"
 						height="40"
@@ -676,7 +692,7 @@ MONTHLY SALES OF AIR EXPORT
 				</staticText>
 				<staticText>
 					<reportElement
-						x="1210"
+						x="1240"
 						y="70"
 						width="110"
 						height="40"
@@ -689,7 +705,7 @@ MONTHLY SALES OF AIR EXPORT
 				</staticText>
 				<staticText>
 					<reportElement
-						x="1320"
+						x="1350"
 						y="70"
 						width="80"
 						height="40"
@@ -706,7 +722,7 @@ MONTHLY SALES OF AIR EXPORT
 			<band height="10"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1210"
+						x="1240"
 						y="0"
 						width="190"
 						height="10"
@@ -933,18 +949,18 @@ MONTHLY SALES OF AIR EXPORT
 					<reportElement
 						x="1000"
 						y="0"
-						width="90"
+						width="80"
 						height="20"
 						key="staticText-18"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[TAX]]></text>
+				<text><![CDATA[PPN]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="1090"
+						x="1120"
 						y="0"
 						width="120"
 						height="20"
@@ -957,7 +973,7 @@ MONTHLY SALES OF AIR EXPORT
 				</staticText>
 				<staticText>
 					<reportElement
-						x="1090"
+						x="1120"
 						y="20"
 						width="60"
 						height="10"
@@ -970,7 +986,7 @@ MONTHLY SALES OF AIR EXPORT
 				</staticText>
 				<staticText>
 					<reportElement
-						x="1150"
+						x="1180"
 						y="20"
 						width="60"
 						height="10"
@@ -983,7 +999,7 @@ MONTHLY SALES OF AIR EXPORT
 				</staticText>
 				<staticText>
 					<reportElement
-						x="1320"
+						x="1350"
 						y="0"
 						width="80"
 						height="30"
@@ -1048,7 +1064,7 @@ MONTHLY SALES OF AIR EXPORT
 				</staticText>
 				<staticText>
 					<reportElement
-						x="1210"
+						x="1240"
 						y="0"
 						width="110"
 						height="20"
@@ -1061,7 +1077,7 @@ MONTHLY SALES OF AIR EXPORT
 				</staticText>
 				<staticText>
 					<reportElement
-						x="1210"
+						x="1240"
 						y="20"
 						width="50"
 						height="10"
@@ -1074,7 +1090,7 @@ MONTHLY SALES OF AIR EXPORT
 				</staticText>
 				<staticText>
 					<reportElement
-						x="1260"
+						x="1290"
 						y="20"
 						width="60"
 						height="10"
@@ -1115,27 +1131,40 @@ MONTHLY SALES OF AIR EXPORT
 					<reportElement
 						x="1000"
 						y="20"
-						width="50"
+						width="40"
 						height="10"
 						key="staticText-62"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[PPN]]></text>
+				<text><![CDATA[10 %]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="1050"
+						x="1040"
 						y="20"
 						width="40"
 						height="10"
-						key="staticText-63"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
+						key="staticText-65"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[PPH]]></text>
+				<text><![CDATA[1 %]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="1080"
+						y="0"
+						width="40"
+						height="30"
+						key="staticText-66"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[PPH23]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -1314,7 +1343,7 @@ MONTHLY SALES OF AIR EXPORT
 					<reportElement
 						x="1000"
 						y="0"
-						width="50"
+						width="40"
 						height="10"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="4" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1325,7 +1354,7 @@ MONTHLY SALES OF AIR EXPORT
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1090"
+						x="1120"
 						y="0"
 						width="60"
 						height="10"
@@ -1338,7 +1367,7 @@ MONTHLY SALES OF AIR EXPORT
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1150"
+						x="1180"
 						y="0"
 						width="60"
 						height="10"
@@ -1351,7 +1380,7 @@ MONTHLY SALES OF AIR EXPORT
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1320"
+						x="1350"
 						y="0"
 						width="80"
 						height="10"
@@ -1390,7 +1419,7 @@ MONTHLY SALES OF AIR EXPORT
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1210"
+						x="1240"
 						y="0"
 						width="50"
 						height="10"
@@ -1403,7 +1432,7 @@ MONTHLY SALES OF AIR EXPORT
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1260"
+						x="1290"
 						y="0"
 						width="60"
 						height="10"
@@ -1429,11 +1458,24 @@ MONTHLY SALES OF AIR EXPORT
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1050"
+						x="1080"
 						y="0"
 						width="40"
 						height="10"
 						key="textField-36"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="4" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1040"
+						y="0"
+						width="40"
+						height="10"
+						key="textField-41"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="4" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="6"/>
@@ -1519,20 +1561,7 @@ MONTHLY SALES OF AIR EXPORT
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1000"
-						y="0"
-						width="50"
-						height="10"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="4" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Arial" size="6"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalTax}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="1150"
+						x="1180"
 						y="0"
 						width="60"
 						height="10"
@@ -1541,11 +1570,11 @@ MONTHLY SALES OF AIR EXPORT
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totProfitIDRX}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalProfitIDR}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1090"
+						x="1120"
 						y="0"
 						width="60"
 						height="10"
@@ -1558,7 +1587,7 @@ MONTHLY SALES OF AIR EXPORT
 				</textField>
 				<staticText>
 					<reportElement
-						x="1320"
+						x="1350"
 						y="0"
 						width="80"
 						height="10"
@@ -1905,7 +1934,7 @@ MONTHLY SALES OF AIR EXPORT
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totProfitIDRX}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalProfitIDR}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1918,7 +1947,7 @@ MONTHLY SALES OF AIR EXPORT
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totProfitUSD}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalProfitUSD}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -2000,7 +2029,7 @@ MONTHLY SALES OF AIR EXPORT
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1260"
+						x="1290"
 						y="0"
 						width="60"
 						height="10"
@@ -2013,7 +2042,7 @@ MONTHLY SALES OF AIR EXPORT
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1210"
+						x="1240"
 						y="0"
 						width="50"
 						height="10"
@@ -2039,7 +2068,7 @@ MONTHLY SALES OF AIR EXPORT
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="1050"
+						x="1080"
 						y="0"
 						width="40"
 						height="10"
@@ -2101,6 +2130,32 @@ MONTHLY SALES OF AIR EXPORT
 						<font size="6"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{pphUSD}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1000"
+						y="0"
+						width="40"
+						height="10"
+						key="textField-42"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="4" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalTax}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1040"
+						y="0"
+						width="40"
+						height="10"
+						key="textField-43"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="4" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalTax2}]]></textFieldExpression>
 				</textField>
 			</band>
 		</summary>
