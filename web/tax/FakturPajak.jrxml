@@ -7,7 +7,7 @@
 		 printOrder="Vertical"
 		 orientation="Portrait"
 		 pageWidth="680"
-		 pageHeight="822"
+		 pageHeight="850"
 		 columnWidth="678"
 		 columnSpacing="0"
 		 leftMargin="2"
@@ -522,13 +522,13 @@ Uang Muka/Terjamin
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="180"  isSplitAllowed="true" >
+			<band height="20"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="410"
 						y="0"
 						width="250"
-						height="180"
+						height="20"
 						key="textField"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -541,7 +541,7 @@ Uang Muka/Terjamin
 						x="60"
 						y="0"
 						width="350"
-						height="180"
+						height="20"
 						key="textField"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
@@ -554,7 +554,7 @@ Uang Muka/Terjamin
 						x="0"
 						y="0"
 						width="60"
-						height="180"
+						height="20"
 						key="textField"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -569,11 +569,324 @@ Uang Muka/Terjamin
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="202"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="378"
+						y="30"
+						width="140"
+						height="20"
+						key="staticText-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="10" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[Jakarta]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="518"
+						y="140"
+						width="140"
+						height="20"
+						key="staticText-11"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="10" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[NINA SUSANTY]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="518"
+						y="160"
+						width="140"
+						height="20"
+						key="staticText-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="10" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma"/>
+					</textElement>
+				<text><![CDATA[DIREKTUR]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="0"
+						height="200"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="200"
+						width="660"
+						height="0"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="659"
+						y="0"
+						width="0"
+						height="200"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="20"
+						y="30"
+						width="300"
+						height="20"
+						key="staticText-47"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[Pajak Penjualan Atas Barang Mewah]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="20"
+						y="60"
+						width="100"
+						height="20"
+						key="staticText-48"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[Tarif]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="120"
+						y="60"
+						width="100"
+						height="20"
+						key="staticText-49"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[DPP]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="220"
+						y="60"
+						width="100"
+						height="20"
+						key="staticText-50"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[PPN BM]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="20"
+						y="80"
+						width="100"
+						height="20"
+						key="staticText-51"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[..................%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="20"
+						y="100"
+						width="100"
+						height="20"
+						key="staticText-52"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[..................%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="120"
+						y="80"
+						width="100"
+						height="20"
+						key="staticText-53"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[Rp...................]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="120"
+						y="100"
+						width="100"
+						height="20"
+						key="staticText-55"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[Rp...................]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="120"
+						y="140"
+						width="100"
+						height="20"
+						key="staticText-56"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[Rp...................]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="120"
+						y="120"
+						width="100"
+						height="20"
+						key="staticText-57"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[Rp...................]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="220"
+						y="80"
+						width="100"
+						height="20"
+						key="staticText-58"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[Rp...................]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="220"
+						y="100"
+						width="100"
+						height="20"
+						key="staticText-59"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[Rp...................]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="220"
+						y="120"
+						width="100"
+						height="20"
+						key="staticText-60"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[Rp...................]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="220"
+						y="140"
+						width="100"
+						height="20"
+						key="staticText-61"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[Rp...................]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="20"
+						y="120"
+						width="100"
+						height="20"
+						key="staticText-62"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[..................%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="20"
+						y="140"
+						width="100"
+						height="20"
+						key="staticText-63"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<text><![CDATA[..................%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="20"
+						y="160"
+						width="200"
+						height="20"
+						key="staticText-64"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="9"/>
+					</textElement>
+				<text><![CDATA[Jumlah]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="220"
+						y="160"
+						width="100"
+						height="20"
+						key="staticText-65"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="9"/>
+					</textElement>
+				<text><![CDATA[Rp...................]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd-MMM-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="518"
+						y="30"
+						width="140"
+						height="20"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="10" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$P{invoiceDate}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="310"  isSplitAllowed="true" >
+			<band height="100"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="0"
@@ -600,45 +913,6 @@ Uang Muka/Terjamin
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalCharge}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement
-						x="378"
-						y="130"
-						width="140"
-						height="20"
-						key="staticText-10"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="10" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[Jakarta]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="518"
-						y="240"
-						width="140"
-						height="20"
-						key="staticText-11"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="10" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[NINA SUSANTY]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="518"
-						y="260"
-						width="140"
-						height="20"
-						key="staticText-12"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="10" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma"/>
-					</textElement>
-				<text><![CDATA[DIREKTUR]]></text>
-				</staticText>
 				<staticText>
 					<reportElement
 						x="0"
@@ -729,280 +1003,6 @@ Uang Muka/Terjamin
 						<font fontName="Tahoma" size="12"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalKenaPajak}]]></textFieldExpression>
-				</textField>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="100"
-						width="0"
-						height="200"
-						key="line-1"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="300"
-						width="660"
-						height="0"
-						key="line-3"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="659"
-						y="100"
-						width="0"
-						height="200"
-						key="line-4"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<staticText>
-					<reportElement
-						x="20"
-						y="130"
-						width="300"
-						height="20"
-						key="staticText-47"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[Pajak Penjualan Atas Barang Mewah]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="20"
-						y="160"
-						width="100"
-						height="20"
-						key="staticText-48"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[Tarif]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="120"
-						y="160"
-						width="100"
-						height="20"
-						key="staticText-49"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[DPP]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="220"
-						y="160"
-						width="100"
-						height="20"
-						key="staticText-50"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[PPN BM]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="20"
-						y="180"
-						width="100"
-						height="20"
-						key="staticText-51"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[..................%]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="20"
-						y="200"
-						width="100"
-						height="20"
-						key="staticText-52"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[..................%]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="120"
-						y="180"
-						width="100"
-						height="20"
-						key="staticText-53"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[Rp...................]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="120"
-						y="200"
-						width="100"
-						height="20"
-						key="staticText-55"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[Rp...................]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="120"
-						y="240"
-						width="100"
-						height="20"
-						key="staticText-56"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[Rp...................]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="120"
-						y="220"
-						width="100"
-						height="20"
-						key="staticText-57"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[Rp...................]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="220"
-						y="180"
-						width="100"
-						height="20"
-						key="staticText-58"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[Rp...................]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="220"
-						y="200"
-						width="100"
-						height="20"
-						key="staticText-59"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[Rp...................]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="220"
-						y="220"
-						width="100"
-						height="20"
-						key="staticText-60"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[Rp...................]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="220"
-						y="240"
-						width="100"
-						height="20"
-						key="staticText-61"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[Rp...................]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="20"
-						y="220"
-						width="100"
-						height="20"
-						key="staticText-62"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[..................%]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="20"
-						y="240"
-						width="100"
-						height="20"
-						key="staticText-63"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<text><![CDATA[..................%]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="20"
-						y="260"
-						width="200"
-						height="20"
-						key="staticText-64"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="9"/>
-					</textElement>
-				<text><![CDATA[Jumlah]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="220"
-						y="260"
-						width="100"
-						height="20"
-						key="staticText-65"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="9"/>
-					</textElement>
-				<text><![CDATA[Rp...................]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" pattern="dd-MMM-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="518"
-						y="130"
-						width="140"
-						height="20"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="10" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma" size="12"/>
-					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$P{invoiceDate}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
