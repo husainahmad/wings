@@ -197,7 +197,7 @@ public final class PrintMonthlySalesAIAction extends Action {
                                                                     new Double(nList.get(8).toString()).doubleValue() -
                                                                     new Double(nList.get(10).toString()).doubleValue());
                                     
-                                    ms.setOutgoingIDR(totalOutgoingIDR);
+                                    ms.setOutgoingIDR(jobDetail.getTotalExpensesIDR());
                                     ms.setOutgoingUSD(jobDetail.getTotalExpensesUSD());
                                     ms.setOutgoingRefund(jobDetail.getRefund());
                                     ms.setOutgoingRefundUS(jobDetail.getRefundUS());
@@ -224,7 +224,7 @@ public final class PrintMonthlySalesAIAction extends Action {
                                                                 new Double(nList.get(8).toString()).doubleValue() -
                                                                 new Double(nList.get(10).toString()).doubleValue());
 
-                                ms.setOutgoingIDR(totalOutgoingIDR);
+                                ms.setOutgoingIDR(jobDetail.getTotalExpensesIDR());
 
                                 ms.setOutgoingUSD(jobDetail.getTotalExpensesUSD());
                                 ms.setOutgoingRefund(jobDetail.getRefund());
@@ -327,7 +327,7 @@ public final class PrintMonthlySalesAIAction extends Action {
                if (ms.getIrow().equalsIgnoreCase("N")) {                   
                    valueOfTable[i][10] = ms.getOutgoingUSD();//ms.getOutgoingUSD();//ms.get;
                    valueOfTable[i][11] = null;//ms.getOutgoingIDR();//jobsheetDetail.getTotalExpensesUSD();   
-                   valueOfTable[i][12] = null;//ms.get
+                   valueOfTable[i][12] = ms.getOutgoingRefund();
                    valueOfTable[i][13] = null;//ms.get; 
                    valueOfTable[i][14] = ms.getRemark(); // remark               
                    valueOfTable[i][15] = ms.getGroupingBy();
@@ -349,12 +349,12 @@ public final class PrintMonthlySalesAIAction extends Action {
                    valueOfTable[i][9] = null;//jobsheetDetail.getTotalBillingUSD();
                    valueOfTable[i][10] = null;//ms.getOutgoingUSD();//ms.get;
                    valueOfTable[i][11] = null;//ms.getOutgoingIDR();//jobsheetDetail.getTotalExpensesUSD();   
-                   valueOfTable[i][12] = null;//ms.get
+                   valueOfTable[i][12] = new Double(0.0);
                    valueOfTable[i][13] = null;//ms.get; 
                    valueOfTable[i][14] = null; // remark               
                    valueOfTable[i][15] = ms.getGroupingBy();
                    valueOfTable[i][16] = null;
-                   valueOfTable[i][17] = null;
+                   valueOfTable[i][17] = new Double(0.0);
                    valueOfTable[i][18] = null;
                    valueOfTable[i][19] = null;
                    valueOfTable[i][20] = null; 
@@ -369,14 +369,14 @@ public final class PrintMonthlySalesAIAction extends Action {
                } else {
                    valueOfTable[i][10] = null;//ms.getOutgoingUSD();//ms.get;
                    valueOfTable[i][11] = null;//ms.getOutgoingIDR();//jobsheetDetail.getTotalExpensesUSD();   
-                   valueOfTable[i][12] = null;//ms.get
+                   valueOfTable[i][12] = new Double(0.0);
                    valueOfTable[i][13] = null;//ms.get; 
                    valueOfTable[i][14] = ms.getRemark(); // remark    
                    valueOfTable[i][15] = ms.getGroupingBy();
                    valueOfTable[i][16] = null;
-                   valueOfTable[i][17] = null;
-                   valueOfTable[i][18] = null;
-                   valueOfTable[i][19] = null;
+                   valueOfTable[i][17] = new Double(0.0);
+                   valueOfTable[i][18] = new Double(0.0);
+                   valueOfTable[i][19] = new Double(0.0);
                    valueOfTable[i][20] = null; 
                    valueOfTable[i][21] = ms.getFlights();
                    valueOfTable[i][22] = null;

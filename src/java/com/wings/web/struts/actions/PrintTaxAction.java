@@ -132,7 +132,7 @@ public final class PrintTaxAction extends Action {
    private Object[][] parseListToArray(List secondList) {        
         
         Object[][] valueOfTable = new Object[secondList.size()][7];          
-        int j = 1;    
+        int j = 0;    
         double totalTax = 0.0;
         try {                        
             for (int i=0; i < secondList.size(); i++) {     
@@ -141,7 +141,7 @@ public final class PrintTaxAction extends Action {
                 totalTax = totalTax + bs.getCharge().doubleValue();                
                 
                 valueOfTable[i][0] = j +"";
-                valueOfTable[i][1] = bs.getDescription();
+                valueOfTable[i][1] = bs.getDescriptionFee();
                 valueOfTable[i][2] = new Double(bs.getCharge().doubleValue());              
 
             }            

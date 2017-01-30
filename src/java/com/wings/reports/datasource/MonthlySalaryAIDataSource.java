@@ -154,6 +154,10 @@ public class MonthlySalaryAIDataSource implements JRDataSource
         {
                 value = data[index][27];
         }
+         else if ("hidVatIDR2".equals(fieldName))
+        {
+                value = data[index][28];
+        }
         return value;
     }
 }

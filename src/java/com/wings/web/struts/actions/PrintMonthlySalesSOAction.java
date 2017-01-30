@@ -113,7 +113,7 @@ public final class PrintMonthlySalesSOAction extends Action {
             for (int i=0; i<globalList.size(); i++) {
                 try {
                     JobsheetDetailSO jobDetail = (JobsheetDetailSO)globalList.get(i);
-                    q.parse("select distinct inumber, totalIDR, totalUSD, shipper, consignee, agent, billTo, billToDebit from com.wings.persistence.JobsheetDetail where jobNo = '"+jobDetail.getJobNo()+"' ");
+                    q.parse("select distinct inumber, totalIDR, totalUSD, shipper, consignee, agent, billTo, billToDebit, vatIDR, pphIDR, vatIDR2 from com.wings.persistence.JobsheetDetail where jobNo = '"+jobDetail.getJobNo()+"' ");
                     QueryResults qr2 = q.execute (iList);            
                     List qrList = qr2.getResults();
                     MonthlySales ms = null;
@@ -124,7 +124,9 @@ public final class PrintMonthlySalesSOAction extends Action {
                             ms = new MonthlySales();
                             ms.setFlights(jobDetail.getFlights());
                             ms.setGroupingBy(jobDetail.getFlights()+jobDetail.getJobNo());
+                            Double totalIncomingIDR = new Double(0.0);
                             
+                            Double totalOutgoingIDR = new Double(0.0);
                             if (nList.get(0).toString().contains("DN/")) {
                                 if (nList.get(7).toString().equalsIgnoreCase("1")) {
                                     ms.setCustomer(nList.get(5).toString());
@@ -174,12 +176,20 @@ public final class PrintMonthlySalesSOAction extends Action {
                                 ms.setPag(jobDetail.getPag());
 
                                 ms.setInumber(nList.get(0).toString());
-                                ms.setIncomingIDR(new Double(nList.get(1).toString()));
+                                totalIncomingIDR = new Double(0.0);
+                                totalIncomingIDR = new Double(new Double(nList.get(1).toString()).doubleValue() + 
+                                                                    new Double(nList.get(8).toString()).doubleValue() +
+                                                                    new Double(nList.get(10).toString()).doubleValue());
+                                ms.setIncomingIDR(totalIncomingIDR);
                                 ms.setIncomingUSD(new Double(nList.get(2).toString()));
                                 if (j==qrList.size()-1) {
                                     ms.setIrow("N");
                                     ms.setInumber(nList.get(0).toString());
-                                    ms.setIncomingIDR(new Double(nList.get(1).toString()));
+                                    totalIncomingIDR = new Double(0.0);
+                                totalIncomingIDR = new Double(new Double(nList.get(1).toString()).doubleValue() + 
+                                                                    new Double(nList.get(8).toString()).doubleValue() +
+                                                                    new Double(nList.get(10).toString()).doubleValue());
+                                ms.setIncomingIDR(totalIncomingIDR);
                                     ms.setIncomingUSD(new Double(nList.get(2).toString()));
                                     ms.setOutgoingIDR(new Double(jobDetail.getTotalExpensesIDR().doubleValue()));
                                     ms.setOutgoingUSD(jobDetail.getTotalExpensesUSD());
@@ -195,7 +205,11 @@ public final class PrintMonthlySalesSOAction extends Action {
                             } else if (j==qrList.size()-1) {
                                 ms.setIrow("N");
                                 ms.setInumber(nList.get(0).toString());
-                                ms.setIncomingIDR(new Double(nList.get(1).toString()));
+                                totalIncomingIDR = new Double(0.0);
+                                totalIncomingIDR = new Double(new Double(nList.get(1).toString()).doubleValue() + 
+                                                                    new Double(nList.get(8).toString()).doubleValue() +
+                                                                    new Double(nList.get(10).toString()).doubleValue());
+                                ms.setIncomingIDR(totalIncomingIDR);
                                 ms.setIncomingUSD(new Double(nList.get(2).toString()));
                                 ms.setOutgoingIDR(new Double(jobDetail.getTotalExpensesIDR().doubleValue()));
                                 ms.setOutgoingUSD(jobDetail.getTotalExpensesUSD());
@@ -223,7 +237,11 @@ public final class PrintMonthlySalesSOAction extends Action {
                             } else {
                                 ms.setIrow("2");
                                 ms.setInumber(nList.get(0).toString());
-                                ms.setIncomingIDR(new Double(nList.get(1).toString()));
+                                totalIncomingIDR = new Double(0.0);
+                                totalIncomingIDR = new Double(new Double(nList.get(1).toString()).doubleValue() + 
+                                                                    new Double(nList.get(8).toString()).doubleValue() +
+                                                                    new Double(nList.get(10).toString()).doubleValue());
+                                ms.setIncomingIDR(totalIncomingIDR);
                                 ms.setIncomingUSD(new Double(nList.get(2).toString()));
                                 remark = jobDetail.getRemark().split(",");
                                 try {
@@ -257,9 +275,7 @@ public final class PrintMonthlySalesSOAction extends Action {
                         ms2.setOutgoingRefund(new Double(0.0));
                         ms2.setOutgoingRefundUS(new Double(0.0));
                         ms2.setRefundAgentIDR(new Double(0.0));
-                        ms2.setRefundAgentUSD(new Double(0.0));
-                        
-                        
+                        ms2.setRefundAgentUSD(new Double(0.0));                                                
                         finalList.add(ms2); 
                     }
                 } catch (Exception ex) {        

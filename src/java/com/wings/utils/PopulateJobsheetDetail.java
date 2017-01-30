@@ -582,7 +582,7 @@ public class PopulateJobsheetDetail {
          }
          
          double vatAgent = totalDPPAgent * 0.10;
-         vatAgent += totalDPP2Agent * 0.01; // pajak 1%
+         //vatAgent += totalDPP2Agent * 0.01; // pajak 1%
          
          double pph23Agent = totalPPHAgent * 0.02;   
          
@@ -644,8 +644,7 @@ public class PopulateJobsheetDetail {
          populateAccount.insertDetailAccountDataInvoiceExpenses(trFormInvoiceExpenses, jobsheetForm, baInvoiceList);
          
          TransactionaccForm trFormInvoiceCost = populateAccount.generateAccountDataHeaderInvoiceCost(jobsheetForm, expInvoiceList);
-         populateAccount.insertDetailAccountDataInvoiceCost(trFormInvoiceCost, jobsheetForm, expInvoiceList);
-         
+         populateAccount.insertDetailAccountDataInvoiceCost(trFormInvoiceCost, jobsheetForm, expInvoiceList);         
          
    }          
 }

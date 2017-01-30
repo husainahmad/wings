@@ -107,6 +107,9 @@ public final class PrintDebitAction extends Action {
         IndonesianDecimalFormat i = new IndonesianDecimalFormat();
 //        DecimalFormat moneyFormat = new DecimalFormat("###.##");
         DecimalFormat indMoneyFormat = new DecimalFormat("###,###");
+        
+        DecimalFormat moneyFormatUS = new DecimalFormat("###.##");
+        
         parameters.put("subTotalBillingIDR", indMoneyFormat.format(totalBillingIDR));
         
         totalPPH = totalPPH * 0.02;
@@ -124,7 +127,15 @@ public final class PrintDebitAction extends Action {
         parameters.put("grandTotal", indMoneyFormat.format(totalBillingIDR));
         
         parameters.put("strTotalBillingIDR", i.convert(String.valueOf(totalBillingIDR)).toUpperCase() + " RUPIAH");
+        String strBilling = moneyFormatUS.format(totalBillingUSD);
+        
+        Float num = new Float(strBilling);
+        int dollars = (int)Math.floor(totalBillingUSD);
+        int cent = (int) Math.round((num.doubleValue() - dollars ) * 100.0f)  ;
+        String s = f.convert(dollars)+" dollars and " 
+            + f.convert(cent)+" cents";
 
+        parameters.put("strTotalBillingUSD", "THE SUM OF:# " + s.toUpperCase() + " DOLLARS #");
         return parameters;
    }
    private String executeAIReport(HttpServletRequest request, DebitKey debitKey, ServletContext context) throws Exception {

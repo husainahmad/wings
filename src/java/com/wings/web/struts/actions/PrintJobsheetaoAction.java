@@ -118,6 +118,27 @@ public final class PrintJobsheetaoAction extends Action {
         JobsheetaoDetailForm jobsheetaoDetailForm = new JobsheetaoDetailForm();
         DebitForm debitForm = new DebitForm();
         
+        totalBillingIDR=0.0;
+        totalExpensesIDR=0.0;
+        totalBillingUSD=0.0;
+        totalExpensesUSD=0.0;
+        double totalRefundIDR = 0.0;            
+        double totalRefundUSD = 0.0;    
+        double totalCreditNoteIDR = 0.0;    
+        double totalCreditNoteUSD = 0.0;    
+            
+        double vatIDR = 0.0;    
+        double pphIDR = 0.0;    
+
+        double vatUSD = 0.0;    
+        double pphUSD = 0.0;            
+
+        double dppIDR = 0.0;    
+        double dppUSD = 0.0;    
+
+        double dppIDR2 = 0.0;    
+        double vat2IDR = 0.0; 
+        
         for (int i=0; i<jobList.size();i++) {
             Jobsheet jobsheet = (Jobsheet)jobList.get(i);
             
@@ -189,6 +210,29 @@ public final class PrintJobsheetaoAction extends Action {
             } catch (Exception e) {            
             }
             
+            totalBillingIDR+= jobsheet.getTotalBillingIDR().doubleValue();
+            totalExpensesIDR+=jobsheet.getTotalExpensesIDR().doubleValue();
+            totalBillingUSD+=jobsheet.getTotalBillingUSD().doubleValue();
+            totalExpensesUSD+=jobsheet.getTotalExpensesUSD().doubleValue();
+                        
+            totalRefundIDR += jobsheet.getRefundIDR().doubleValue();
+            totalRefundUSD += jobsheet.getRefundUSD().doubleValue();
+            totalCreditNoteIDR += jobsheet.getCreditNoteIDR().doubleValue();
+            totalCreditNoteUSD += jobsheet.getCreditNoteUSD().doubleValue();
+            
+            vatIDR +=jobsheet.getVatIDR() == null ? 0.0 : jobsheet.getVatIDR().doubleValue();
+            pphIDR +=jobsheet.getPphIDR() == null ? 0.0 : jobsheet.getPphIDR().doubleValue();
+
+            vatUSD +=jobsheet.getVatUSD() == null ? 0.0 : jobsheet.getVatUSD().doubleValue();
+            pphUSD +=jobsheet.getPphUSD() == null ? 0.0 : jobsheet.getPphUSD().doubleValue();        
+
+            dppIDR+=jobsheet.getDppIDR() == null ? 0.0 : jobsheet.getDppIDR().doubleValue();
+            dppUSD+=jobsheet.getDppUSD() == null ? 0.0 : jobsheet.getDppUSD().doubleValue();        
+
+            dppIDR2+=jobsheet.getDppIDR2()== null ? 0.0 : jobsheet.getDppIDR2().doubleValue();
+            vat2IDR+=jobsheet.getVatIDR2() == null ? 0.0 : jobsheet.getVatIDR2().doubleValue();   
+            
+            
             if (i==0) {
                   jobsheetForm.setIdJobSheet(jobsheet.getIdJobSheet());
                   jobsheetForm.setIdAgent(jobsheet.getIdAgent());
@@ -213,24 +257,18 @@ public final class PrintJobsheetaoAction extends Action {
                   jobsheetForm.setRemark(jobsheet.getRemark());
 
                   jobsheetForm.setShippeddateAsString(formatDate.format(jobsheet.getShippeddate()));
-                  jobsheetForm.setTotalBillingIDR(jobsheet.getTotalBillingIDR());
-                  jobsheetForm.setTotalExpensesIDR(jobsheet.getTotalExpensesIDR());
-                  jobsheetForm.setTotalBillingUSD(jobsheet.getTotalBillingUSD());
-                  jobsheetForm.setTotalExpensesUSD(jobsheet.getTotalExpensesUSD());
+                  
                   jobsheetForm.setVolume(jobsheet.getVolume());
                   jobsheetForm.setVolumeDesc(jobsheet.getVolumeDesc());
                   jobsheetForm.setWeight(jobsheet.getWeight());
                   jobsheetForm.setWeightDesc(jobsheet.getWeightDesc());
                   jobsheetForm.setIdTransporter(jobsheet.getIdTransporter());
                   jobsheetForm.setTransportCost(jobsheet.getTransportCost());
-                  jobsheetForm.setRefundIDR(jobsheet.getRefundIDR());
-                  jobsheetForm.setRefundUSD(jobsheet.getRefundUSD());
+                  
                   jobsheetForm.setCnNo(jobsheet.getCnNo());      
                   jobsheetForm.setDepart(jobsheet.getDepart());
                   jobsheetForm.setCnKurs(jobsheet.getCnKurs());                  
                   jobsheetForm.setCmb(jobsheet.getCmb());      
-                  jobsheetForm.setCreditNoteIDR(jobsheet.getCreditNoteIDR());                  
-                  jobsheetForm.setCreditNoteUSD(jobsheet.getCreditNoteUSD());                  
                   
               } else {
                   if (invoiceForm.getInvoiceNumber()!=null) {
@@ -245,19 +283,19 @@ public final class PrintJobsheetaoAction extends Action {
                      }                     
                   }                   
                   
-                  if (jobsheet.getRefundIDR()!=null) {
-                      jobsheetForm.setRefundIDR(new Double(jobsheetForm.getRefundIDR().doubleValue()+jobsheet.getRefundIDR().doubleValue()));
-                  }
-                  if (jobsheet.getRefundUSD()!=null) {
-                      jobsheetForm.setRefundUSD(new Double(jobsheetForm.getRefundUSD().doubleValue()+jobsheet.getRefundUSD().doubleValue()));
-                  }
-                  if (jobsheet.getCreditNoteIDR()!=null) {
-                      jobsheetForm.setCreditNoteIDR(new Double(jobsheetForm.getCreditNoteIDR().doubleValue()+jobsheet.getCreditNoteIDR().doubleValue()));
-                  }
-                  
-                  if (jobsheet.getCreditNoteUSD()!=null) {
-                      jobsheetForm.setCreditNoteUSD(new Double(jobsheetForm.getCreditNoteUSD().doubleValue()+jobsheet.getCreditNoteUSD().doubleValue()));
-                  }
+//                  if (jobsheet.getRefundIDR()!=null) {
+//                      jobsheetForm.setRefundIDR(new Double(jobsheetForm.getRefundIDR().doubleValue()+jobsheet.getRefundIDR().doubleValue()));
+//                  }
+//                  if (jobsheet.getRefundUSD()!=null) {
+//                      jobsheetForm.setRefundUSD(new Double(jobsheetForm.getRefundUSD().doubleValue()+jobsheet.getRefundUSD().doubleValue()));
+//                  }
+//                  if (jobsheet.getCreditNoteIDR()!=null) {
+//                      jobsheetForm.setCreditNoteIDR(new Double(jobsheetForm.getCreditNoteIDR().doubleValue()+jobsheet.getCreditNoteIDR().doubleValue()));
+//                  }
+//                  
+//                  if (jobsheet.getCreditNoteUSD()!=null) {
+//                      jobsheetForm.setCreditNoteUSD(new Double(jobsheetForm.getCreditNoteUSD().doubleValue()+jobsheet.getCreditNoteUSD().doubleValue()));
+//                  }
 
                   if (jobsheet.getDepart()!=null) {
                       jobsheetForm.setDepart(new Double(jobsheetForm.getDepart().doubleValue()+jobsheet.getDepart().doubleValue()));
@@ -313,39 +351,45 @@ public final class PrintJobsheetaoAction extends Action {
         parameters.put("PickUpCargo", jobsheetaoDetailForm.getPickupCargo());
         parameters.put("TransportTo", transporterForm.getName());
         parameters.put("TransportCost", jobsheetForm.getTransportCost());
+        
         parameters.put("totalBillingIDR", new Double(totalBillingIDR));
         parameters.put("totalBillingUSD", new Double(totalBillingUSD));
         parameters.put("totalExpensesIDR", new Double(totalExpensesIDR));
         parameters.put("totalExpensesUSD", new Double(totalExpensesUSD));
-        parameters.put("cmb", jobsheetForm.getCmb());
-        parameters.put("cnIDR", jobsheetForm.getCreditNoteIDR());
-        parameters.put("cnUSD", jobsheetForm.getCreditNoteUSD());
-                
-        parameters.put("vatIDR", new Double(jobsheetForm.getVatIDR() == null ? 0.0 : jobsheetForm.getVatIDR().doubleValue()));
-        parameters.put("pphIDR", new Double(jobsheetForm.getPphIDR() == null ? 0.0 : jobsheetForm.getPphIDR().doubleValue()));
+        parameters.put("totalExpensesUSD", new Double(totalExpensesUSD));
         
-        parameters.put("vatUSD", new Double(jobsheetForm.getVatUSD() == null ? 0.0 : jobsheetForm.getVatUSD().doubleValue()));
-        parameters.put("pphUSD", new Double(jobsheetForm.getPphUSD() == null ? 0.0 : jobsheetForm.getPphUSD().doubleValue()));        
+        parameters.put("vatIDR", new Double(vatIDR));
+        parameters.put("pphIDR", new Double(pphIDR));
         
-        parameters.put("dppIDR", new Double(jobsheetForm.getDppIDR() == null ? 0.0 : jobsheetForm.getDppIDR().doubleValue()));
-        parameters.put("dppUSD", new Double(jobsheetForm.getDppUSD() == null ? 0.0 : jobsheetForm.getDppUSD().doubleValue()));        
+        parameters.put("vatUSD", new Double(vatUSD));
+        parameters.put("pphUSD", new Double(pphUSD));        
         
-        parameters.put("dppIDR2", new Double(jobsheetForm.getDppIDR2()== null ? 0.0 : jobsheetForm.getDppIDR2().doubleValue()));
-        parameters.put("vat2IDR", new Double(jobsheetForm.getVatIDR2() == null ? 0.0 : jobsheetForm.getVatIDR2().doubleValue()));    
+        parameters.put("dppIDR", new Double(dppIDR));
+        parameters.put("dppUSD", new Double(dppUSD));        
+        
+        parameters.put("dppIDR2", new Double(dppIDR2));
+        parameters.put("vat2IDR", new Double(vat2IDR));        
+        
         parameters.put("vat2USD", new Double(0.0));        
+        
+        parameters.put("cmb", jobsheetForm.getCmb());
         
         try {
             double refundIDR = 0.0;
             double refundUSD = 0.0;
             KursdollarForm kursdollarForm = com.wings.adapter.StrutsKursdollarDelegate.selectLastKurs();
-            parameters.put("refundIDR", new Double(jobsheetForm.getRefundIDR().doubleValue())); 
-            parameters.put("refundUSD", new Double(jobsheetForm.getRefundUSD().doubleValue()));             
-            parameters.put("cnIDR", new Double(jobsheetForm.getCreditNoteIDR().doubleValue())); 
-            parameters.put("cnUSD",  new Double(jobsheetForm.getCreditNoteUSD().doubleValue())); 
-          
-        } catch (Exception e) {
+            parameters.put("refundIDR", new Double(totalRefundIDR)); 
+            parameters.put("refundUSD", new Double(totalRefundUSD)); 
             
-        }    
+            double cnIDR = 0.0;
+            double cnUSD = 0.0;        
+            parameters.put("cnIDR", new Double(totalCreditNoteIDR)); 
+            parameters.put("cnUSD",  new Double(totalCreditNoteUSD)); 
+                    
+            
+        } catch (Exception e) {            
+        }
+        
         try {
             parameters.put("Date", FORMAT.format(jobsheetForm.getShippeddate()));
         } catch (Exception e) {

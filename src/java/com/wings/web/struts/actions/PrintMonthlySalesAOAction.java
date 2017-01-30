@@ -113,7 +113,7 @@ public final class PrintMonthlySalesAOAction extends Action {
             for (int i=0; i<globalList.size(); i++) {
                 try {
                     JobsheetDetailAO jobDetail = (JobsheetDetailAO)globalList.get(i);
-                    q.parse("select distinct inumber, totalIDR, totalUSD, shipper, consignee, agent, billTo, billToDebit from com.wings.persistence.JobsheetDetail where jobNo = '"+jobDetail.getJobNo()+"' ");
+                    q.parse("select distinct inumber, totalIDR, totalUSD, shipper, consignee, agent, billTo, billToDebit, vatIDR, pphIDR, vatIDR2  from com.wings.persistence.JobsheetDetail where jobNo = '"+jobDetail.getJobNo()+"' ");
                     QueryResults qr2 = q.execute (iList);            
                     List qrList = qr2.getResults();
                     MonthlySales ms = null;
@@ -124,7 +124,9 @@ public final class PrintMonthlySalesAOAction extends Action {
                             ms = new MonthlySales();
                             ms.setFlights(jobDetail.getFlights());
                             ms.setGroupingBy(jobDetail.getFlights()+jobDetail.getJobNo());
+                            Double totalIncomingIDR = new Double(0.0);
                             
+                            Double totalOutgoingIDR = new Double(0.0);
                             if (nList.get(0).toString().contains("DN/")) {
                                 if (nList.get(7).toString().equalsIgnoreCase("1")) {
                                     ms.setCustomer(nList.get(5).toString());
@@ -174,12 +176,20 @@ public final class PrintMonthlySalesAOAction extends Action {
                                 ms.setPag(jobDetail.getPag());
 
                                 ms.setInumber(nList.get(0).toString());
-                                ms.setIncomingIDR(new Double(nList.get(1).toString()));
+                                totalIncomingIDR = new Double(0.0);
+                                totalIncomingIDR = new Double(new Double(nList.get(1).toString()).doubleValue() + 
+                                                                    new Double(nList.get(8).toString()).doubleValue() +
+                                                                    new Double(nList.get(10).toString()).doubleValue());
+                                ms.setIncomingIDR(totalIncomingIDR);
                                 ms.setIncomingUSD(new Double(nList.get(2).toString()));
                                 if (j==qrList.size()-1) {
                                     ms.setIrow("N");
                                     ms.setInumber(nList.get(0).toString());
-                                    ms.setIncomingIDR(new Double(nList.get(1).toString()));
+                                   totalIncomingIDR = new Double(0.0);
+                                    totalIncomingIDR = new Double(new Double(nList.get(1).toString()).doubleValue() + 
+                                                                        new Double(nList.get(8).toString()).doubleValue() +
+                                                                        new Double(nList.get(10).toString()).doubleValue());
+                                    ms.setIncomingIDR(totalIncomingIDR);
                                     ms.setIncomingUSD(new Double(nList.get(2).toString()));
                                     ms.setOutgoingIDR(new Double(jobDetail.getTotalExpensesIDR().doubleValue()));
                                     ms.setOutgoingUSD(jobDetail.getTotalExpensesUSD());
@@ -197,7 +207,11 @@ public final class PrintMonthlySalesAOAction extends Action {
                             } else if (j==qrList.size()-1) {
                                 ms.setIrow("N");
                                 ms.setInumber(nList.get(0).toString());
-                                ms.setIncomingIDR(new Double(nList.get(1).toString()));
+                                totalIncomingIDR = new Double(0.0);
+                                totalIncomingIDR = new Double(new Double(nList.get(1).toString()).doubleValue() + 
+                                                                    new Double(nList.get(8).toString()).doubleValue() +
+                                                                    new Double(nList.get(10).toString()).doubleValue());
+                                ms.setIncomingIDR(totalIncomingIDR);
                                 ms.setIncomingUSD(new Double(nList.get(2).toString()));
                                 ms.setOutgoingIDR(new Double(jobDetail.getTotalExpensesIDR().doubleValue()));
                                 ms.setOutgoingUSD(jobDetail.getTotalExpensesUSD());
@@ -339,7 +353,7 @@ public final class PrintMonthlySalesAOAction extends Action {
                    valueOfTable[i][25] = ms.getCreditNoteUSD();
                    valueOfTable[i][26] = null;    
                    valueOfTable[i][27] = null;
-                   valueOfTable[i][28] = null;
+                   valueOfTable[i][28] = new Double(0.0);
                } else {
                    valueOfTable[i][10] = null;//ms.getOutgoingUSD();//ms.get;
                    valueOfTable[i][11] = null;//ms.getOutgoingIDR();//jobsheetDetail.getTotalExpensesUSD();   
@@ -359,7 +373,7 @@ public final class PrintMonthlySalesAOAction extends Action {
                    valueOfTable[i][25] = new Double(0.0);
                    valueOfTable[i][26] = null;
                    valueOfTable[i][27] = null;
-                   valueOfTable[i][28] = null;
+                   valueOfTable[i][28] = new Double(0.0);
                }                                             
             }
         } catch (Exception e) {

@@ -1685,6 +1685,8 @@
         ja.mawb as mawb,
         sum(j.refundIDR) as refundIDR,
         sum(j.refundUSD) as refundUSD,
+        (sum(ifnull(esf.charge,0))+sum(ifnull(eaf.charge,0))) as refund,
+        (sum(ifnull(esfusd.charge,0))+sum(ifnull(eafusd.charge,0))) as refundUS,
         sum(ifnull(j.creditNoteIDR,0)) as creditNoteIDR,
         sum(ifnull(j.creditNoteUSD,0)) as creditNoteUSD,        
         j.cnNo,    
@@ -1839,7 +1841,6 @@
       ao.billToDebit,
       j.jobNo, i.invoiceNumber as inumber,
       ifnull(j.vatIDR,0) as vatIDR, ifnull(j.vatIDR2,0) as vatIDR2, ifnull(j.pphIDR,0) as pphIDR,
-      j.jobNo, i.invoiceNumber as inumber,
        (
             select ifnull(sum(b.charge),0) from billingshipper b
             where b.kurs = 'IDR'
@@ -2134,6 +2135,8 @@
         jo.hawb as hawb,
         sum(j.refundIDR) as refundIDR,
         sum(j.refundUSD) as refundUSD,
+        (sum(ifnull(esf.charge,0))+sum(ifnull(eaf.charge,0))) as refund,
+        (sum(ifnull(esfusd.charge,0))+sum(ifnull(eafusd.charge,0))) as refundUS,
         sum(ifnull(j.creditNoteIDR,0)) as creditNoteIDR,
         sum(ifnull(j.creditNoteUSD,0)) as creditNoteUSD,        
         j.cnNo,
@@ -2264,6 +2267,8 @@
         ji.termMBL as mawb,
         sum(j.refundIDR) as refundIDR,
         sum(j.refundUSD) as refundUSD,
+        (sum(ifnull(esf.charge,0))+sum(ifnull(eaf.charge,0))) as refund,
+        (sum(ifnull(esfusd.charge,0))+sum(ifnull(eafusd.charge,0))) as refundUS,
         sum(ifnull(j.creditNoteIDR,0)) as creditNoteIDR,
         sum(ifnull(j.creditNoteUSD,0)) as creditNoteUSD,
         j.cnNo,
@@ -2278,7 +2283,23 @@
     j.totalExpensesUSD    
     FROM jobsheet j
     left join jobsheetsi ji
-        on ji.idJobSheet = j.idJobSheet    
+        on ji.idJobSheet = j.idJobSheet  
+    left join expensesshipper esf
+        on esf.idJobSheet = j.idJobSheet
+        and esf.idShipperFee in (158, 162, 45, 44, 291)
+        and esf.kurs = 'IDR'
+    left join expensesagent eaf
+        on eaf.idJobSheet = j.idJobSheet
+        and eaf.idAgentFee in (28, 85, 170, 228)
+        and eaf.kurs = 'IDR'
+    left join expensesshipper esfusd
+        on esfusd.idJobSheet = j.idJobSheet
+        and esfusd.idShipperFee in (158, 162, 45, 44, 291)
+        and esfusd.kurs = 'USD'
+    left join expensesagent eafusd
+        on eafusd.idJobSheet = j.idJobSheet
+        and eafusd.idAgentFee in (28, 85, 170, 228)
+        and eafusd.kurs = 'USD'    
     left join consignee c
         on c.idConsignee = j.idConsignee
     left join consignee s
@@ -2356,6 +2377,8 @@
         jo.termMBL as mawb,
         sum(j.refundIDR) as refundIDR,
         sum(j.refundUSD) as refundUSD,
+        (sum(ifnull(esf.charge,0))+sum(ifnull(eaf.charge,0))) as refund,
+        (sum(ifnull(esfusd.charge,0))+sum(ifnull(eafusd.charge,0))) as refundUS,
         sum(ifnull(j.creditNoteIDR,0)) as creditNoteIDR,
         sum(ifnull(j.creditNoteUSD,0)) as creditNoteUSD,       
         j.cnNo,
@@ -2371,6 +2394,22 @@
     FROM jobsheet j
     left join jobsheetso jo
         on jo.idJobSheet = j.idJobSheet    
+    left join expensesshipper esf
+        on esf.idJobSheet = j.idJobSheet
+        and esf.idShipperFee in (158, 162, 45, 44, 291)
+        and esf.kurs = 'IDR'
+    left join expensesagent eaf
+        on eaf.idJobSheet = j.idJobSheet
+        and eaf.idAgentFee in (28, 85, 170, 228)
+        and eaf.kurs = 'IDR'
+    left join expensesshipper esfusd
+        on esfusd.idJobSheet = j.idJobSheet
+        and esfusd.idShipperFee in (158, 162, 45, 44, 291)
+        and esfusd.kurs = 'USD'
+    left join expensesagent eafusd
+        on eafusd.idJobSheet = j.idJobSheet
+        and eafusd.idAgentFee in (28, 85, 170, 228)
+        and eafusd.kurs = 'USD'  
     left join consignee c
         on c.idConsignee = j.idConsignee
     left join consignee s
