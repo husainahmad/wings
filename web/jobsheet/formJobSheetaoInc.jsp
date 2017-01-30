@@ -400,7 +400,7 @@
                                     <td width="25%" align="center">
                                         Kurs Value
                                     </td>                         
-                                    <td width="25%" align="center">
+<!--                                    <td width="25%" align="center">
                                         VAT
                                     </td> 
                                     <td width="25%" align="center">
@@ -408,7 +408,7 @@
                                     </td> 
                                     <td width="25%" align="center">
                                         VAT 1 %
-                                    </td> 
+                                    </td> -->
                                     <td width="25%" align="center">
                                         Action
                                     </td>                         
@@ -424,6 +424,7 @@
                                         com.wings.persistence.Billingagent billingagent = (com.wings.persistence.Billingagent)billAgent;
                                         i++;
                                         %>
+                                            <span id="dasbaDebit<%=i%>">
                                             <tr>
                                                 <td width="25%">
                                                     <select name="billingidAgentFeeDebit<%=i%>" onkeydown="if(event.keyCode==13) event.keyCode=9;">
@@ -466,11 +467,12 @@
                                                     </select>
                                                 </td>
                                                 <td width="25%"><input type="text" name="billingAgentKursValueDebit<%=i%>"id="billingAgentKursValueDebit<%=i%>"  value="<bean:write name="billAgent" property="kursValue" format="#,###,###.##"/>" size="10" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                <td width="25%"><input type="checkbox" name="billingAgentTaxDebit<%=i%>" id="billingAgentTaxDebit<%=i%>" value="<bean:write name="billAgent" property="isTax" />" <%=billingagent.getIsTax().intValue()>0 ? " checked " : ""%> size="10" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                <td width="25%"><input type="checkbox" name="billingAgentVatDebit<%=i%>" id="billingAgentVatDebit<%=i%>" value="<bean:write name="billAgent" property="isVat" />" <%=billingagent.getIsVat().intValue()>0 ? " checked " : ""%> size="10" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                <td width="25%"><input type="checkbox" name="billingAgentTax2Debit<%=i%>" id="billingAgentTax2Debit<%=i%>" value="<bean:write name="billAgent" property="isVat" />" <%=billingagent.getIsVat().intValue()>0 ? " checked " : ""%> size="10" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                <td>&nbsp;<input type="button" value="$" onclick="convertToDollarOrRupiah('billingAgentKursValueDebit<%=i%>','billingAgentChargeDebit<%=i%>','billingAgentKursDebit<%=i%>')" > </td>
+                                                <%--<td width="25%"><input type="checkbox" name="billingAgentTaxDebit<%=i%>" id="billingAgentTaxDebit<%=i%>" value="<bean:write name="billAgent" property="isTax" />" <%=billingagent.getIsTax().intValue()>0 ? " checked " : ""%> size="10" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;" onchange="countBilling()"/></td>--%>
+                                                <%--<td width="25%"><input type="checkbox" name="billingAgentVatDebit<%=i%>" id="billingAgentVatDebit<%=i%>" value="<bean:write name="billAgent" property="isVat" />" <%=billingagent.getIsVat().intValue()>0 ? " checked " : ""%> size="10" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;" onchange="countBilling()"/></td>--%>
+                                                <%--<td width="25%"><input type="checkbox" name="billingAgentTax2Debit<%=i%>" id="billingAgentTax2Debit<%=i%>" value="<bean:write name="billAgent" property="isTax2" />" <%=billingagent.getIsTax2().intValue()>0 ? " checked " : ""%> size="10" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;" onchange="countBilling()"/></td>--%>
+                                                <td><input type="button" value="-" onclick="subtractbaDebit2(<%=i%>)">&nbsp;<input type="button" value="$" onclick="convertToDollarOrRupiah('billingAgentKursValueDebit<%=i%>','billingAgentChargeDebit<%=i%>','billingAgentKursDebit<%=i%>')" > </td>
                                             </tr>
+                                            </span>
                                         </logic:iterate>   
                                         </logic:notEmpty>
                                 </table>                                                                            
@@ -537,6 +539,7 @@
                                                 com.wings.persistence.Billingshipper billS = (com.wings.persistence.Billingshipper)billShipper;
                                                 i++;
                                                 %>
+                                                <span id="dasbaInvoice<%=i%>">   
                                                 <tr>
                                                     <td width="25%">
                                                         <select name="billingidAgentFeeInvoice<%=i%>" onkeydown="if(event.keyCode==13) event.keyCode=9;">
@@ -580,11 +583,12 @@
                                                         </select>
                                                     </td>
                                                     <td width="25%"><input type="text" name="billingAgentKursValueInvoice<%=i%>" id="billingAgentKursValueInvoice<%=i%>" value="<bean:write name="billShipper" property="kursValue" format="#,###,###.##"/>" size="10" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                    <td width="25%"><input type="checkbox" name="billingAgentTaxInvoice<%=i%>" id="billingAgentTaxInvoice<%=i%>" value="<bean:write name="billShipper" property="isTax" />" <%=billS.getIsTax().intValue()>0 ? " checked " : ""%>  onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                    <td width="25%"><input type="checkbox" name="billingAgentVatInvoice<%=i%>" id="billingAgentVatInvoice<%=i%>" value="<bean:write name="billShipper" property="isVat" />" <%=billS.getIsVat().intValue()>0 ? " checked " : ""%>  onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                    <td width="25%"><input type="checkbox" name="billingAgentTax2Invoice<%=i%>" id="billingAgentTax2Invoice<%=i%>" value="<bean:write name="billShipper" property="isVat" />" <%=billS.getIsVat().intValue()>0 ? " checked " : ""%>  onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                    <td>&nbsp;<input type="button" value="$" onclick="convertToDollarOrRupiah('billingAgentKursValueInvoice<%=i%>','billingAgentChargeInvoice<%=i%>','billingAgentKursInvoice<%=i%>')" >  </td>
-                                                </tr>                                                                                          
+                                                    <td width="25%"><input type="checkbox" name="billingAgentTaxInvoice<%=i%>" id="billingAgentTaxInvoice<%=i%>" value="1" <%=billS.getIsTax().intValue()>0 ? " checked " : ""%>  onkeydown="if(event.keyCode==13) event.keyCode=9;" onchange="countBilling()"/></td>
+                                                    <td width="25%"><input type="checkbox" name="billingAgentVatInvoice<%=i%>" id="billingAgentVatInvoice<%=i%>" value="1" <%=billS.getIsVat().intValue()>0 ? " checked " : ""%>  onkeydown="if(event.keyCode==13) event.keyCode=9;" onchange="countBilling()"/></td>
+                                                    <td width="25%"><input type="checkbox" name="billingAgentTax2Invoice<%=i%>" id="billingAgentTax2Invoice<%=i%>" value="1" <%=billS.getIsTax2().intValue()>0 ? " checked " : ""%>  onkeydown="if(event.keyCode==13) event.keyCode=9;" onchange="countBilling()"/></td>
+                                                    <td><input type="button" value="-" onclick="subtractbaInvoice2(<%=i%>)">&nbsp;<input type="button" value="$" onclick="convertToDollarOrRupiah('billingAgentKursValueInvoice<%=i%>','billingAgentChargeInvoice<%=i%>','billingAgentKursInvoice<%=i%>')" >  </td>
+                                                </tr>      
+                                                </span>
                                              </logic:iterate>  
                                             </logic:notEmpty>
                                         </table>                                    
@@ -648,6 +652,7 @@
                                         com.wings.persistence.Expensesagent exAgent = (com.wings.persistence.Expensesagent)expAgent;
                                         i++;
                                         %>
+                                            <span id="dasexpensesagentDebit<%=i%>">
                                             <tr>
                                                 <td width="25%">
                                                     <select name="expensesidAgentFeeDebit<%=i%>" onkeydown="if(event.keyCode==13) event.keyCode=9;">
@@ -669,11 +674,11 @@
                                                 </td>
                                                 <td><input type="text" name="expensesAgentOriKursDebit<%=i%>" id="expensesAgentOriKursDebit<%=i%>" value="<bean:write name="expAgent" property="oriKurs" format="#,###,###.##"/>" size="10" onchange="countCharge('expensesAgentOriKursDebit<%=i%>','expensesAgentOriWeightDebit<%=i%>','expensesAgentChargeDebit<%=i%>')" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                 <td><input type="text" name="expensesAgentOriWeightDebit<%=i%>" id="expensesAgentOriWeightDebit<%=i%>" value="<bean:write name="expAgent" property="oriWeight" format="#,###,###.##"/>" size="10" onchange="countCharge('expensesAgentOriKursDebit<%=i%>','expensesAgentOriWeightDebit<%=i%>','expensesAgentChargeDebit<%=i%>')" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                <td width="25%"><input type="text" name="expensesAgentChargeDebit<%=i%>" id="expensesAgentChargeDebit<%=i%>" value="<bean:write name="expAgent" property="charge" format="#,###,###.##"/>" size="10" onchange="countExpenses()" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
+                                                <td width="25%"><input type="text" name="expensesAgentChargeDebit<%=i%>" id="expensesAgentChargeDebit<%=i%>" value="<bean:write name="expAgent" property="charge" format="#,###,###.##"/>" size="10" onchange="countBilling()" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                 <td width="25%"><input type="text" name="expensesAgentDescDebit<%=i%>" id="expensesAgentDescDebit<%=i%>" value="<bean:write name="expAgent" property="description"/>" size="20" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                 <td width="25%"><input type="text" name="expensesAgentDescriptionDebit<%=i%>" id="expensesAgentDescriptionDebit<%=i%>" value="<bean:write name="expAgent" property="descriptionInvoice"/>" size="20" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                 <td width="25%">
-                                                    <select name="expensesAgentKursDebit<%=i%>" id="expensesAgentKursDebit<%=i%>" onchange="countExpenses()" onkeydown="if(event.keyCode==13) event.keyCode=9;">
+                                                    <select name="expensesAgentKursDebit<%=i%>" id="expensesAgentKursDebit<%=i%>" onchange="countBilling()" onkeydown="if(event.keyCode==13) event.keyCode=9;">
                                                         <%
                                                         if (exAgent.getKurs().equalsIgnoreCase("IDR")) {
                                                         %>
@@ -692,8 +697,9 @@
                                                 <td width="25%"><input type="text" name="expensesAgentKursValueDebit<%=i%>" id="expensesAgentKursValueDebit<%=i%>" value="<bean:write name="expAgent" property="kursValue" format="#,###,###.##"/>" size="10" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
 <!--                                                <td width="25%"><input type="checkbox" name="expensesAgentTaxDebit<%=i%>" id="expensesAgentTaxDebit<%=i%>" value="<bean:write name="expAgent" property="isTax" />" <%=exAgent.getIsTax().intValue()>0 ? " checked " : ""%>  size="10" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                 <td width="25%"><input type="checkbox" name="expensesAgentVatDebit<%=i%>" id="expensesAgentVatDebit<%=i%>" value="<bean:write name="expAgent" property="isVat" />" <%=exAgent.getIsVat().intValue()>0 ? " checked " : ""%>  size="10" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>                                                -->
-                                                <td>&nbsp;<input type="button" value="$" onclick="convertToDollarOrRupiah('expensesAgentKursValueDebit<%=i%>','expensesAgentChargeDebit<%=i%>','expensesAgentKursDebit<%=i%>')" >  </td>
-                                            </tr>                                                                               
+                                                <td><input type="button" value="-" onclick="subtractexpensesagentDebit2(<%=i%>)">&nbsp;<input type="button" value="$" onclick="convertToDollarOrRupiah('expensesAgentKursValueDebit<%=i%>','expensesAgentChargeDebit<%=i%>','expensesAgentKursDebit<%=i%>')" >  </td>
+                                            </tr>   
+                                            </span>
                                         </logic:iterate>  
                                     </logic:notEmpty>
                                     </table>                                 
@@ -778,11 +784,11 @@
                                                 </td>
                                                 <td><input type="text" name="expensesAgentOriKursInvoice<%=i%>" id="expensesAgentOriKursInvoice<%=i%>" value="<bean:write name="expShipper" property="oriKurs" format="#,###,###.##"/>" size="10" onchange="countCharge('expensesAgentOriKursInvoice<%=i%>','expensesAgentOriWeightInvoice<%=i%>','expensesAgentChargeInvoice<%=i%>')" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                 <td><input type="text" name="expensesAgentOriWeightInvoice<%=i%>" id="expensesAgentOriWeightInvoice<%=i%>" value="<bean:write name="expShipper" property="oriWeight" format="#,###,###.##"/>" size="10" onchange="countCharge('expensesAgentOriKursInvoice<%=i%>','expensesAgentOriWeightInvoice<%=i%>','expensesAgentChargeInvoice<%=i%>')" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
-                                                <td width="25%"><input type="text" name="expensesAgentChargeInvoice<%=i%>" id="expensesAgentChargeInvoice<%=i%>" value="<bean:write name="expShipper" property="charge" format="#,###,###.##"/>" size="10" onchange="countExpenses()" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
+                                                <td width="25%"><input type="text" name="expensesAgentChargeInvoice<%=i%>" id="expensesAgentChargeInvoice<%=i%>" value="<bean:write name="expShipper" property="charge" format="#,###,###.##"/>" size="10" onchange="countBilling()" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                 <td width="25%"><input type="text" name="expensesAgentDescInvoice<%=i%>" id="expensesAgentDescInvoice<%=i%>" value="<bean:write name="expShipper" property="description"/>" size="20" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                 <td width="25%"><input type="text" name="expensesAgentDescriptionInvoice<%=i%>" id="expensesAgentDescriptionInvoice<%=i%>" value="<bean:write name="expShipper" property="descriptionInvoice"/>" size="20" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                 <td width="25%">
-                                                    <select name="expensesAgentKursInvoice<%=i%>" id="expensesAgentKursInvoice<%=i%>"  onchange="countExpenses()" onkeydown="if(event.keyCode==13) event.keyCode=9;">
+                                                    <select name="expensesAgentKursInvoice<%=i%>" id="expensesAgentKursInvoice<%=i%>"  onchange="countBilling()" onkeydown="if(event.keyCode==13) event.keyCode=9;">
                                                         <%
                                                         if (exShipper.getKurs().equalsIgnoreCase("IDR")) {
                                                         %>
@@ -801,7 +807,7 @@
                                                 <td width="25%"><input type="text" name="expensesAgentKursValueInvoice<%=i%>" id="expensesAgentKursValueInvoice<%=i%>" value="<bean:write name="expShipper" property="kursValue" format="#,###,###.##"/>" size="10" onBlur="this.value=formatCurrency(this.value);" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
 <!--                                                <td width="25%"><input type="checkbox" name="expensesAgentTaxInvoice<%=i%>" id="expensesAgentTaxInvoice<%=i%>" value="<bean:write name="expShipper" property="isTax" />" <%=exShipper.getIsTax().intValue()>0 ? " checked " : ""%>  size="10" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>
                                                 <td width="25%"><input type="checkbox" name="expensesAgentVatInvoice<%=i%>" id="expensesAgentVatInvoice<%=i%>" value="<bean:write name="expShipper" property="isVat" />" <%=exShipper.getIsVat().intValue()>0 ? " checked " : ""%>  size="10" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;"/></td>-->
-                                                <td>&nbsp;<input type="button" value="$" onclick="convertToDollarOrRupiah('expensesAgentKursValueInvoice<%=i%>','expensesAgentChargeInvoice<%=i%>','expensesAgentKursInvoice<%=i%>')" > </td>
+                                                <td><input type="button" value="-" onclick="subtractexpensesagentInvoice2(<%=i%>)">&nbsp;<input type="button" value="$" onclick="convertToDollarOrRupiah('expensesAgentKursValueInvoice<%=i%>','expensesAgentChargeInvoice<%=i%>','expensesAgentKursInvoice<%=i%>')" > </td>
                                             </tr>                                                                                                
                                         </logic:iterate>  
                                     </logic:notEmpty>
@@ -834,6 +840,37 @@
                                             IDR
                                         </td>
                                     </tr>  
+                                    
+                                    <tr>
+                                        <td>
+                                            Sub Total Cost
+                                        </td>                                        
+                                        <td width="5"></td>                                        
+                                        <td>      
+                                            <input type="text" id="totalCostUSDAsString" name="totalCostUSDAsString" size="35" style="text-align: right;" value="" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                        </td>
+                                        <td>
+                                             <input type="text" id="totalCostIDRAsString" name="totalCostIDRAsString" size="35" style="text-align: right;" value="" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Sub Total Selling
+                                        </td>                                        
+                                        <td width="5"></td>                                        
+                                        <td>      
+                                            <input type="text" id="totalSellingUSDAsString" name="totalSellingUSDAsString" size="35" style="text-align: right;" value="" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                        </td>
+                                        <td>
+                                             <input type="text" id="totalSellingIDRAsString" name="totalSellingIDRAsString" size="35" style="text-align: right;" value="" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                        </td>
+                                    </tr>
+
+                                    <input type="hidden" id="totalSellingIDR" name="totalSellingIDR" >
+                                    <input type="hidden" id="totalSellingUSD" name="totalSellingUSD" >
+                                    <input type="hidden" id="totalCostIDR" name="totalCostIDR" >
+                                    <input type="hidden" id="totalCostUSD" name="totalCostUSD" >
+
                                     <tr>
                                         <td>
                                             DPP
@@ -965,8 +1002,5 @@
          </tr>   
                 
          <script>
-             document.addEventListener("DOMContentLoaded", function(event) { 
-                 countBilling();
-                 countExpenses();
-             });
-         </script>  
+             countBilling();         
+         </script>    

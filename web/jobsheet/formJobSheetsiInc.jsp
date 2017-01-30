@@ -425,6 +425,36 @@
                                     </tr>  
                                     <tr>
                                         <td>
+                                            Sub Total Cost
+                                        </td>                                        
+                                        <td width="5"></td>                                        
+                                        <td>      
+                                            <input type="text" id="totalCostUSDAsString" name="totalCostUSDAsString" size="35" style="text-align: right;" value="" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                        </td>
+                                        <td>
+                                             <input type="text" id="totalCostIDRAsString" name="totalCostIDRAsString" size="35" style="text-align: right;" value="" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Sub Total Selling
+                                        </td>                                        
+                                        <td width="5"></td>                                        
+                                        <td>      
+                                            <input type="text" id="totalSellingUSDAsString" name="totalSellingUSDAsString" size="35" style="text-align: right;" value="" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                        </td>
+                                        <td>
+                                             <input type="text" id="totalSellingIDRAsString" name="totalSellingIDRAsString" size="35" style="text-align: right;" value="" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                        </td>
+                                    </tr>
+
+                                    <input type="hidden" id="totalSellingIDR" name="totalSellingIDR" >
+                                    <input type="hidden" id="totalSellingUSD" name="totalSellingUSD" >
+                                    <input type="hidden" id="totalCostIDR" name="totalCostIDR" >
+                                    <input type="hidden" id="totalCostUSD" name="totalCostUSD" >
+
+                                    <tr>
+                                        <td>
                                             DPP
                                         </td>                                        
                                         <td width="5"></td>                                        
@@ -555,8 +585,5 @@
          </tr>   
          
          <script>
-             document.addEventListener("DOMContentLoaded", function(event) { 
-                 countBilling();
-                 countExpenses();
-             });
+             countBilling();
          </script>     
