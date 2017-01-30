@@ -19,7 +19,6 @@ function convertToDollarOrRupiah(kursValue,chargeDebit,kurs) {
             
 function countBilling() {
     var dacountbaDebit = document.getElementById("dacountbaDebit").value;    
-    console.log(dacountbaDebit);
     var i = 1;
     var billacchd = "billingAgentChargeDebit";
     var kurs = "billingAgentKursDebit";
@@ -60,39 +59,10 @@ function countBilling() {
             
             if (pas2=="IDR") {
                 totalIDR+=parseFloat(pas1);    
-                if (tax1.checked) {
-                    console.log('checked');
-                    totalDPPIDR += parseFloat(pas1);
-                } 
-
-                if (vat1.checked) {
-                    console.log('vat checked');
-                    totalPPHIDR += parseFloat(pas1);
-                } 
-                
-                if (tax2.checked) {
-                    console.log('checked tax2');
-                    totalDPP2IDR += parseFloat(pas1);
-                } 
             } else {
                 totalUSD+=parseFloat(pas1);    
-                if (tax1.checked) {
-                    console.log('checked');
-                    totalDPPUSD += parseFloat(pas1);
-                } 
-
-                if (vat1.checked) {
-                    console.log('vat checked');
-                    totalPPHUSD += parseFloat(pas1);
-                } 
-                
-                if (tax2.checked) {
-                    console.log('checked tax 2');
-                    totalDPP2USD += parseFloat(pas1);
-                }
             }
             
-            console.log(totalDPPIDR);
         } catch (e) {
         }                                                                               
     }
@@ -105,10 +75,12 @@ function countBilling() {
     
     tax = "billingAgentTaxInvoice";
     vat = "billingAgentVatInvoice";
+    tax2 = "billingAgentTax2Invoice";
     
     pas1 = "";
     pas2 = "";                
-                
+    pas3 = "";
+    
     for (i=1; i<=dacountbaInvoice+5; i++) {
         try {                        
             pas2 = kurs + i;
@@ -120,34 +92,41 @@ function countBilling() {
             
             tax1 = document.getElementById(tax+i);  
             vat1 = document.getElementById(vat+i); 
+            pas3 = document.getElementById(tax2+i); 
             
             if (pas2=="IDR") {
                 totalIDR+=parseFloat(pas1);   
                 if (tax1.checked) {
-                    console.log('checked');
                     totalDPPIDR += parseFloat(pas1);
+                } 
+                
+                if (pas3.checked) {
+                    totalDPP2IDR += parseFloat(pas1);
                 } 
 
                 if (vat1.checked) {
-                    console.log('vat checked');
                     totalPPHIDR += parseFloat(pas1);
                     
                 } 
             } else {
                 totalUSD+=parseFloat(pas1); 
                 if (tax1.checked) {
-                    console.log('checked');
                     totalDPPUSD += parseFloat(pas1);
                 } 
 
+                if (pas3.checked) {
+                    totalDPP2USD += parseFloat(pas1);
+                } 
+                
                 if (vat1.checked) {
-                    console.log('vat checked');
                     totalPPHUSD += parseFloat(pas1);                    
                 } 
             }
         } catch (e) {
         }                                                                               
     }
+    
+    countExpenses();
     
     var vatIDR = totalDPPIDR * 0.10;
     var vat2IDR = totalDPP2IDR * 0.01;
@@ -156,6 +135,12 @@ function countBilling() {
     var vatUSD = totalDPPUSD * 0.10;
     var vat2USD = totalDPP2USD * 0.01;
     var pph23USD = totalPPHUSD * 0.02;
+    
+    document.getElementById("totalSellingUSDAsString").value = formatCurrency(totalUSD);
+    document.getElementById("totalSellingUSD").value = formatCurrency(totalUSD);
+    
+    document.getElementById("totalSellingIDRAsString").value = formatCurrency(totalIDR);
+    document.getElementById("totalSellingIDR").value = totalIDR;
     
     document.getElementById("totalDPPUSDAsString").value = formatCurrency(totalDPPUSD);
     document.getElementById("totalDPPIDRAsString").value = formatCurrency(totalDPPIDR);
@@ -166,37 +151,36 @@ function countBilling() {
     document.getElementById("totalVat2USDAsString").value = formatCurrency(vat2USD);
     document.getElementById("totalVat2IDRAsString").value = formatCurrency(vat2IDR);
     
-    document.getElementById("subTotalBillingUSDAsString").value = formatCurrency(totalUSD + vatUSD + vat2USD);    
-    document.getElementById("subTotalBillingIDRAsString").value = formatCurrency(totalIDR + vatIDR + vat2IDR);
-    
     document.getElementById("totalPPHUSDAsString").value = formatCurrency(pph23USD);
     document.getElementById("totalPPHIDRAsString").value = formatCurrency(pph23IDR);
+    
+    document.getElementById("subTotalBillingUSDAsString").value = formatCurrency(totalUSD + vatUSD + vat2USD);    
+    document.getElementById("subTotalBillingIDRAsString").value = formatCurrency(totalIDR + vatIDR + vat2IDR);        
     
     document.getElementById("totalBillingUSDAsString").value = formatCurrency((totalUSD + vatUSD + vat2USD) - pph23USD);
     document.getElementById("totalBillingIDRAsString").value = formatCurrency((totalIDR + vatIDR + vat2IDR) - pph23IDR);
     
     document.getElementById("totalBillingUSD").value = ((totalUSD + vatUSD + vat2USD) - pph23USD);
-    document.getElementById("totalBillingIDR").value = ((totalIDR + vatIDR + vat2IDR) - pph23IDR);
-        
-    
-//    document.getElementById("totalBillingIDRAsString").value = formatCurrency(totalIDR - (totalTaxIDR+totalVatIDR));
-//    document.getElementById("totalBillingUSDAsString").value = formatCurrency(totalUSD - (totalTaxUSD+totalVatUSD));
-//                
-//    document.getElementById("totalBillingIDR").value = totalIDR - (totalTaxIDR+totalVatIDR);
-//    document.getElementById("totalBillingUSD").value = totalUSD - (totalTaxUSD+totalVatUSD);      
+    document.getElementById("totalBillingIDR").value = ((totalIDR + vatIDR + vat2IDR) - pph23IDR);                
                 
     var totalBillingIDR = document.getElementById("totalBillingIDR").value;
-    var totalBillingUSD = document.getElementById("totalBillingUSD").value;
-
+    var totalBillingUSD = document.getElementById("totalBillingUSD").value;    
+    
     var totalExpensesIDR = document.getElementById("totalExpensesIDR").value;
-    var totalExpensesUSD = document.getElementById("totalExpensesUSD").value;
+    var totalExpensesUSD = document.getElementById("totalExpensesUSD").value;          
                  
     var refundUSD = 0;
     var refundIDR = 0;
                 
-    totalBillingIDR=parseFloat(totalBillingIDR); 
-    totalExpensesIDR=parseFloat(totalExpensesIDR); 
-
+    totalBillingIDR=parseFloat(totalBillingIDR);     
+    totalExpensesIDR=(parseFloat(totalExpensesIDR) + vatIDR + vat2IDR);
+    totalExpensesUSD=(parseFloat(totalExpensesUSD) + vatUSD);
+    
+    document.getElementById("totalExpensesIDRAsString").value = formatCurrency(totalExpensesIDR);
+    document.getElementById("totalExpensesUSDAsString").value = formatCurrency(totalExpensesUSD);
+    document.getElementById("totalExpensesIDR").value = totalExpensesIDR;
+    document.getElementById("totalExpensesUSD").value = totalExpensesUSD;
+    
     try {                        
         if (totalBillingIDR>totalExpensesIDR) {                       
             if (totalExpensesIDR>0)
@@ -242,12 +226,12 @@ function countBilling() {
     }        
                 
     if (refundIDR>creditNoteIDR) {
-        document.getElementById("refundIDR").value = (refundIDR-creditNoteIDR);
+        document.getElementById("refundIDR").value = parseFloat(refundIDR-creditNoteIDR);
     } else {
         document.getElementById("refundIDR").value = 0;
     }
     if (refundUSD>creditNoteUSD) {
-        document.getElementById("refundUSD").value = (refundUSD-creditNoteUSD);
+        document.getElementById("refundUSD").value = parseFloat(refundUSD-creditNoteUSD);
     } else {
         document.getElementById("refundUSD").value = 0;
     }       
@@ -256,7 +240,7 @@ function countBilling() {
 function countExpenses() {
 
     var dacountexpensesagentDebit = document.getElementById("dacountexpensesagentDebit").value;
-    console.log(dacountexpensesagentDebit);
+    
     var i = 1;
     var billacchd = "expensesAgentChargeDebit";
     var kurs = "expensesAgentKursDebit";
@@ -265,17 +249,10 @@ function countExpenses() {
     
     var pas1 = "";
     var pas2 = "";
-    var tax1 = "";
-    var vat1 = "";
+    
     
     var totalIDR = 0;
-    var totalUSD = 0;                                
-    var totalTaxIDR = 0;
-    var totalVatIDR =0;
-    
-    var totalTaxUSD = 0;
-    var totalVatUSD =0;
-    
+    var totalUSD = 0;              
     
     for (i=1; i<=dacountexpensesagentDebit+5; i++) {
                 
@@ -292,27 +269,8 @@ function countExpenses() {
             
             if (pas2=="IDR") {
                 totalIDR+=parseFloat(pas1);                                        
-                if (tax1.checked) {
-                    console.log('checked');
-                    totalTaxIDR += parseFloat(pas1);
-                } 
-
-                if (vat1.checked) {
-                    console.log('vat checked');
-                    totalVatIDR += parseFloat(pas1);
-                } 
-
             } else {
-                totalUSD+=parseFloat(pas1);                                             
-                if (tax1.checked) {
-                    console.log('checked');
-                    totalTaxUSD += parseFloat(pas1);
-                } 
-
-                if (vat1.checked) {
-                    console.log('vat checked');
-                    totalVatUSD += parseFloat(pas1);
-                } 
+                totalUSD+=parseFloat(pas1);                                              
             }
                                     
         } catch (e) {
@@ -330,6 +288,7 @@ function countExpenses() {
     pas1 = "";
     pas2 = "";                
         
+    
     for (i=1; i<=dacountexpensesagentInvoice+5; i++) {
         
         try {
@@ -340,121 +299,27 @@ function countExpenses() {
             pas1 = document.getElementById(pas1).value;     
             pas1 = pas1.toString().replace(/\$|\,/g,'');
             
-            tax1 = document.getElementById(tax+i);  
-            vat1 = document.getElementById(vat+i); 
-            
             if (pas2=="IDR") {
                 totalIDR+=parseFloat(pas1);       
-//                if (tax1.checked) {
-//                    console.log('checked');
-//                    totalTaxIDR += parseFloat(pas1);
-//                } 
-//
-//                if (vat1.checked) {
-//                    console.log('vat checked');
-//                    totalVatIDR += parseFloat(pas1);
-//                    
-//                } 
             } else {
                 totalUSD+=parseFloat(pas1);                                             
-//                if (tax1.checked) {
-//                    console.log('checked');
-//                    totalTaxUSD += parseFloat(pas1);
-//                } 
-//
-//                if (vat1.checked) {
-//                    console.log('vat checked');
-//                    totalVatUSD += parseFloat(pas1);
-//                } 
             }
         } catch (e) {
         }                                                                               
     }
-//   
-//    totalTaxIDR = totalTaxIDR * 0.02;
-//    totalVatIDR = totalVatIDR * 0.10;
-//    
-//    totalTaxUSD = totalTaxUSD * 0.02;
-//    totalVatUSD = totalVatUSD * 0.10;
-//    
-//    document.getElementById("totalExTaxIDRAsString").value = formatCurrency(totalTaxIDR);
-//    document.getElementById("totalExVatIDRAsString").value = formatCurrency(totalVatIDR);
-//    
-//    document.getElementById("totalExTaxUSDAsString").value = formatCurrency(totalTaxUSD);
-//    document.getElementById("totalExVatUSDAsString").value = formatCurrency(totalVatUSD);
-//    
-//    document.getElementById("totalExpensesIDRAsString").value = formatCurrency(totalIDR - (totalTaxIDR + totalVatIDR));
-//    document.getElementById("totalExpensesUSDAsString").value = formatCurrency(totalUSD - (totalTaxUSD + totalVatUSD));
-//    document.getElementById("totalExpensesIDR").value = totalIDR - (totalTaxIDR + totalVatIDR);
-//    document.getElementById("totalExpensesUSD").value = totalUSD - (totalTaxUSD + totalVatUSD);
-
+    
+    
+    document.getElementById("totalCostUSDAsString").value = formatCurrency(totalUSD);
+    document.getElementById("totalCostUSD").value = formatCurrency(totalUSD);
+    
+    document.getElementById("totalCostIDRAsString").value = formatCurrency(totalIDR);
+    document.getElementById("totalCostIDR").value = totalIDR;
+    
+   
     document.getElementById("totalExpensesIDRAsString").value = formatCurrency(totalIDR);
     document.getElementById("totalExpensesUSDAsString").value = formatCurrency(totalUSD);
     document.getElementById("totalExpensesIDR").value = totalIDR;
     document.getElementById("totalExpensesUSD").value = totalUSD;
-
-    var totalBillingIDR = document.getElementById("totalBillingIDR").value;
-    var totalBillingUSD = document.getElementById("totalBillingUSD").value;
-                 
-    var totalExpensesIDR = document.getElementById("totalExpensesIDR").value;
-    var totalExpensesUSD = document.getElementById("totalExpensesUSD").value;
-                 
-    var refundUSD = 0;
-    var refundIDR = 0;
-                
-    totalBillingIDR=parseFloat(totalBillingIDR); 
-    totalExpensesIDR=parseFloat(totalExpensesIDR); 
-
-    try {                        
-        if (totalBillingIDR>totalExpensesIDR ) {                       
-            refundIDR = (totalBillingIDR-totalExpensesIDR) * 0.4;
-        }                       
-    } catch (e) {
-        refundIDR = 0;
-    }           
-
-    totalExpensesUSD=parseFloat(totalExpensesUSD); 
-    totalBillingUSD=parseFloat(totalBillingUSD);          
-         
-    try {               
-        if (totalBillingUSD>totalExpensesUSD) {
-            if (totalExpensesUSD>0) {                           
-                if (totalExpensesUSD>=51) {                              
-                    refundUSD = (totalBillingUSD-totalExpensesUSD) * 0.4;
-                } else {
-                    refundUSD = 0;
-                }                    
-            } else {
-                refundUSD = 0;
-            }
-        } else {
-            refundUSD = 0;
-        }                                              
-    } catch (e) {
-        refundUSD = 0;
-    }                            
-    var creditNoteIDR = 0;
-    var creditNoteUSD = 0;
-      
-    try {
-        creditNoteIDR = parseFloat(document.getElementById("creditNoteIDR").value);      
-    } catch (e) {
-        creditNoteIDR = 0;
-    }
-                
-    try {
-        creditNoteUSD = parseFloat(document.getElementById("creditNoteUSD").value);      
-    } catch (e) {
-        creditNoteUSD = 0;
-    }        
-    if (refundIDR>creditNoteIDR) {
-        document.getElementById("refundIDR").value = (refundIDR-creditNoteIDR);
-    } else {
-        document.getElementById("refundIDR").value = 0;
-    }
-    if (refundUSD>creditNoteUSD) {
-        document.getElementById("refundUSD").value = (refundUSD-creditNoteUSD);
-    } else {
-        document.getElementById("refundUSD").value = 0;
-    }      
+    
+        
 }
