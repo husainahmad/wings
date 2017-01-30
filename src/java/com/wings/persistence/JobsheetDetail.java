@@ -42,6 +42,7 @@ public class JobsheetDetail extends Jobsheet {
     private Double bsPPH;
     
     
+    
     public JobsheetDetail() {
     }
 
@@ -274,5 +275,6 @@ public class JobsheetDetail extends Jobsheet {
     public void setBsPPH(Double bsPPH) {
         this.bsPPH = bsPPH;
     }
+   
     
 }

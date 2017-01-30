@@ -45,6 +45,7 @@ public class MonthlySales {
     private Double creditNoteUSD;
     private Double creditNoteIDR;
     private Double bsPPH;
+    private Double vatIDR2;
     
     /** Creates a new instance of MonthlySales */
     public MonthlySales() {
@@ -286,6 +287,20 @@ public class MonthlySales {
      */
     public void setBsPPH(Double bsPPH) {
         this.bsPPH = bsPPH;
+    }
+
+    /**
+     * @return the vatIDR2
+     */
+    public Double getVatIDR2() {
+        return vatIDR2;
+    }
+
+    /**
+     * @param vatIDR2 the vatIDR2 to set
+     */
+    public void setVatIDR2(Double vatIDR2) {
+        this.vatIDR2 = vatIDR2;
     }
     
 }
