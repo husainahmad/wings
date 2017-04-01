@@ -1188,7 +1188,10 @@
                then slo.name
         end
     ),'') as shippingLine,
-    i.isPayable
+    i.isPayable,
+     ifnull(j.vatIDR,0) as vatIDR,
+    ifnull(j.vatIDR2,0) as vatIDR2,
+    ifnull(j.pphIDR,0) as pphIDR
     from jobsheet j
     left join invoice i
         on j.idJobSheet = i.idJobSheet
@@ -1211,7 +1214,6 @@
     left join consignee slo
         on so.shippingLine = slo.idConsignee  
     where  j.shippeddate between #from# AND #to#
-    and i.isPayable is null
     and i.invoiceNumber is not null        
     union
     select j.idJobSheet,
@@ -1294,7 +1296,10 @@
                then slo.name
         end
     ),'') as shippingLine,
-    d.isPayable
+    d.isPayable,
+    ifnull(j.vatIDR,0) as vatIDR,
+    ifnull(j.vatIDR2,0) as vatIDR2,
+    ifnull(j.pphIDR,0) as pphIDR
     from jobsheet j
     left join debit d
         on j.idJobSheet = d.idJobSheet
@@ -1317,7 +1322,6 @@
     left join consignee slo
         on so.shippingLine = slo.idConsignee      
     where  j.shippeddate between #from# AND #to#
-    and d.isPayable is null
     and d.debitNumber is not null
   </select>
   
@@ -1401,6 +1405,9 @@
                then slo.name
         end
     ),'') as shippingLine,
+     ifnull(j.vatIDR,0) as vatIDR,
+    ifnull(j.vatIDR2,0) as vatIDR2,
+    ifnull(j.pphIDR,0) as pphIDR, 
     ifnull(i.isPayable,'') as isPayable
     from jobsheet j
     left join invoice i
@@ -1424,7 +1431,6 @@
     left join consignee slo
         on so.shippingLine = slo.idConsignee       
     where  j.shippeddate between #from# AND #to#
-    and i.isPayable is null
     and i.invoiceNumber is not null        
     union
     select j.idJobSheet,
@@ -1506,6 +1512,9 @@
                then slo.name
         end
     ),'') as shippingLine,
+     ifnull(j.vatIDR,0) as vatIDR,
+    ifnull(j.vatIDR2,0) as vatIDR2,
+    ifnull(j.pphIDR,0) as pphIDR, 
     ifnull(d.isPayable, '') as isPayable
     from jobsheet j
     left join debit d
@@ -1529,8 +1538,30 @@
     left join consignee slo
         on so.shippingLine = slo.idConsignee                    
     where  j.shippeddate between #from# AND #to#
-    and d.isPayable is null
     and d.debitNumber is not null
+  </select>
+  
+  <select id="jobsheet_selectReportJaminan" resultClass="invoiceAIDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    select j.idJobSheet,
+      ifnull(j.jobNo,'') as jobNo,      
+      ifnull(i.invoiceNumber,'') as idNumber,      
+      ifnull(sli.name,'') as shippingLine,
+      ifnull(c.name,'') as idConsignee, 
+      j.volumeDesc,
+      j.jaminan,
+      si.termMBL as hawb    
+    from jobsheet j
+    left join invoice i
+        on j.idJobSheet = i.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee     
+    where  j.shippeddate between #from# AND #to#
+      and j.idJobType = 'SI'
+    group by j.jobNo
   </select>
   
   <select id="jobsheet_selectReportSummaryJobsheet" resultClass="jobsheet" parameterClass="com.wings.web.struts.forms.DateSelection">   
@@ -2279,8 +2310,32 @@
         ji.billToDebit,
     sl.name as flights,
     0 as pag,
-    j.totalExpensesIDR,
-    j.totalExpensesUSD    
+    sum((
+        select ifnull(sum(b.charge),0) from expensesagent b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+      ) +
+      (
+        select ifnull(sum(b.charge),0) from expensesshipper b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+        and b.idShipperFee != 379
+      ))
+      as
+      totalExpensesIDR,
+      sum(ifnull((
+        select ifnull(sum(b1.charge),0) from expensesagent b1
+        where b1.kurs = 'USD'
+        and b1.idJobSheet = j.idJobSheet
+      ),0) +
+       ifnull((
+        select ifnull(sum(b2.charge),0) from expensesshipper b2
+        where b2.kurs = 'USD'
+        and b2.idJobSheet = j.idJobSheet
+        and b2.idShipperFee != 379
+      ),0))
+      as
+    totalExpensesUSD     
     FROM jobsheet j
     left join jobsheetsi ji
         on ji.idJobSheet = j.idJobSheet  
@@ -2389,8 +2444,32 @@
     jo.billToDebit,
     ifnull(sl.name,'') as flights,
     0 as pag,
-    j.totalExpensesIDR,
-    j.totalExpensesUSD
+    sum((
+        select ifnull(sum(b.charge),0) from expensesagent b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+      ) +
+      (
+        select ifnull(sum(b.charge),0) from expensesshipper b
+        where b.kurs = 'IDR'
+        and b.idJobSheet = j.idJobSheet
+        and b.idShipperFee != 379
+      ))
+      as
+      totalExpensesIDR,
+      sum(ifnull((
+        select ifnull(sum(b1.charge),0) from expensesagent b1
+        where b1.kurs = 'USD'
+        and b1.idJobSheet = j.idJobSheet
+      ),0) +
+       ifnull((
+        select ifnull(sum(b2.charge),0) from expensesshipper b2
+        where b2.kurs = 'USD'
+        and b2.idJobSheet = j.idJobSheet
+        and b2.idShipperFee != 379
+      ),0))
+      as
+    totalExpensesUSD    
     FROM jobsheet j
     left join jobsheetso jo
         on jo.idJobSheet = j.idJobSheet    
@@ -2741,6 +2820,69 @@
     and t.noFaktur is not null
     order by t.noFaktur
   </select>
+  
+  <select id="jobsheet_selectReportFakturPajak" resultClass="jobsheetDetail" parameterClass="com.wings.web.struts.forms.DateSelection">   
+    select j.idJobSheet,
+      j.jobNo,
+      ifnull(s.name,'') as idShipper,
+          ifnull(c.name,'') as idConsignee,
+          ifnull(a.name,'') as idAgent,
+      ifnull(s.idConsignee,'') as idS,
+      ifnull(c.idConsignee,'') as idC,
+      ifnull(a.idConsignee,'') as idA,
+      ifnull(s.idAccountIDR,'') as idSAccountIDR,
+      ifnull(c.idAccountIDR,'') as idCAccountIDR,
+      ifnull(a.idAccountIDR,'') as idAAccountIDR,
+      ifnull(s.idAccountUSD,'') as idSAccountUSD,
+      ifnull(c.idAccountUSD,'') as idCAccountUSD,
+      ifnull(a.idAccountUSD,'') as idAAccountUSD,
+      (
+        case j.idJobType
+            when 'AI'
+               then ai.billTo
+            when 'AO'
+               then ao.billTo
+            when 'SI'
+               then si.billTo
+            when 'SO'
+               then so.billTo
+        end
+     ) as billTo,
+      i.invoiceDate as shippeddate,
+      i.invoiceNumber as invoiceNumber,
+      j.totalBillingIDR,
+      j.idJobType,
+      j.dppIDR,
+      j.dppIDR2,
+      j.pphIDR,
+      j.vatIDR,
+      j.vatIDR2
+    from jobsheet j
+    left join invoice i
+        on j.idJobSheet = i.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+   left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join jobsheetai ai
+        on j.idJobSheet = ai.idJobSheet
+    left join jobsheetao ao
+        on j.idJobSheet = ao.idJobSheet
+     left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee
+    left join jobsheetso so
+        on j.idJobSheet = so.idJobSheet
+    left join consignee slo
+        on so.shippingLine = slo.idConsignee
+    where j.idJobType = #jobType#
+    and i.invoiceNumber is not null
+    and i.invoiceDate between #from# AND #to#
+      order by i.invoiceDate
+ </select>
   
 <select id="jobsheet_select_detail" resultClass="detailJobsheet" parameterClass="com.wings.persistence.JobsheetKey">
     select af.description,

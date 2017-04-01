@@ -29,6 +29,7 @@ public final class UpdateAgentfeeAction extends Action {
       AgentfeeForm agentfeeForm = (AgentfeeForm)form;
 
       try {
+         agentfeeForm.setIsTax("0"); 
          agentfeeForm = com.wings.adapter.StrutsAgentfeeDelegate.update(agentfeeForm);
          request.setAttribute("agentfee", agentfeeForm);
          return mapping.findForward("view");

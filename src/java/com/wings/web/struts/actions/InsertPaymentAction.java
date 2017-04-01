@@ -170,7 +170,7 @@ public final class InsertPaymentAction extends Action {
             } catch (Exception e) {                
             }
             
-            if (kurs.equalsIgnoreCase("USD")) {
+            if (kurs!=null && kurs.equalsIgnoreCase("USD")) {
                 if ((decbillUSD>=decchargeUSD) && (decbillUSD>0.0)) {
                     payment.setKurs(kurs);
                     payment.setAmount(new Double(decbillUSD));
@@ -259,7 +259,7 @@ public final class InsertPaymentAction extends Action {
             } catch (ParseException pe) {
                  tutupBuku = new java.sql.Date((new java.util.Date()).getTime());
             }
-            if (kurs.equalsIgnoreCase("USD")) {
+            if (kurs!=null && kurs.equalsIgnoreCase("USD")) {
                 transactionaccForm.setIdAccount(accUSD);   
                 try {
                     double dkurs = Double.parseDouble(kursvalue);                    
@@ -317,7 +317,7 @@ public final class InsertPaymentAction extends Action {
                 }                
             } catch (Exception e) {                
             }
-            if (kurs.equalsIgnoreCase("USD")) {
+            if (kurs!=null && kurs.equalsIgnoreCase("USD")) {
                 transactionaccForm.setDescription("Payment " + name + " (" + idNumber + ")" + " $ " + billUSD);                  
             } else {
                 transactionaccForm.setDescription("Payment " + name + " (" + idNumber + ")" + " IDR " + billIDR);                  

@@ -222,6 +222,12 @@ public class JobsheetDAOImpl extends SqlMapDaoTemplate implements JobsheetDAO {
 
         return records;
     }
+    
+    public List selectReportJaminan(DateSelection dateSelection) {
+        List records = (List) queryForList("jobsheet_selectReportJaminan", dateSelection);
+
+        return records;
+    }
 
     public Jobsheet selectMaxJobNo(Jobsheet jobsheet) {
         Jobsheet record = (Jobsheet) queryForObject("jobsheet_selectMaxJobNo", jobsheet);
@@ -315,6 +321,12 @@ public class JobsheetDAOImpl extends SqlMapDaoTemplate implements JobsheetDAO {
     
     public List selectRefund(DateSelection dateSelection) {
         List records = (List) queryForList("jobsheet_selectReportRefund", dateSelection);
+
+        return records;
+    }
+
+    public List selectFakturPajakByJobType(DateSelection dateSelection) {        
+        List records = (List) queryForList("jobsheet_selectReportFakturPajak", dateSelection);
 
         return records;
     }

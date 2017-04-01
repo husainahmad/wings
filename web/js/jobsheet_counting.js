@@ -128,9 +128,14 @@ function countBilling() {
     
     countExpenses();
     
-    var vatIDR = totalDPPIDR * 0.10;
-    var vat2IDR = totalDPP2IDR * 0.01;
-    var pph23IDR = totalPPHIDR * 0.02;
+    var vat2IDR = Math.round(totalDPP2IDR * 0.01);
+    
+    totalDPP2IDR = Math.round(totalDPP2IDR * 0.10);
+    totalDPP2USD = totalDPP2USD * 0.10;
+    
+    var vatIDR = Math.round(totalDPPIDR * 0.10);
+    
+    var pph23IDR = Math.round((totalDPPIDR+totalDPP2IDR) * 0.02);
     
     var vatUSD = totalDPPUSD * 0.10;
     var vat2USD = totalDPP2USD * 0.01;
@@ -139,11 +144,14 @@ function countBilling() {
     document.getElementById("totalSellingUSDAsString").value = formatCurrency(totalUSD);
     document.getElementById("totalSellingUSD").value = formatCurrency(totalUSD);
     
-    document.getElementById("totalSellingIDRAsString").value = formatCurrency(totalIDR);
+    document.getElementById("totalSellingIDRAsString").value = formatCurrency(Math.round(totalIDR));
     document.getElementById("totalSellingIDR").value = totalIDR;
     
     document.getElementById("totalDPPUSDAsString").value = formatCurrency(totalDPPUSD);
     document.getElementById("totalDPPIDRAsString").value = formatCurrency(totalDPPIDR);
+    
+    document.getElementById("totalDPP2USDAsString").value = formatCurrency(totalDPP2USD);
+    document.getElementById("totalDPP2IDRAsString").value = formatCurrency(totalDPP2IDR);
           
     document.getElementById("totalVatUSDAsString").value = formatCurrency(vatUSD);
     document.getElementById("totalVatIDRAsString").value = formatCurrency(vatIDR);
@@ -155,10 +163,10 @@ function countBilling() {
     document.getElementById("totalPPHIDRAsString").value = formatCurrency(pph23IDR);
     
     document.getElementById("subTotalBillingUSDAsString").value = formatCurrency(totalUSD + vatUSD + vat2USD);    
-    document.getElementById("subTotalBillingIDRAsString").value = formatCurrency(totalIDR + vatIDR + vat2IDR);        
+    document.getElementById("subTotalBillingIDRAsString").value = formatCurrency(Math.round(totalIDR + vatIDR + vat2IDR));        
     
     document.getElementById("totalBillingUSDAsString").value = formatCurrency((totalUSD + vatUSD + vat2USD) - pph23USD);
-    document.getElementById("totalBillingIDRAsString").value = formatCurrency((totalIDR + vatIDR + vat2IDR) - pph23IDR);
+    document.getElementById("totalBillingIDRAsString").value = formatCurrency(Math.round((totalIDR + vatIDR + vat2IDR) - pph23IDR));
     
     document.getElementById("totalBillingUSD").value = ((totalUSD + vatUSD + vat2USD) - pph23USD);
     document.getElementById("totalBillingIDR").value = ((totalIDR + vatIDR + vat2IDR) - pph23IDR);                
@@ -176,7 +184,7 @@ function countBilling() {
     totalExpensesIDR=(parseFloat(totalExpensesIDR) + vatIDR + vat2IDR);
     totalExpensesUSD=(parseFloat(totalExpensesUSD) + vatUSD);
     
-    document.getElementById("totalExpensesIDRAsString").value = formatCurrency(totalExpensesIDR);
+    document.getElementById("totalExpensesIDRAsString").value = formatCurrency(Math.round(totalExpensesIDR));
     document.getElementById("totalExpensesUSDAsString").value = formatCurrency(totalExpensesUSD);
     document.getElementById("totalExpensesIDR").value = totalExpensesIDR;
     document.getElementById("totalExpensesUSD").value = totalExpensesUSD;
@@ -184,7 +192,7 @@ function countBilling() {
     try {                        
         if (totalBillingIDR>totalExpensesIDR) {                       
             if (totalExpensesIDR>0)
-                refundIDR = (totalBillingIDR-totalExpensesIDR) * 0.4;                        
+                refundIDR = Math.round((totalBillingIDR-totalExpensesIDR) * 0.3);                        
         }                       
     } catch (e) {
         refundIDR = 0;
@@ -196,7 +204,7 @@ function countBilling() {
         if (totalBillingUSD>totalExpensesUSD) {                       
             if (totalBillingUSD>0) {                           
                 if (totalBillingUSD>=51) {                               
-                    refundUSD = (totalBillingUSD-totalExpensesUSD) * 0.4;
+                    refundUSD = (totalBillingUSD-totalExpensesUSD) * 0.3;
                 } else {
                     refundUSD = 0;
                 }                    
@@ -226,7 +234,7 @@ function countBilling() {
     }        
                 
     if (refundIDR>creditNoteIDR) {
-        document.getElementById("refundIDR").value = parseFloat(refundIDR-creditNoteIDR);
+        document.getElementById("refundIDR").value = Math.round(parseFloat(refundIDR-creditNoteIDR));
     } else {
         document.getElementById("refundIDR").value = 0;
     }
@@ -312,7 +320,7 @@ function countExpenses() {
     document.getElementById("totalCostUSDAsString").value = formatCurrency(totalUSD);
     document.getElementById("totalCostUSD").value = formatCurrency(totalUSD);
     
-    document.getElementById("totalCostIDRAsString").value = formatCurrency(totalIDR);
+    document.getElementById("totalCostIDRAsString").value = formatCurrency(Math.round(totalIDR));
     document.getElementById("totalCostIDR").value = totalIDR;
     
    

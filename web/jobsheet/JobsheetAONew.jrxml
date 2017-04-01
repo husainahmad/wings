@@ -89,6 +89,9 @@
 	<parameter name="dppUSD" isForPrompting="false" class="java.lang.Double"/>
 	<parameter name="vat2IDR" isForPrompting="false" class="java.lang.Double"/>
 	<parameter name="vat2USD" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="dppIDR2" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="dppUSD2" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="jaminan" isForPrompting="false" class="java.lang.Double"/>
 
 	<field name="description" class="java.lang.String"/>
 	<field name="billingIDR" class="java.lang.Double"/>
@@ -136,13 +139,14 @@
 -$P{pphUSD}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
+	<variable name="totalExpensesIDR" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double(($V{subTotalExpensesIDR}.doubleValue() + 
+$P{vatIDR}.doubleValue() + 
+$P{vat2IDR}.doubleValue()))]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
+	</variable>
 	<variable name="totalProfitIDR" class="java.lang.Double" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[new Double($V{totalBillingPPHIDR}.doubleValue()-
-(($V{subTotalExpensesIDR}.doubleValue()
-+$P{vatIDR}.doubleValue()
-+$P{vat2IDR}.doubleValue())
-+$P{cnIDR}.doubleValue()+
-$P{refundIDR}.doubleValue()))]]></variableExpression>
+		<variableExpression><![CDATA[new Double(($V{totalBillingPPHIDR}.doubleValue()-($V{totalExpensesIDR}.doubleValue()))*0.7)]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="totalProfitUSD" class="java.lang.Double" resetType="Report" calculation="Nothing">
@@ -777,9 +781,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="460"
+						x="465"
 						y="260"
-						width="270"
+						width="265"
 						height="20"
 						key="staticText-47"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -790,9 +794,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="460"
+						x="465"
 						y="280"
-						width="80"
+						width="90"
 						height="20"
 						key="staticText-48"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -803,9 +807,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="540"
+						x="555"
 						y="280"
-						width="80"
+						width="65"
 						height="20"
 						key="staticText-49"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -818,7 +822,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 					<reportElement
 						x="190"
 						y="260"
-						width="270"
+						width="275"
 						height="20"
 						key="staticText-50"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -831,7 +835,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 					<reportElement
 						x="190"
 						y="280"
-						width="80"
+						width="100"
 						height="20"
 						key="staticText-51"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -842,9 +846,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="270"
+						x="290"
 						y="280"
-						width="80"
+						width="65"
 						height="20"
 						key="staticText-52"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -907,7 +911,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="350"
+						x="355"
 						y="280"
 						width="110"
 						height="20"
@@ -954,9 +958,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="460"
+						x="465"
 						y="0"
-						width="80"
+						width="90"
 						height="20"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -967,9 +971,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="540"
+						x="555"
 						y="0"
-						width="80"
+						width="65"
 						height="20"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -982,7 +986,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 					<reportElement
 						x="190"
 						y="0"
-						width="80"
+						width="100"
 						height="20"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -993,9 +997,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="270"
+						x="290"
 						y="0"
-						width="80"
+						width="65"
 						height="20"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -1006,7 +1010,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="350"
+						x="355"
 						y="0"
 						width="110"
 						height="20"
@@ -1041,7 +1045,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="353"  isSplitAllowed="true" >
+			<band height="387"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="0"
@@ -1059,7 +1063,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 					<reportElement
 						x="190"
 						y="0"
-						width="80"
+						width="100"
 						height="20"
 						key="textField-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -1070,9 +1074,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="270"
+						x="290"
 						y="0"
-						width="80"
+						width="65"
 						height="20"
 						key="textField-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -1083,9 +1087,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="460"
+						x="465"
 						y="0"
-						width="80"
+						width="90"
 						height="20"
 						key="textField-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -1096,9 +1100,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="540"
+						x="555"
 						y="0"
-						width="80"
+						width="65"
 						height="20"
 						key="textField-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -1110,7 +1114,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="0"
-						y="91"
+						y="111"
 						width="190"
 						height="20"
 						key="staticText-62"/>
@@ -1123,8 +1127,8 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="190"
-						y="91"
-						width="270"
+						y="111"
+						width="275"
 						height="20"
 						key="staticText-63"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1135,9 +1139,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="460"
-						y="91"
-						width="270"
+						x="465"
+						y="111"
+						width="265"
 						height="20"
 						key="staticText-64"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1163,7 +1167,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 					<reportElement
 						x="190"
 						y="31"
-						width="270"
+						width="275"
 						height="20"
 						key="staticText-69"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1174,9 +1178,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="460"
+						x="465"
 						y="31"
-						width="270"
+						width="265"
 						height="20"
 						key="staticText-70"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1188,7 +1192,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="0"
-						y="51"
+						y="71"
 						width="190"
 						height="20"
 						key="staticText-71"/>
@@ -1201,8 +1205,8 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="190"
-						y="51"
-						width="270"
+						y="71"
+						width="275"
 						height="20"
 						key="textField-16"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1213,9 +1217,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="460"
-						y="51"
-						width="270"
+						x="465"
+						y="71"
+						width="265"
 						height="20"
 						key="textField-17"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1227,7 +1231,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="0"
-						y="71"
+						y="91"
 						width="190"
 						height="20"
 						key="staticText-72"/>
@@ -1240,8 +1244,8 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="190"
-						y="71"
-						width="270"
+						y="91"
+						width="275"
 						height="20"
 						key="textField-18"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1252,9 +1256,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="460"
-						y="71"
-						width="270"
+						x="465"
+						y="91"
+						width="265"
 						height="20"
 						key="textField-19"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1265,7 +1269,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="350"
+						x="355"
 						y="0"
 						width="110"
 						height="20"
@@ -1292,7 +1296,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="0"
-						y="131"
+						y="151"
 						width="190"
 						height="20"
 						key="staticText-77"/>
@@ -1300,13 +1304,13 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 					<textElement verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
 					</textElement>
-				<text><![CDATA[VAT]]></text>
+				<text><![CDATA[VAT 10%]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="190"
-						y="131"
-						width="270"
+						y="151"
+						width="275"
 						height="20"
 						key="textField-24"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1317,9 +1321,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="460"
-						y="131"
-						width="270"
+						x="465"
+						y="151"
+						width="265"
 						height="20"
 						key="textField-25"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1331,7 +1335,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="0"
-						y="251"
+						y="291"
 						width="190"
 						height="20"
 						key="staticText-78"/>
@@ -1344,8 +1348,8 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="190"
-						y="251"
-						width="270"
+						y="291"
+						width="275"
 						height="20"
 						key="textField-26"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -1356,9 +1360,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="460"
-						y="251"
-						width="270"
+						x="465"
+						y="291"
+						width="265"
 						height="20"
 						key="textField-27"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -1370,7 +1374,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="0"
-						y="191"
+						y="231"
 						width="190"
 						height="20"
 						key="staticText-79"/>
@@ -1383,8 +1387,8 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="190"
-						y="191"
-						width="270"
+						y="231"
+						width="275"
 						height="20"
 						key="textField-28"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1395,9 +1399,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="460"
-						y="191"
-						width="270"
+						x="465"
+						y="231"
+						width="265"
 						height="20"
 						key="textField-29"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1409,7 +1413,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="0"
-						y="211"
+						y="251"
 						width="190"
 						height="20"
 						key="staticText-80"/>
@@ -1422,8 +1426,8 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="190"
-						y="211"
-						width="270"
+						y="251"
+						width="275"
 						height="20"
 						key="textField-30"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1434,9 +1438,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="460"
-						y="211"
-						width="270"
+						x="465"
+						y="251"
+						width="265"
 						height="20"
 						key="textField-31"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1448,7 +1452,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="0"
-						y="231"
+						y="271"
 						width="190"
 						height="20"
 						key="staticText-81"/>
@@ -1460,9 +1464,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="460"
-						y="231"
-						width="270"
+						x="465"
+						y="271"
+						width="265"
 						height="20"
 						key="textField-32"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1474,21 +1478,20 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="190"
-						y="231"
-						width="270"
+						y="271"
+						width="275"
 						height="20"
 						key="textField-33"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="12"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(($V{subTotalExpensesIDR}.doubleValue() + $P{vatIDR}.doubleValue()
-+ $P{vat2IDR}.doubleValue()))]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalExpensesIDR}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
 						x="0"
-						y="111"
+						y="131"
 						width="190"
 						height="20"
 						key="staticText-82"/>
@@ -1496,13 +1499,13 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 					<textElement verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
 					</textElement>
-				<text><![CDATA[DPP]]></text>
+				<text><![CDATA[DPP 10%]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="190"
-						y="111"
-						width="270"
+						y="131"
+						width="275"
 						height="20"
 						key="textField-34"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1513,9 +1516,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="460"
-						y="111"
-						width="270"
+						x="465"
+						y="131"
+						width="265"
 						height="20"
 						key="textField-35"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1527,7 +1530,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="0"
-						y="171"
+						y="211"
 						width="190"
 						height="20"
 						key="staticText-83"/>
@@ -1540,8 +1543,8 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="190"
-						y="171"
-						width="270"
+						y="211"
+						width="275"
 						height="20"
 						key="textField-36"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1552,9 +1555,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="460"
-						y="171"
-						width="270"
+						x="465"
+						y="211"
+						width="265"
 						height="20"
 						key="textField-37"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1566,8 +1569,8 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="0"
-						y="287"
-						width="190"
+						y="327"
+						width="160"
 						height="20"
 						key="staticText-84"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1578,9 +1581,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="190"
-						y="287"
-						width="160"
+						x="160"
+						y="327"
+						width="190"
 						height="20"
 						key="staticText-85"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="5" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1592,7 +1595,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="350"
-						y="287"
+						y="327"
 						width="190"
 						height="20"
 						key="staticText-86"/>
@@ -1605,7 +1608,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="540"
-						y="287"
+						y="327"
 						width="190"
 						height="20"
 						key="staticText-87"/>
@@ -1618,8 +1621,8 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="0"
-						y="307"
-						width="190"
+						y="347"
+						width="160"
 						height="40"
 						key="staticText-88"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -1630,9 +1633,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="190"
-						y="307"
-						width="160"
+						x="160"
+						y="347"
+						width="190"
 						height="40"
 						key="staticText-89"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="5" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -1644,7 +1647,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="350"
-						y="307"
+						y="347"
 						width="190"
 						height="40"
 						key="staticText-90"/>
@@ -1657,7 +1660,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="540"
-						y="307"
+						y="347"
 						width="190"
 						height="40"
 						key="staticText-91"/>
@@ -1670,7 +1673,7 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<staticText>
 					<reportElement
 						x="0"
-						y="151"
+						y="191"
 						width="190"
 						height="20"
 						key="staticText-92"/>
@@ -1683,8 +1686,8 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="190"
-						y="151"
-						width="270"
+						y="191"
+						width="275"
 						height="20"
 						key="textField-38"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1695,9 +1698,9 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="460"
-						y="151"
-						width="270"
+						x="465"
+						y="191"
+						width="265"
 						height="20"
 						key="textField-39"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1705,6 +1708,84 @@ $P{refundUSD}.doubleValue()))]]></variableExpression>
 						<font size="12"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{vat2USD}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="0"
+						y="171"
+						width="190"
+						height="20"
+						key="staticText-93"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+					</textElement>
+				<text><![CDATA[DPP 1%]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="190"
+						y="171"
+						width="275"
+						height="20"
+						key="textField-40"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{dppIDR2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="465"
+						y="171"
+						width="265"
+						height="20"
+						key="textField-41"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{dppUSD2}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="0"
+						y="51"
+						width="190"
+						height="20"
+						key="staticText-94"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Jaminan]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="190"
+						y="51"
+						width="275"
+						height="20"
+						key="textField-42"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{jaminan}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="465"
+						y="51"
+						width="265"
+						height="20"
+						key="textField-43"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[]]></textFieldExpression>
 				</textField>
 			</band>
 		</summary>

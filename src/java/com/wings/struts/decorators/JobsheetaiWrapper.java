@@ -60,7 +60,7 @@ public class JobsheetaiWrapper extends TableDecorator {
                 "<a class=\"link1\" href=\"Javascript:PopUpAddEdit('5','" + jobsheet.getIdJobSheet() + "');\"><img src=\"../Images/icon_add_new.png\" alt=\"As New\"/></a> " +
                 "<a class=\"link1\" href=\"Javascript:PopUpAddEdit('6','" + jobsheet.getIdJobSheet() + "');\"><img src=\"../Images/icon_add_copy.png\" alt=\"Copy\"/></a> " +
                 "<a class=\"link1\" href=\"Javascript:PopUpAddEdit('4','" + jobsheet.getIdJobSheet() + "');\"><img src=\"../Images/icon_print.png\" alt=\"Print\"/></a> " +
-                "<a class=\"link1\" href=\"Javascript:PopUpAddEdit('7','" + jobsheet.getIdJobSheet() + "');\"><img src=\"../Images/icon_print_header.png\" alt=\"Print Arrival Notice\"/></a> " +
+                "<a class=\"link1\" href=\"Javascript:PopUpAddEdit('7','" + jobsheet.getIdJobSheet() + "');\"><img src=\"../Images/icon_print_header.png\" alt=\"Print Arrival Notice\"/></a> " +                
                 "<a class=\"link1\" href=\"Javascript:PopUpAddEdit('2','" + jobsheet.getIdJobSheet() + "');\"><img src=\"../Images/icon_delete.png\" alt=\"Delete\"/></a></div>";
     }
 

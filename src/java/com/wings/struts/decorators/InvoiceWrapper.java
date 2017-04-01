@@ -40,7 +40,8 @@ public class InvoiceWrapper extends TableDecorator {
         InvoiceDetail invoice = (InvoiceDetail)getCurrentRowObject();
         
         return "<div align=\"center\"><a class=\"link1\" href=\"Javascript:PopUpAddEdit('4','" + invoice.getIdInvoice() + "');\">Print</a> | " +
-                "<a class=\"link1\" href=\"Javascript:PopUpAddEdit('5','" + invoice.getIdInvoice() + "');\">Print (USD)</a> |" +
+                "<a class=\"link1\" href=\"Javascript:PopUpAddEdit('5','" + invoice.getIdInvoice() + "');\">Print (USD)</a> | " +
+                "<a class=\"link1\" href=\"Javascript:PopUpAddEdit('7','" + invoice.getIdInvoice() + "');\">Kwitansi</a> | " +
                 "<a class=\"link1\" href=\"Javascript:PopUpAddEdit('2','" + invoice.getIdInvoice() + "');\">Delete</a></div>";
     }
 

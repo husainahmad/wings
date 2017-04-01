@@ -1,7 +1,7 @@
 package com.wings.web.struts.actions;
 
 import com.wings.persistence.TaxJobSheetDetail;
-import com.wings.reports.datasource.TaxReportDataSource;
+import com.wings.reports.datasource.FakturLapReportDataSource;
 import com.wings.reports.datasource.TruckingDataSource;
 import com.wings.web.struts.forms.DateSelection;
 import java.io.File;
@@ -56,10 +56,9 @@ public final class PrintSummaryPajakAction extends Action {
             parameters.put("BaseDir", reportFile.getParentFile());                        
             parameters.put("dateFromTo", "Period : " + request.getParameter("from") + " - " + request.getParameter("to"));               
             JasperPrint jasperPrint = 
-                    JasperFillManager.fillReport(
-                            reportFileName, 
+                    JasperFillManager.fillReport(reportFileName, 
                             parameters, 
-                            new TaxReportDataSource(dtReport)
+                            new FakturLapReportDataSource(dtReport)
                             );
 
             request.getSession().setAttribute(ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint);            

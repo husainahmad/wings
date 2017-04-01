@@ -54,6 +54,12 @@
             <forward name="view" path="/viewer.jsp"/>
             <forward name="err" path="/errViewer.jsp"/>
         </action>
+        
+        <action path="/printKwitansi" type="com.wings.web.struts.actions.PrintKwitansiAction"
+          name="invoiceForm" validate="false" scope="request">                      
+            <forward name="view" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
 
         <action path="/printInvoiceUSD" type="com.wings.web.struts.actions.PrintInvoiceUSDAction"
           name="invoiceForm" validate="false" scope="request">                      

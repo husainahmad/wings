@@ -473,7 +473,7 @@
 
                                     <tr>
                                         <td>
-                                            DPP
+                                            DPP 10%
                                         </td>                                        
                                         <td width="5"></td>                                        
                                         <td>      
@@ -485,7 +485,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            VAT
+                                            VAT 10%
                                         </td>                                        
                                         <td width="5"></td>                                        
                                         <td>      
@@ -493,6 +493,18 @@
                                         </td>
                                         <td>
                                                 <input type="text" id="totalVatIDRAsString" name="totalVatIDRAsString" size="35" style="text-align: right;" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            DPP 1%
+                                        </td>                                        
+                                        <td width="5"></td>                                        
+                                        <td>      
+                                            <input type="text" id="totalDPP2USDAsString" name="totalDPP2USDAsString" size="35" style="text-align: right;" value="" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
+                                        </td>
+                                        <td>
+                                             <input type="text" id="totalDPP2IDRAsString" name="totalDPP2IDRAsString" size="35" style="text-align: right;" value="" onkeydown="if(event.keyCode==13) event.keyCode=9;">                                                        
                                         </td>
                                     </tr>
                                     <tr>

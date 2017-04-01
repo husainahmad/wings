@@ -926,6 +926,143 @@ public class PopulateAccount {
 
         return null;
     }
+
+    public TransactionaccForm insertACCAccount(JobsheetForm jobsheetForm, List baDebitList) {
+        TransactionaccForm transactionaccForm = new TransactionaccForm();
+        try {
+            KursdollarForm kursdollarForm = com.wings.adapter.StrutsKursdollarDelegate.selectLastKurs();
+            String name = "";
+            String id = "";
+            String idTR = "";
+            String nameTR = "";
+            if (jobsheetForm.getIdJobType().equalsIgnoreCase("AO")) {
+                id = "4101001";
+                name = "Sales Air Export";
+                idTR = "1104004";
+                nameTR = "T/R AO";
+            } else if (jobsheetForm.getIdJobType().equalsIgnoreCase("AI")) {
+                id = "4101002";
+                name = "Sales Air Import";
+                idTR = "1104003";
+                nameTR = "T/R AI";
+            } else if (jobsheetForm.getIdJobType().equalsIgnoreCase("SO")) {
+                id = "4101003";
+                name = "Sales Sea Export";
+                idTR = "1104002";
+                nameTR = "T/R SO";                
+            } else if (jobsheetForm.getIdJobType().equalsIgnoreCase("SI")) {
+                id = "4101004";
+                name = "Sales Sea Import";
+                idTR = "1104001";
+                nameTR = "T/R SI";
+            }
+
+            JobsheetKey jobsheetKey = new JobsheetKey();
+            jobsheetKey.setIdJobSheet(jobsheetForm.getIdJobSheet());
+            String uuid = String.valueOf(new AtomicInteger().incrementAndGet());
+
+            Double totalIDR = com.wings.adapter.StrutsBillingagentDelegate.selectTotalIDRByIdJobSheet(jobsheetKey);
+            
+            
+            if (jobsheetForm.getTotalBillingIDR().doubleValue() > 0.0) {
+                transactionaccForm.setDebit(new Double(0.0));
+                transactionaccForm.setKredit(jobsheetForm.getTotalBillingIDR());
+                transactionaccForm.setIdAccount("1103001");
+                transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
+                transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
+                transactionaccForm.setKurs("IDR");
+                transactionaccForm.setNoBatch(getNoBatchExpenses(jobsheetForm));
+                transactionaccForm.setBatchDesc("Account Receivable IDR");
+                transactionaccForm.setVoucherDesc(getIdInvoice(2));
+                transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
+                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "- Account Receivable IDR Rp. " + String.valueOf(jobsheetForm.getTotalBillingIDR().doubleValue()));
+                transactionaccForm.setJobNo(jobsheetForm.getJobNo());
+
+                Integer inUrut = com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
+                transactionaccForm.setInUrut(inUrut);
+                transactionaccForm.setGroupid(uuid);
+
+                transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut), 3, "0"));
+                transactionaccForm.setKursValue(kursdollarForm.getValue());
+                transactionaccForm = com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
+
+                // sebelah debit
+
+                transactionaccForm.setDebit(jobsheetForm.getPphIDR());
+                transactionaccForm.setKredit(new Double(0.0));
+                transactionaccForm.setIdAccount("2203001"); //PPN Keluaran
+                transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
+                transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
+                transactionaccForm.setKurs("IDR");
+                transactionaccForm.setNoBatch(getNoBatchExpenses(jobsheetForm));
+                transactionaccForm.setBatchDesc("PPN Keluaran");
+                transactionaccForm.setVoucherDesc(getIdInvoice(2));
+                transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
+                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "-" + "PPN Keluaran" + " Rp. " + String.valueOf(jobsheetForm.getPphIDR()));
+                transactionaccForm.setJobNo(jobsheetForm.getJobNo());
+                inUrut = com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
+                transactionaccForm.setInUrut(inUrut);
+                transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut), 3, "0"));
+                transactionaccForm.setKursValue(kursdollarForm.getValue());
+                transactionaccForm = com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
+                
+                transactionaccForm.setDebit(new Double(jobsheetForm.getTotalBillingIDR().doubleValue() - jobsheetForm.getPphIDR().doubleValue()));
+                transactionaccForm.setKredit(new Double(0.0));
+                transactionaccForm.setIdAccount(id); 
+                transactionaccForm.setBatchDesc(name);
+                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "-" + name + " Rp. " + String.valueOf(new Double(jobsheetForm.getTotalBillingIDR().doubleValue() - jobsheetForm.getPphIDR().doubleValue())));
+                inUrut = com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
+                transactionaccForm.setInUrut(inUrut);
+                transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut), 3, "0"));
+                transactionaccForm = com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);                
+            }
+
+            Double totalUSD = com.wings.adapter.StrutsBillingagentDelegate.selectTotalUSDByIdJobSheet(jobsheetKey);
+            if (jobsheetForm.getTotalBillingUSD().doubleValue() > 0.0) {
+                transactionaccForm.setDebit(new Double(0.0));
+                transactionaccForm.setKredit(jobsheetForm.getTotalBillingUSD());
+                transactionaccForm.setIdAccount("1103002");
+                transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
+                transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
+                transactionaccForm.setKurs("USD");
+                transactionaccForm.setNoBatch(getNoBatchExpenses(jobsheetForm));
+                transactionaccForm.setBatchDesc(name);
+                transactionaccForm.setVoucherDesc(getIdInvoice(2));
+                transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
+                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "-" + name + " $. " + String.valueOf(totalUSD.doubleValue()));
+                transactionaccForm.setJobNo(jobsheetForm.getJobNo());
+                Integer inUrut = com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
+                transactionaccForm.setInUrut(inUrut);
+                transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut), 3, "0"));
+                transactionaccForm.setKursValue(kursdollarForm.getValue());
+                transactionaccForm = com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
+
+                // sebelah debit
+                transactionaccForm.setDebit(jobsheetForm.getTotalBillingUSD());
+                transactionaccForm.setKredit(new Double(0.0));
+                transactionaccForm.setIdAccount(idTR);
+                transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
+                transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
+                transactionaccForm.setKurs("USD");
+                transactionaccForm.setNoBatch(getNoBatchExpenses(jobsheetForm));
+                transactionaccForm.setBatchDesc(nameTR);
+                transactionaccForm.setVoucherDesc(getIdInvoice(2));
+                transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
+                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "-" + nameTR + " $. " + String.valueOf(totalUSD.doubleValue()));
+                transactionaccForm.setJobNo(jobsheetForm.getJobNo());
+                inUrut = com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
+                transactionaccForm.setInUrut(inUrut);
+                transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut), 3, "0"));
+                transactionaccForm.setKursValue(kursdollarForm.getValue());
+                transactionaccForm = com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
+            }
+            return transactionaccForm;
+        } catch (Exception e) {
+        }
+
+        return null;
+    }
+    
     //BillingAgent//Selling//Billing
 
     public TransactionaccForm generateAccountDataHeaderDebitExpenses(JobsheetForm jobsheetForm, List baDebitList) {
@@ -963,6 +1100,7 @@ public class PopulateAccount {
             String uuid = String.valueOf(new AtomicInteger().incrementAndGet());
 
             Double totalIDR = com.wings.adapter.StrutsBillingagentDelegate.selectTotalIDRByIdJobSheet(jobsheetKey);
+            
             if (totalIDR.doubleValue() > 0.0) {
                 transactionaccForm.setDebit(new Double(0.0));
                 transactionaccForm.setKredit(totalIDR);

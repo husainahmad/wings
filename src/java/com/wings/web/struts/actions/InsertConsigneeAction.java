@@ -33,7 +33,7 @@ public final class InsertConsigneeAction extends Action {
          return mapping.findForward("view");
       } catch (Exception e) {
          ActionErrors errors = new ActionErrors();
-         errors.add("errors", new ActionError("err.message","Error while inserting data, perhaps you were input the existing data, "));
+         errors.add("errors", new ActionError("err.message","Error while inserting data, perhaps you were input the existing data, " + e.getMessage()));
          saveErrors(request, errors);
          request.setAttribute("action", "insert");      
          return mapping.findForward("form");

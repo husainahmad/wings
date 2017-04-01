@@ -103,9 +103,13 @@ public interface JobsheetDAO {
     
     List selectSummaryReportTaxMonthly(DateSelection dateSelection);
     
+    List selectReportJaminan(DateSelection dateSelection);
+    
     List selectDetailJobsheet(JobsheetKey jobsheetKey);
     
     List selectDetailJobsheetByJobNo(Jobsheet jobsheet);
     
     List selectRefund(DateSelection dateSelection);
+    
+    List selectFakturPajakByJobType(DateSelection dateSelection);
 }

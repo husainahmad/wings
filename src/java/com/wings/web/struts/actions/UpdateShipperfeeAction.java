@@ -29,6 +29,7 @@ public final class UpdateShipperfeeAction extends Action {
       ShipperfeeForm shipperfeeForm = (ShipperfeeForm)form;
 
       try {
+         shipperfeeForm.setIsTax("0");
          shipperfeeForm = com.wings.adapter.StrutsShipperfeeDelegate.update(shipperfeeForm);
          request.setAttribute("shipperfee", shipperfeeForm);
       } catch (Exception e) {

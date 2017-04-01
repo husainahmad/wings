@@ -49,11 +49,23 @@
             <forward name="form" path="/formTax.jsp"/>
         </action>
         
-         <action path="/printTax" type="com.wings.web.struts.actions.PrintTaxAction"
+        <action path="/printTax" type="com.wings.web.struts.actions.PrintTaxAction"
           name="taxForm" validate="false" scope="request">                      
             <forward name="view" path="/viewer.jsp"/>
             <forward name="err" path="/errViewer.jsp"/>
         </action>
+        
+        <action path="/lapFakturPajak" type="com.wings.web.struts.actions.SelectFakturPajakPaymentAction"
+          name="monthYearForm" validate="false" scope="request">                      
+            <forward name="list" path="/formLapTaxIndex.jsp"/>
+        </action>               
+        
+        <action path="/printFakturPajak" type="com.wings.web.struts.actions.PrintFakturPajakAction"
+            validate="false" scope="request">                              
+            <forward name="view" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>
+        </action>
+        
         
         <action path="/deleteTax" type="com.wings.web.struts.actions.DeleteTaxAction"
           name="taxForm" validate="false" scope="request">                      

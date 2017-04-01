@@ -27,7 +27,10 @@ public final class InsertAgentfeeAction extends Action {
 
       try {
          AgentfeeForm agentfeeForm = (AgentfeeForm)form;
+         agentfeeForm.setIsTax("0"); 
+         agentfeeForm.setJobType("0"); 
          AgentfeeForm agentfeeForm2 = agentfeeForm;
+         
          agentfeeForm2 = com.wings.adapter.StrutsAgentfeeDelegate.findByName(agentfeeForm2);
          if (agentfeeForm2!=null) {
              ActionErrors errors = new ActionErrors();

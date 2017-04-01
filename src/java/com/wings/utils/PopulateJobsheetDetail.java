@@ -607,7 +607,7 @@ public class PopulateJobsheetDetail {
          }         
          
          jobsheetForm.setVatIDR(new Double(vatAgent));
-         jobsheetForm.setPphIDR(new Double(pph23Agent));         
+                
          
          jobsheetForm.setVatUSD(new Double(0.0));
          jobsheetForm.setPphUSD(new Double(0.0));         
@@ -615,8 +615,10 @@ public class PopulateJobsheetDetail {
          jobsheetForm.setDppIDR(new Double(totalDPPAgent));        
          jobsheetForm.setDppUSD(new Double(0.0));         
          
-         jobsheetForm.setDppIDR2(new Double(totalDPP2Agent)); 
+         jobsheetForm.setDppIDR2(new Double(totalDPP2Agent * 0.1)); 
          jobsheetForm.setVatIDR2(new Double(totalDPP2Agent * 0.01)); 
+         
+         jobsheetForm.setPphIDR(new Double(((totalDPPAgent) + (totalDPP2Agent * 0.1)) * 0.02));  
          
          com.wings.adapter.StrutsJobsheetDelegate.updateTaxVat(jobsheetForm);
          
@@ -631,12 +633,16 @@ public class PopulateJobsheetDetail {
          // create invoice acc header
 //       populateAccount.generateAccountDataHeaderInvoice(jobsheetForm, baInvoiceList);         
          
+         
          // account Operational Expense/Selling/Billing
+         /*
          TransactionaccForm trFormDebitExpenses = populateAccount.generateAccountDataHeaderDebitExpenses(jobsheetForm, baDebitList);   
          populateAccount.insertDetailAccountDataDebitExpenses(trFormDebitExpenses, jobsheetForm, baDebitList);
          // account Operational Expense/Cost
+         
          TransactionaccForm trFormDebitCost = populateAccount.generateAccountDataHeaderDebitCost(jobsheetForm, expDebitList);                  
          populateAccount.insertDetailAccountDataDebitCost(trFormDebitCost, jobsheetForm, expDebitList);
+                 
          //populateAccount.generateAccountDataHeaderInvoiceExpenses(jobsheetForm, expInvoiceList);
          
          // account Sales/Selling
@@ -645,6 +651,9 @@ public class PopulateJobsheetDetail {
          
          TransactionaccForm trFormInvoiceCost = populateAccount.generateAccountDataHeaderInvoiceCost(jobsheetForm, expInvoiceList);
          populateAccount.insertDetailAccountDataInvoiceCost(trFormInvoiceCost, jobsheetForm, expInvoiceList);         
+         */
          
+         populateAccount.insertACCAccount(jobsheetForm, baDebitList);   
+         //populateAccount.insertDetailAccountDataDebitExpenses(trFormDebitExpenses, jobsheetForm, baDebitList);
    }          
 }

@@ -366,6 +366,7 @@ public final class PrintJobsheetaiAction extends Action {
         parameters.put("vat2USD", new Double(0.0));        
         
         parameters.put("cmb", jobsheetForm.getCmb());
+        parameters.put("jaminan", jobsheetForm.getJaminan());
         
         try {
             double refundIDR = 0.0;
@@ -538,6 +539,7 @@ public final class PrintJobsheetaiAction extends Action {
         parameters.put("vat2USD", new Double(0.0));        
         
         parameters.put("cmb", jobsheetForm.getCmb());
+        parameters.put("jaminan", jobsheetForm.getJaminan());
         
         try {
             double refundIDR = 0.0;

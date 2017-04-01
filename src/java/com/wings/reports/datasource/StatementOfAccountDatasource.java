@@ -90,6 +90,18 @@ public class StatementOfAccountDatasource implements JRDataSource
 		{
 			value = data[index][9];
 		}
+                else if ("vat10".equals(fieldName))
+		{
+			value = data[index][10];
+		}
+                else if ("vat1".equals(fieldName))
+		{
+			value = data[index][11];
+		}
+                else if ("pph".equals(fieldName))
+		{
+			value = data[index][12];
+		}
 		return value;
 	}
 

@@ -117,9 +117,26 @@ public final class PrintMonthlySalesAIAction extends Action {
                     List qrList = qr2.getResults();
                     MonthlySales ms = null;                                        
                     
+                    double vat1 = 0.0;
+                    double vat2 = 0.0;
+                    double pph = 0.0;
                     for (int j=0;j<qrList.size();j++) {
                         try {
                             List nList = (List)qrList.get(j);
+                            
+                            try {
+                                vat1+=new Double(nList.get(8).toString()).doubleValue();
+                            } catch (Exception ex) {                                
+                            }
+                            try {
+                                pph+=new Double(nList.get(9).toString()).doubleValue();
+                            } catch (Exception ex) {                                
+                            }
+                            try {
+                                vat2+=new Double(nList.get(10).toString()).doubleValue();
+                            } catch (Exception ex) {                                
+                            }
+                            
                             ms = new MonthlySales();
                             ms.setFlights(jobDetail.getFlights());
                             ms.setGroupingBy(jobDetail.getFlights()+jobDetail.getJobNo());
@@ -202,13 +219,13 @@ public final class PrintMonthlySalesAIAction extends Action {
                                     ms.setOutgoingRefund(jobDetail.getRefund());
                                     ms.setOutgoingRefundUS(jobDetail.getRefundUS());
                                     ms.setOutgoingRefundIDR(jobDetail.getRefundIDR());
-                                    ms.setOutgoingRefundUSD(jobDetail.getRefundUSD());
-                                    ms.setOutgoingTax(jobDetail.getVatIDR());
+                                    ms.setOutgoingRefundUSD(jobDetail.getRefundUSD());                                    
                                     ms.setPag(jobDetail.getPag());
                                     ms.setRefundAgentIDR(jobDetail.getRefundIDR());
                                     ms.setRefundAgentUSD(jobDetail.getRefundUSD());
-                                    ms.setBsPPH(jobDetail.getBsPPH());    
-                                    ms.setVatIDR2(jobDetail.getVatIDR2());
+                                    ms.setOutgoingTax(Double.valueOf(vat1));
+                                    ms.setBsPPH(Double.valueOf(pph));    
+                                    ms.setVatIDR2(Double.valueOf(vat2));
                                 }
                             } else if (j==qrList.size()-1) {                                                                                                                                    
                                 ms.setIrow("N");
@@ -230,8 +247,7 @@ public final class PrintMonthlySalesAIAction extends Action {
                                 ms.setOutgoingRefund(jobDetail.getRefund());
                                 ms.setOutgoingRefundUS(jobDetail.getRefundUS());
                                 ms.setOutgoingRefundIDR(jobDetail.getRefundIDR());
-                                ms.setOutgoingRefundUSD(jobDetail.getRefundUSD());
-                                ms.setOutgoingTax(jobDetail.getVatIDR());
+                                ms.setOutgoingRefundUSD(jobDetail.getRefundUSD());                                
                                 remark = jobDetail.getRemark().split(",");
                                 try {
                                     if (jobDetail.getRemark().split(",").length>j) {
@@ -246,8 +262,9 @@ public final class PrintMonthlySalesAIAction extends Action {
                                 ms.setPag(jobDetail.getPag());
                                 ms.setRefundAgentIDR(jobDetail.getRefundIDR());
                                 ms.setRefundAgentUSD(jobDetail.getRefundUSD());
-                                ms.setBsPPH(jobDetail.getBsPPH());
-                                ms.setVatIDR2(jobDetail.getVatIDR2());
+                                ms.setOutgoingTax(Double.valueOf(vat1));
+                                ms.setBsPPH(Double.valueOf(pph));    
+                                ms.setVatIDR2(Double.valueOf(vat2));
                             } else {
                                 ms.setIrow("2");
                                 ms.setInumber(nList.get(0).toString());

@@ -37,6 +37,8 @@ public class InvoiceAIDetail extends Jobsheet {
     private String idAAccountUSD = null;
     private String idAccountIDR = null;    
     private String idAccountUSD = null;
+    private String vol;
+    private Double jaminan;
     
     public InvoiceAIDetail() {
         
@@ -370,5 +372,33 @@ public class InvoiceAIDetail extends Jobsheet {
      */
     public void setIdAccountUSD(String idAccountUSD) {
         this.idAccountUSD = idAccountUSD;
+    }
+
+    /**
+     * @return the vol
+     */
+    public String getVol() {
+        return vol;
+    }
+
+    /**
+     * @param vol the vol to set
+     */
+    public void setVol(String vol) {
+        this.vol = vol;
+    }
+
+    /**
+     * @return the jaminan
+     */
+    public Double getJaminan() {
+        return jaminan;
+    }
+
+    /**
+     * @param jaminan the jaminan to set
+     */
+    public void setJaminan(Double jaminan) {
+        this.jaminan = jaminan;
     }
 }

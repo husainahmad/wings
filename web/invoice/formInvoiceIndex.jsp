@@ -53,7 +53,9 @@
                     url = 'printInvoiceUSD.do?idInvoice=' + idInvoice;    
                 } else if (id==6) {
                     url = 'newIncome.do?idInvoice=' + idInvoice;
-                }                   
+                } else if (id==7) {
+                    url = 'printKwitansi.do?idInvoice=' + idInvoice;
+                }                    
                 popUp('Invoice',url,'775','550');
         }		
     </script>

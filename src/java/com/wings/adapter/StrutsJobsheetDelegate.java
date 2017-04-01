@@ -136,6 +136,7 @@ public class StrutsJobsheetDelegate {
       
       jobsheetForm.setDppIDR2(jobsheet.getDppIDR2());
       jobsheetForm.setVatIDR2(jobsheet.getVatIDR2());
+      jobsheetForm.setJaminan(jobsheet.getJaminan());
       
       return jobsheetForm;
    }
@@ -468,6 +469,15 @@ public class StrutsJobsheetDelegate {
       return retVals;
    }
    
+   public static List selectReportJaminan (DateSelection dateSelection) throws Exception {
+      List retVals = new ArrayList();
+      JobsheetDAO jobsheetDAO;
+      DaoManager daoMgr = DaoConfig.getDaoManager();   
+      jobsheetDAO = (JobsheetDAO)daoMgr.getDao(JobsheetDAO.class);      
+      retVals = jobsheetDAO.selectReportJaminan(dateSelection);
+      return retVals;
+   }
+   
    public static List selectReportSummaryTax (DateSelection dateSelection) throws Exception {
       List retVals = new ArrayList();
       JobsheetDAO jobsheetDAO;
@@ -519,6 +529,15 @@ public class StrutsJobsheetDelegate {
       DaoManager daoMgr = DaoConfig.getDaoManager();   
       jobsheetDAO = (JobsheetDAO)daoMgr.getDao(JobsheetDAO.class);      
       retVals = jobsheetDAO.selectRefund(dateSelection);
+      return retVals;
+   }
+   
+   public static List selectReportFakturPajak (DateSelection dateSelection) throws Exception {
+      List retVals = new ArrayList();
+      JobsheetDAO jobsheetDAO;
+      DaoManager daoMgr = DaoConfig.getDaoManager();   
+      jobsheetDAO = (JobsheetDAO)daoMgr.getDao(JobsheetDAO.class);      
+      retVals = jobsheetDAO.selectFakturPajakByJobType(dateSelection);
       return retVals;
    }
 }

@@ -95,7 +95,7 @@
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="subTotalOutgoingRefundUS" class="java.lang.Double" resetType="Group" resetGroup="FlightsGouping" calculation="Sum">
-		<variableExpression><![CDATA[$F{hidRefundAgentUSD}]]></variableExpression>
+		<variableExpression><![CDATA[$F{hidRefundUS}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="subTotalOutgoingTax" class="java.lang.Double" resetType="Group" resetGroup="FlightsGouping" calculation="Sum">
@@ -120,9 +120,15 @@
 	</variable>
 	<variable name="subTotalOutgoingTaxIDR" class="java.lang.Double" resetType="None" calculation="Nothing">
 		<variableExpression><![CDATA[new Double($V{subTotalOutgoingIDR}.doubleValue()
--$V{subTotalOutgoingTax}.doubleValue()
--$V{subTotalTax2}.doubleValue()
--$V{subTotalOutgoingRefund}.doubleValue())]]></variableExpression>
+-$V{subTotalOutgoingRefund}.doubleValue())
+]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
+	</variable>
+	<variable name="subTotalOutgoingTaxUSD" class="java.lang.Double" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($V{subTotalOutgoingIDR}.doubleValue()
+-$V{subTotalOutgoingRefund}.doubleValue()
+-$V{subTotalCreditNoteUSD}.doubleValue())
+]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="subTotalProfitUSD" class="java.lang.Double" resetType="Group" resetGroup="FlightsGouping" calculation="Nothing">
@@ -135,7 +141,7 @@ $V{subTotalRefundAgentUSD}.doubleValue()))]]></variableExpression>
 	</variable>
 	<variable name="subTotalProfitIDR" class="java.lang.Double" resetType="Group" resetGroup="FlightsGouping" calculation="Nothing">
 		<variableExpression><![CDATA[new Double($V{totalIncomingIDR}.doubleValue()-
-$V{subTotalOutgoingIDR}.doubleValue()-
+$V{subTotalOutgoingTaxIDR}.doubleValue()-
 $V{subTotalOutgoingRefund}.doubleValue()-
 $V{subTotalOutgoingTax}.doubleValue()-
 $V{subTotalTax2}.doubleValue()-
@@ -168,8 +174,11 @@ $V{subTotalRefundAgentIDR}.doubleValue())]]></variableExpression>
 		<variableExpression><![CDATA[new Double($V{subTotalOutgoingTax}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
+	<variable name="totalTax2" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
+		<variableExpression><![CDATA[$V{subTotalTax2}]]></variableExpression>
+	</variable>
 	<variable name="totalPPH" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
-		<variableExpression><![CDATA[$F{bsPPH}]]></variableExpression>
+		<variableExpression><![CDATA[$V{subTotalPPH}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="totalProfitIDR" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
@@ -189,15 +198,16 @@ $V{subTotalRefundAgentIDR}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="sumTotalOutgoingIDR" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
-		<variableExpression><![CDATA[$V{subTotalOutgoingIDR}]]></variableExpression>
+		<variableExpression><![CDATA[$V{subTotalOutgoingTaxIDR}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="sumTotalOutgoingUSD" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
-		<variableExpression><![CDATA[$V{subTotalOutgoingUSD}]]></variableExpression>
+		<variableExpression><![CDATA[$V{subTotalOutgoingTaxUSD}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="sumTotalTaxAndRefundIDR" class="java.lang.Double" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[new Double($V{totalRefund}.doubleValue()+
+$V{totalTax2}.doubleValue()+
 $V{totalTax}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
@@ -206,7 +216,7 @@ $V{totalTax}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="sumTotalBuyingUSDKurs" class="java.lang.Double" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[new java.lang.Double(  ($V{sumTotalOutgoingIDR}.doubleValue()) /($P{Kurs}.doubleValue()) )]]></variableExpression>
+		<variableExpression><![CDATA[new java.lang.Double(($V{sumTotalOutgoingIDR}.doubleValue()) /($P{Kurs}.doubleValue()) )]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="sumTotalRefundTaxIDR" class="java.lang.Double" resetType="Report" calculation="Nothing">
@@ -219,6 +229,20 @@ $V{totalTax}.doubleValue())]]></variableExpression>
 	</variable>
 	<variable name="sumTotalTaxAndRefundUSD" class="java.lang.Double" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[new Double(0.0)]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
+	</variable>
+	<variable name="sumTotalProfitIDR" class="java.lang.Double" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($V{sumTotalIncomingIDR}.doubleValue() -
+$V{sumTotalOutgoingIDR}.doubleValue() -
+$V{sumTotalTaxAndRefundIDR}.doubleValue() -
+$V{totalPPH}.doubleValue())]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
+	</variable>
+	<variable name="sumTotalProfitUSD" class="java.lang.Double" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($V{sumTotalIncomingUSD}.doubleValue() -
+$V{sumTotalOutgoingUSD}.doubleValue() -
+$V{sumTotalTaxAndRefundUSD}.doubleValue())
+]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="totalRefundAgentIDR" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
@@ -240,18 +264,22 @@ $V{totalTax}.doubleValue())]]></variableExpression>
 	<variable name="totProfitUSD" class="java.lang.Double" resetType="None" calculation="Nothing">
 	</variable>
 	<variable name="totProfitIDR" class="java.lang.Double" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($V{sumTotalIncomingIDR}.doubleValue() -
+$V{sumTotalOutgoingIDR}.doubleValue() -
+$V{sumTotalTaxAndRefundIDR}.doubleValue() -
+$V{totalPPH}.doubleValue())]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="totProfitUSDKurs" class="java.lang.Double" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[new Double(  ($V{totalProfitIDR}.doubleValue()) /($P{Kurs}.doubleValue()) )]]></variableExpression>
+		<variableExpression><![CDATA[new Double($V{sumTotalProfitIDR}.doubleValue() /$P{Kurs}.doubleValue() )]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="totTProfitUSD" class="java.lang.Double" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[new Double($V{totProfitAgentUSD}.doubleValue() + $V{totProfitUSD}.doubleValue()) ]]></variableExpression>
+		<variableExpression><![CDATA[new Double($V{sumTotalProfitUSD}.doubleValue()-$V{totalRefundAgentUSD}.doubleValue()) ]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="totTProfitIDR" class="java.lang.Double" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[new java.lang.Double(  ($V{totProfitIDR}.doubleValue()) +
-($V{totProfitAgentIDR}.doubleValue()) )]]></variableExpression>
+		<variableExpression><![CDATA[new Double($V{sumTotalProfitIDR}.doubleValue()-$V{totalRefundAgentIDR}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="totTProfitUSDKurs" class="java.lang.Double" resetType="Report" calculation="Nothing">
@@ -259,7 +287,7 @@ $V{totalTax}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="totalUSDAll" class="java.lang.Double" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[new java.lang.Double($V{totTProfitUSD}.doubleValue()+$V{totTProfitUSDKurs}.doubleValue())]]></variableExpression>
+		<variableExpression><![CDATA[new java.lang.Double($V{totTProfitUSD}.doubleValue()+$V{totTProfitUSDKurs}.doubleValue() )]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="totalRefundUS" class="java.lang.Double" resetType="Report" incrementType="Group" incrementGroup="FlightsGouping" calculation="Sum">
@@ -270,8 +298,13 @@ $V{totalTax}.doubleValue())]]></variableExpression>
 		<variableExpression><![CDATA[new Double(0.0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
-	<variable name="totalTax2" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[new Double($V{subTotalTax2}.doubleValue())]]></variableExpression>
+	<variable name="sumTotalIncomingIDRKurs" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($V{sumTotalIncomingIDR}.doubleValue()/$P{Kurs}.doubleValue())]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
+	</variable>
+	<variable name="pphUSDKurs" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($V{totalPPH}.doubleValue()/$P{Kurs}.doubleValue())]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 
 		<group  name="FlightsGouping" >
@@ -436,7 +469,7 @@ $V{totalTax}.doubleValue())]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{subTotalOutgoingIDR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{subTotalOutgoingTaxIDR}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1109,7 +1142,7 @@ MONTHLY SALES OF AIR IMPORT
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{creditNoteUSD}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{subTotalCreditNoteUSD}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1239,7 +1272,7 @@ MONTHLY SALES OF AIR IMPORT
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{creditNoteIDR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{subTotalCreditNoteIDR}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1719,7 +1752,7 @@ MONTHLY SALES OF AIR IMPORT
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{sumTotalSellingUSDKurs}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{sumTotalIncomingIDRKurs}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1784,7 +1817,7 @@ MONTHLY SALES OF AIR IMPORT
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalProfitIDR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{sumTotalProfitIDR}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1797,7 +1830,7 @@ MONTHLY SALES OF AIR IMPORT
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalProfitUSD}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{sumTotalProfitUSD}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1823,7 +1856,7 @@ MONTHLY SALES OF AIR IMPORT
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totTProfitUSD}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1836,7 +1869,7 @@ MONTHLY SALES OF AIR IMPORT
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totTProfitIDR}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1966,7 +1999,7 @@ MONTHLY SALES OF AIR IMPORT
 					<textElement textAlignment="Right">
 						<font size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{pphUSD}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{pphUSDKurs}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

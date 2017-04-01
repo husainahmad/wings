@@ -224,6 +224,9 @@ public final class PrintStatementOfAccountAction extends Action {
                valueOfTable[i][7] = invoiceAIDetail.getDDate();
                valueOfTable[i][8] = invoiceAIDetail.getIdNumber();               
                valueOfTable[i][9] = invoiceAIDetail.getName();
+               valueOfTable[i][10] = invoiceAIDetail.getVatIDR();
+               valueOfTable[i][11] = invoiceAIDetail.getVatIDR2();
+               valueOfTable[i][12] = invoiceAIDetail.getPphIDR();
             }
         } catch (Exception e) {
            

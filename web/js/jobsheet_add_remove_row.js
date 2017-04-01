@@ -27,7 +27,7 @@ function addbaDebit() {
     var dacountbaDebit = document.getElementById('dacountbaDebit').value;
     var kursValue = "billingAgentKursValueDebit"+dacountbaDebit;
     var chargeDebit = "billingAgentChargeDebit"+dacountbaDebit;
-    var kurs = "billingAgentKursebit"+dacountbaDebit;
+    var kurs = "billingAgentKursDebit"+dacountbaDebit;
     
     var new_row = table.insertRow(rowCount);
                 

@@ -37,6 +37,7 @@ public final class InsertShipperfeeAction extends Action {
              request.setAttribute("action", "insert");      
              return mapping.findForward("form");
          } else {
+             shipperfeeForm.setIsTax("0");
              shipperfeeForm = com.wings.adapter.StrutsShipperfeeDelegate.create(shipperfeeForm);
              // Set the newly created vo as a request attribute to be picked up
              request.setAttribute("shipperfee", shipperfeeForm);

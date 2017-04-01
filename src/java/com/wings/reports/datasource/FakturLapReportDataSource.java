@@ -17,7 +17,7 @@ import net.sf.jasperreports.engine.JRField;
  *
  * @author Administrator
  */
-public class TaxReportDataSource implements JRDataSource
+public class FakturLapReportDataSource implements JRDataSource
 {
     /**
      *
@@ -26,7 +26,7 @@ public class TaxReportDataSource implements JRDataSource
 
     private int index = -1;
 
-    public TaxReportDataSource(Object[][] data)
+    public FakturLapReportDataSource(Object[][] data)
     {
         this.data = data;
     }
@@ -44,46 +44,39 @@ public class TaxReportDataSource implements JRDataSource
 
         String fieldName = field.getName();
 
-        if ("no".equals(fieldName))
+        if ("tgl".equals(fieldName))
         {
                 value = data[index][0];
         }
-        else if ("nama".equals(fieldName))
+        else if ("invoice".equals(fieldName))
         {
                 value = data[index][1];
         }
-        else if ("npwp".equals(fieldName))
+        else if ("jobno".equals(fieldName))
         {
                 value = data[index][2];
         }
-        else if ("noInvoice".equals(fieldName))
+        else if ("customer".equals(fieldName))
         {
                 value = data[index][3];
         }        
-        else if ("tglInvoice".equals(fieldName))
+        else if ("vat10".equals(fieldName))
         {
                 value = data[index][4];
         }	
-        else if ("jobNo".equals(fieldName))
+        else if ("vat1".equals(fieldName))
         {
                 value = data[index][5];
         }
-        else if ("volume".equals(fieldName))
+        else if ("pph".equals(fieldName))
         {
                 value = data[index][6];
         }
-         else if ("tglFaktur".equals(fieldName))
+        else if ("total".equals(fieldName))
         {
                 value = data[index][7];
         }
-        else if ("dpp".equals(fieldName))
-        {
-                value = data[index][8];
-        }
-        else if ("noFaktur".equals(fieldName))
-        {
-                value = data[index][9];
-        }        
+           
         return value;
     }
 

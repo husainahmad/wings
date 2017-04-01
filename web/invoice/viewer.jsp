@@ -58,7 +58,6 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <head>
-  <title>.:  :.</title>  
   <style type="text/css">
     a {text-decoration: none}
   </style>
@@ -74,7 +73,7 @@
             }			
     //-->
     </SCRIPT>
-    <LINK href="<%=request.getContextPath()%>/Styles.css" type="text/css" rel="stylesheet">
+    
 </head>
 <body text="#000000" link="#000000" alink="#000000" vlink="#000000">
 <table width="100%" cellpadding="0" cellspacing="0" border="0">

@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,15 +49,15 @@ import org.apache.struts.util.RequestUtils;
 
 public final class PrintInvoiceAction extends Action {
     
-   SimpleDateFormat FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+   public static SimpleDateFormat FORMAT = new SimpleDateFormat("dd/MM/yyyy");
    
-   private double totalBillingIDR = 0.0;
-   private double totalBillingUSD = 0.0;
-   private double totalExpensesIDR = 0.0;
-   private double totalExpensesUSD = 0.0; 
-   private double totalTax = 0.0;
-   private double totalTax2 = 0.0;
-   private double totalPPH = 0.0;
+   public static double totalBillingIDR = 0.0;
+    public static  double totalBillingUSD = 0.0;
+    public static  double totalExpensesIDR = 0.0;
+    public static  double totalExpensesUSD = 0.0; 
+    public static  double totalDPP = 0.0;
+    public static  double totalDPP2 = 0.0;
+    public static  double totalPPH = 0.0;
    
    public ActionForward execute(
       ActionMapping mapping,
@@ -66,14 +67,16 @@ public final class PrintInvoiceAction extends Action {
    )
       throws IOException, ServletException {
         ServletContext context = this.getServlet().getServletConfig().getServletContext();
-   
+        InputStream imgInputStream = this.getClass().getResourceAsStream("/com/wings/images/logo.png"); 
+        
         totalBillingIDR = 0.0;
         totalBillingUSD = 0.0;
         totalExpensesIDR = 0.0;
         totalExpensesUSD = 0.0; 
-        totalTax = 0.0;
-        totalTax2 = 0.0;
+        totalDPP = 0.0;
+        totalDPP2 = 0.0;
         totalPPH = 0.0;
+        
         try                        
         {
             InvoiceForm invoiceForm = new InvoiceForm();
@@ -86,14 +89,16 @@ public final class PrintInvoiceAction extends Action {
             
             String mapp = "";
             if (jobType.equalsIgnoreCase("AI")) {
-                mapp = executeAIReport(request, invoiceKey, context);
+                mapp = executeAIReport(request, invoiceKey, context, false, imgInputStream, "InvoiceAI");
             } else if (jobType.equalsIgnoreCase("AO")) {
-                mapp = executeAOReport(request, invoiceKey, context);
+                mapp = executeAOReport(request, invoiceKey, context, false, imgInputStream, "InvoiceAO");
             } else if (jobType.equalsIgnoreCase("SI")) {
-                mapp = executeSIReport(request, invoiceKey, context);
+                mapp = executeSIReport(request, invoiceKey, context, false, imgInputStream, "InvoiceSI");
             } else if (jobType.equalsIgnoreCase("SO")) {
-                mapp = executeSOReport(request, invoiceKey, context);
+                mapp = executeSOReport(request, invoiceKey, context, false, imgInputStream, "InvoiceSO");
             }
+            
+            
             return mapping.findForward("view");
         } catch (Exception e) {
             request.setAttribute("err", e.getMessage());
@@ -101,8 +106,19 @@ public final class PrintInvoiceAction extends Action {
         }
                      
    }
-   private String executeAIReport(HttpServletRequest request, InvoiceKey invoiceKey, ServletContext context) throws Exception {
-       
+   
+   public static void resetValue() {
+        totalBillingIDR = 0.0;
+        totalBillingUSD = 0.0;
+        totalExpensesIDR = 0.0;
+        totalExpensesUSD = 0.0; 
+        totalDPP = 0.0;
+        totalDPP2 = 0.0;
+        totalPPH = 0.0;
+   }
+   public static String executeAIReport(HttpServletRequest request, InvoiceKey invoiceKey, ServletContext context, 
+                                        boolean isservis, InputStream imgInputStream, String fileName) throws Exception {
+                                        
         InvoiceAIDetail invoiceAIDetail = com.wings.adapter.StrutsInvoiceDelegate.selectInvoiceAIDetailByInvoiceKey(invoiceKey);
         JobsheetKey jobsheetKey = new JobsheetKey();
         jobsheetKey.setIdJobSheet(invoiceAIDetail.getIdJobSheet());
@@ -149,16 +165,15 @@ public final class PrintInvoiceAction extends Action {
         
         List list = com.wings.adapter.StrutsBillingshipperDelegate.selectByIdJobSheet(jobsheetKey);
         
-        Object[][] dtReport = this.parseListToArray(list);
+        Object[][] dtReport = PrintInvoiceAction.parseListToArray(list, isservis);
 
-        JasperCompileManager.compileReportToFile(context.getRealPath("/invoice/InvoiceAI.jrxml"));
-        String reportFileName = context.getRealPath("/invoice/InvoiceAI.jasper");
+        JasperCompileManager.compileReportToFile(context.getRealPath("/invoice/"+fileName+".jrxml"));
+        String reportFileName = context.getRealPath("/invoice/"+fileName+".jasper");
         File reportFile = new File(reportFileName);
         if (!reportFile.exists())
                 throw new JRRuntimeException("File jasper not found. The report design must be compiled first.");
 
         Map parameters = new HashMap();            
-        InputStream imgInputStream = this.getClass().getResourceAsStream("/com/wings/images/logo.png"); 
         parameters.put("IMAGE", imgInputStream);
         parameters.put("BaseDir", reportFile.getParentFile());          
         parameters.put("No", invoiceAIDetail.getInvoiceNumber());
@@ -215,7 +230,7 @@ public final class PrintInvoiceAction extends Action {
             
         }
         
-        parameters = countTotal(parameters);
+        parameters = countTotal(parameters, isservis);
         
         String perDistrict = null;                   
 
@@ -231,41 +246,35 @@ public final class PrintInvoiceAction extends Action {
        
    }
    
-   private Map countTotal(Map parameters) {
+   public static Map countTotal(Map parameters, boolean isservis) {
        EnglishDecimalFormat f = new EnglishDecimalFormat();
         IndonesianDecimalFormat i = new IndonesianDecimalFormat();
 //        DecimalFormat moneyFormat = new DecimalFormat("###.##");
         DecimalFormat indMoneyFormat = new DecimalFormat("###,###");
         parameters.put("subTotalBillingIDR", indMoneyFormat.format(totalBillingIDR));
+        parameters.put("dppIDR", indMoneyFormat.format(totalDPP));        
+        parameters.put("dppIDR2", indMoneyFormat.format(new Double(totalDPP2 * 0.1)));
         
-        totalPPH = totalPPH * 0.02;
-        parameters.put("totalPPH", indMoneyFormat.format(totalPPH));
+        parameters.put("totalPPH", indMoneyFormat.format(new Double(((totalDPP) + (totalDPP2 * 0.1)) * 0.02)));
                 
-        totalTax = totalTax * 0.10;
-        totalTax2 = totalTax2 * 0.01;
-        parameters.put("totalTax", indMoneyFormat.format(totalTax));
-        parameters.put("totalTax2", indMoneyFormat.format(totalTax2));
-        totalBillingIDR += (totalTax+totalTax2);
+        parameters.put("totalTax", indMoneyFormat.format(totalDPP * 0.1));
+        parameters.put("totalTax2", indMoneyFormat.format(new Double(totalDPP2 * 0.01)));
+        
+        totalBillingIDR += (new Double(totalDPP * 0.1).doubleValue() + new Double(totalDPP2 * 0.01).doubleValue());
         
         parameters.put("totalBillingIDRAfterVat", indMoneyFormat.format(totalBillingIDR));
         
-        totalBillingIDR = totalBillingIDR-totalPPH;
+        totalBillingIDR = totalBillingIDR -new Double(((totalDPP) + (totalDPP2 * 0.1)) * 0.02).doubleValue();            
+        
         parameters.put("grandTotal", indMoneyFormat.format(totalBillingIDR));
         
         parameters.put("strTotalBillingIDR", i.convert(String.valueOf(totalBillingIDR)).toUpperCase() + " RUPIAH");
-//        String strBilling = moneyFormat.format(totalBillingUSD);
-//        
-//        Float num = new Float(strBilling);
-//        int dollars = (int)Math.floor(totalBillingUSD);
-//        int cent = (int) Math.round((num.doubleValue() - dollars ) * 100.0f)  ;
-//        String s = f.convert(dollars)+" dollars and " 
-//            + f.convert(cent)+" cents dollars ";
-//
-//        parameters.put("strTotalBillingUSD", "THE SUM OF:# " + s.toUpperCase() + "#");
+
         return parameters;
    }
    
-   private String executeAOReport(HttpServletRequest request, InvoiceKey invoiceKey, ServletContext context) throws Exception {
+   public static String executeAOReport(HttpServletRequest request, InvoiceKey invoiceKey, ServletContext context, 
+                                        boolean isservis, InputStream imgInputStream, String fileName) throws Exception {
        
         InvoiceAODetail invoiceAODetail = com.wings.adapter.StrutsInvoiceDelegate.selectInvoiceAODetailByInvoiceKey(invoiceKey);
         JobsheetKey jobsheetKey = new JobsheetKey();
@@ -313,16 +322,16 @@ public final class PrintInvoiceAction extends Action {
         
         List list = com.wings.adapter.StrutsBillingshipperDelegate.selectByIdJobSheet(jobsheetKey);
 
-        Object[][] dtReport = this.parseListToArray(list);
+        Object[][] dtReport = PrintInvoiceAction.parseListToArray(list, isservis);
 
-        JasperCompileManager.compileReportToFile(context.getRealPath("/invoice/InvoiceAO.jrxml"));
-        String reportFileName = context.getRealPath("/invoice/InvoiceAO.jasper");
+        JasperCompileManager.compileReportToFile(context.getRealPath("/invoice/"+fileName+".jrxml"));
+        String reportFileName = context.getRealPath("/invoice/"+fileName+".jasper");
         File reportFile = new File(reportFileName);
         if (!reportFile.exists())
                 throw new JRRuntimeException("File jasper not found. The report design must be compiled first.");
 
         Map parameters = new HashMap();         
-        InputStream imgInputStream = this.getClass().getResourceAsStream("/com/wings/images/logo.png"); 
+
         parameters.put("IMAGE", imgInputStream);
         parameters.put("BaseDir", reportFile.getParentFile());          
         parameters.put("No", invoiceAODetail.getInvoiceNumber());
@@ -377,7 +386,7 @@ public final class PrintInvoiceAction extends Action {
         } catch (Exception e) {            
         }
         
-        parameters = countTotal(parameters);                
+        parameters = countTotal(parameters, isservis);                
 
         JasperPrint jasperPrint = 
                 JasperFillManager.fillReport(
@@ -390,7 +399,8 @@ public final class PrintInvoiceAction extends Action {
         return null;                
    }
    
-   private String executeSIReport(HttpServletRequest request, InvoiceKey invoiceKey, ServletContext context) throws Exception {
+   public static String executeSIReport(HttpServletRequest request, InvoiceKey invoiceKey, ServletContext context, 
+                                        boolean isservis, InputStream imgInputStream, String fileName) throws Exception {
        
         InvoiceSIDetail invoiceSIDetail = com.wings.adapter.StrutsInvoiceDelegate.selectInvoiceSIDetailByInvoiceKey(invoiceKey);
         JobsheetKey jobsheetKey = new JobsheetKey();
@@ -442,16 +452,15 @@ public final class PrintInvoiceAction extends Action {
         
         List list = com.wings.adapter.StrutsBillingshipperDelegate.selectByIdJobSheet(jobsheetKey);
 
-        Object[][] dtReport = this.parseListToArray(list);
+        Object[][] dtReport = PrintInvoiceAction.parseListToArray(list, isservis);
 
-        JasperCompileManager.compileReportToFile(context.getRealPath("/invoice/InvoiceSI.jrxml"));
-        String reportFileName = context.getRealPath("/invoice/InvoiceSI.jasper");
+        JasperCompileManager.compileReportToFile(context.getRealPath("/invoice/"+fileName+".jrxml"));
+        String reportFileName = context.getRealPath("/invoice/"+fileName+".jasper");
         File reportFile = new File(reportFileName);
         if (!reportFile.exists())
                 throw new JRRuntimeException("File jasper not found. The report design must be compiled first.");
 
         Map parameters = new HashMap();      
-        InputStream imgInputStream = this.getClass().getResourceAsStream("/com/wings/images/logo.png"); 
         parameters.put("IMAGE", imgInputStream);
         parameters.put("BaseDir", reportFile.getParentFile());          
         parameters.put("No", invoiceSIDetail.getInvoiceNumber());
@@ -507,9 +516,8 @@ public final class PrintInvoiceAction extends Action {
         } catch (Exception e) {            
         }
         
-        parameters = countTotal(parameters);        
-        
-        String perDistrict = null;                   
+        parameters = countTotal(parameters, isservis);        
+                       
         
         JasperPrint jasperPrint = 
                 JasperFillManager.fillReport(
@@ -522,7 +530,9 @@ public final class PrintInvoiceAction extends Action {
         return null;         
        
    }
-   private String executeSOReport(HttpServletRequest request, InvoiceKey invoiceKey, ServletContext context) throws Exception {
+   
+   public static String executeSOReport(HttpServletRequest request, InvoiceKey invoiceKey, ServletContext context, 
+                                        boolean isservis, InputStream imgInputStream, String fileName) throws Exception {
         
         
         InvoiceSODetail invoiceSODetail = com.wings.adapter.StrutsInvoiceDelegate.selectInvoiceSODetailByInvoiceKey(invoiceKey);
@@ -582,16 +592,15 @@ public final class PrintInvoiceAction extends Action {
         
         List list = com.wings.adapter.StrutsBillingshipperDelegate.selectByIdJobSheet(jobsheetKey);
 
-        Object[][] dtReport = this.parseListToArray(list);
+        Object[][] dtReport = PrintInvoiceAction.parseListToArray(list, isservis);
 
-        JasperCompileManager.compileReportToFile(context.getRealPath("/invoice/InvoiceSO.jrxml"));
-        String reportFileName = context.getRealPath("/invoice/InvoiceSO.jasper");
+        JasperCompileManager.compileReportToFile(context.getRealPath("/invoice/"+fileName+".jrxml"));
+        String reportFileName = context.getRealPath("/invoice/"+fileName+".jasper");
         File reportFile = new File(reportFileName);
         if (!reportFile.exists())
                 throw new JRRuntimeException("File jasper not found. The report design must be compiled first.");
 
         Map parameters = new HashMap();      
-        InputStream imgInputStream = this.getClass().getResourceAsStream("/com/wings/images/logo.png"); 
         parameters.put("IMAGE", imgInputStream);
         parameters.put("BaseDir", reportFile.getParentFile());          
         parameters.put("No", invoiceSODetail.getInvoiceNumber());
@@ -647,7 +656,7 @@ public final class PrintInvoiceAction extends Action {
         } catch (Exception e) {            
         }
         
-        parameters = countTotal(parameters);        
+        parameters = countTotal(parameters, isservis);        
         
         String perDistrict = null;                   
 
@@ -662,15 +671,35 @@ public final class PrintInvoiceAction extends Action {
         return null;         
        
    }
-   private Object[][] parseListToArray(List list) {
-        
+   
+   public static Object[][] parseListToArray(List list, boolean service) {
+        PrintInvoiceAction.resetValue();
         Object[][] valueOfTable = new Object[list.size()][7];
-                
+        if (service) {
+             try {
+                ArrayList newList = new ArrayList();
+                for (int i = 0; i < list.size(); i++) {
+                    BillingshipperDetail bs = (BillingshipperDetail)list.get(i);
+                    if ((bs.getIsTax().intValue()>0) || (bs.getIsTax2().intValue()>0)) {
+                        newList.add(bs);
+                    }
+                    if (bs.getDescriptionFee().equalsIgnoreCase("MATERAI")) {
+                         newList.add(bs);
+                    }
+                }                
+                valueOfTable = new Object[newList.size()][7];
+                list = newList;                
+             } catch (Exception e) {
+                e.printStackTrace();
+             }
+        }        
         try {
             for (int i = 0; i < list.size(); i++) {
                 BillingshipperDetail bs = (BillingshipperDetail)list.get(i);
                 valueOfTable[i][0] = String.valueOf(bs.getDescriptionFee());
                 valueOfTable[i][1] = bs.getDescriptionInvoice();
+                
+                valueOfTable[i][5] = "Cost To Cost";
                 
                 if (bs.getKurs().equalsIgnoreCase("IDR")) {
                     valueOfTable[i][2] = new Double(0.0);
@@ -683,17 +712,19 @@ public final class PrintInvoiceAction extends Action {
                 } 
                 
                 if (bs.getIsTax().intValue()>0) {
-                    totalTax+=bs.getCharge().doubleValue();
+                    totalDPP+=bs.getCharge().doubleValue();
+                    valueOfTable[i][5] = "Service";                    
                 }
                 if (bs.getIsTax2().intValue()>0) {
-                    totalTax2+=bs.getCharge().doubleValue();
+                    totalDPP2+=bs.getCharge().doubleValue();
+                    valueOfTable[i][5] = "Service";
                 }
                 if (bs.getIsVat().intValue()>0) {
                     totalPPH+=bs.getCharge().doubleValue();
                 }    
                 
                 valueOfTable[i][4] = bs.getDescriptionFee();
-                valueOfTable[i][5] = bs.getCategory();
+                
             }
         } catch (Exception e) {
             //log.info(e);

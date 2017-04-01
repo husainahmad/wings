@@ -110,6 +110,14 @@
             <forward name="view" path="/viewer.jsp"/>
             <forward name="err" path="/errViewer.jsp"/>  
         </action>
+        <action path="/reportJaminan" type="com.wings.web.struts.actions.ReportJaminanAction">
+            <forward name="index" path="/formJaminan.jsp"/>            
+            <forward name="err" path="/errViewer.jsp"/>  
+        </action>          
+        <action path="/printJaminan" type="com.wings.web.struts.actions.PrintJaminanAction">
+            <forward name="view" path="/viewer.jsp"/>
+            <forward name="err" path="/errViewer.jsp"/>  
+        </action> 
     </action-mappings>    
     <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
     

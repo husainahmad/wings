@@ -454,6 +454,7 @@ public final class PrintJobsheetsoAction extends Action {
         parameters.put("vat2USD", new Double(0.0));        
         
         parameters.put("cmb", jobsheetForm.getCmb());
+        parameters.put("jaminan", jobsheetForm.getJaminan());        
         
         try {
             double refundIDR = 0.0;
@@ -659,6 +660,8 @@ public final class PrintJobsheetsoAction extends Action {
         parameters.put("dppIDR2", new Double(jobsheetForm.getDppIDR2()== null ? 0.0 : jobsheetForm.getDppIDR2().doubleValue()));
         parameters.put("vat2IDR", new Double(jobsheetForm.getVatIDR2() == null ? 0.0 : jobsheetForm.getVatIDR2().doubleValue()));    
         parameters.put("vat2USD", new Double(0.0));        
+        
+        parameters.put("jaminan", jobsheetForm.getJaminan());
         
         try {
             double refundIDR = 0.0;
