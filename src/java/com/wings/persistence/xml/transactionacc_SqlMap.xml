@@ -47,22 +47,8 @@
       idAccount,
       description,
       kurs,
-      (
-            case kurs
-                when 'IDR'
-                    then kredit
-                when 'USD'
-                    then kredit*kursValue
-            end
-       ) as kredit,
-       (
-            case kurs
-                when 'IDR'
-                    then debit
-                when 'USD'
-                    then debit*kursValue
-            end
-       ) as debit,
+      kredit as kredit,
+      debit as debit,
       jobNo,
       tglTutupBuku, 
       kursValue,
@@ -87,22 +73,8 @@
       concat(t.idAccount,' - ',trim(a.accountName)) as idAccount,
       t.description,
       t.kurs,
-      (
-            case t.kurs
-                when 'IDR'
-                    then t.kredit
-                when 'USD'
-                    then t.kredit*t.kursValue
-            end
-       ) as kredit,
-       (
-            case t.kurs
-                when 'IDR'
-                    then t.debit
-                when 'USD'
-                    then t.debit*t.kursValue
-            end
-       ) as debit,
+      t.kredit as kredit,
+       t.debit as debit,
       t.jobNo,
       t.tglTutupBuku,
       t.kursValue,
@@ -120,35 +92,21 @@
         on a.idAccount = t.idAccount
     left join account_saldo ac
         on ac.idAccount = t.idAccount
-        and ac.bulan = (month(DATE_ADD(t.tglTutupBuku, interval -1 month)))
-        and ac.tahun = (year(DATE_ADD(t.tglTutupBuku, interval -1 month)))   
+        and ac.bulan = (month(t.tglTutupBuku))
+        and ac.tahun = (year(t.tglTutupBuku))   
     where month(t.tglTutupBuku) = #month#
         and year(t.tglTutupBuku) = #year#
         and t.idAccount like #idAccount#
         and a.idAccount is not null
         and length(t.idAccount) > 4
-    order by t.idAccount
+    order by t.idTransactionAcc, t.idAccount, t.transactionDate
   </select>
   
   <select id="transactionacc_selectReportGL" resultClass="transactionaccDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">
     select concat(a.idAccount,' ', trim(a.accountName)) as idAccount,
       ac.saldoAkhir as saldoAwal,
-      (
-            case t.kurs
-                when 'IDR'
-                    then sum(t.kredit)
-                when 'USD'
-                    then sum(t.kredit*t.kursValue)
-            end
-       ) as kredit,
-       (
-            case t.kurs
-                when 'IDR'
-                    then sum(t.debit)
-                when 'USD'
-                    then sum(t.debit*t.kursValue)
-            end
-       ) as debit,
+       sum(t.kredit) as kredit,
+       sum(t.debit) as debit,
        (
          select concat(ac.idAccount,' ', ac.accountName) from account ac
          where ac.idAccount = concat(left(t.idAccount,3),'00')
@@ -158,35 +116,21 @@
         on a.idAccount = t.idAccount
     left join account_saldo ac
         on ac.idAccount = t.idAccount
-        and ac.bulan = (month(DATE_ADD(t.tglTutupBuku, interval -1 month)))
-        and ac.tahun = (year(DATE_ADD(t.tglTutupBuku, interval -1 month)))       
+        and ac.bulan = (month(t.tglTutupBuku))
+        and ac.tahun = (year(t.tglTutupBuku))       
     where month(t.tglTutupBuku) = #month#
         and year(t.tglTutupBuku) = #year#
         and t.idAccount like #idAccount#
         and a.idAccount is not null
         and length(t.idAccount) > 4
-    group by t.idAccount
-    order by t.idAccount
+    group by t.idAccount, month(t.tglTutupBuku), year(t.tglTutupBuku)
+    order by t.idAccount, t.transactionDate, t.idTransactionAcc
   </select>
 
   <select id="transactionacc_selectReportGLSaldo" resultClass="transactionaccDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">
     select concat(a.idAccount,' ', trim(a.accountName)) as idAccount,
-      (
-            case t.kurs
-                when 'IDR'
-                    then sum(t.kredit)
-                when 'USD'
-                    then sum(t.kredit*t.kursValue)
-            end
-       ) as kredit,
-       (
-            case t.kurs
-                when 'IDR'
-                    then sum(t.debit)
-                when 'USD'
-                    then sum(t.debit*t.kursValue)
-            end
-       ) as debit,
+      sum(t.kredit) as kredit,
+       sum(t.debit) as debit,
        (
          select concat(ac.idAccount,' ', ac.accountName) from account ac
          where ac.idAccount = concat(left(t.idAccount,3),'00')
@@ -194,33 +138,20 @@
     from transactionacc t
     left join account a
         on a.idAccount = t.idAccount
-    where t.tglTutupBuku <![CDATA[ >= ]]> #date#
+    where month(t.tglTutupBuku) = #month#
+        and year(t.tglTutupBuku) = #year#
         and t.idAccount like #idAccount#
         and a.idAccount is not null
         and length(t.idAccount) > 4
-    group by t.idAccount
-    order by t.idAccount
+    group by t.idAccount, month(t.tglTutupBuku), year(t.tglTutupBuku)
+    order by t.idAccount, t.transactionDate, t.idTransactionAcc
 
   </select>
 
   <select id="transactionacc_selectReportRL" resultClass="transactionaccDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">
     select      
-      (
-            case t.kurs
-                when 'IDR'
-                    then sum(t.kredit)
-                when 'USD'
-                    then sum(t.kredit*t.kursValue)
-            end
-       ) as kredit,
-       (
-            case t.kurs
-                when 'IDR'
-                    then sum(t.debit)
-                when 'USD'
-                    then sum(t.debit*t.kursValue)
-            end
-       ) as debit,
+      sum(t.kredit) as kredit,
+       sum(t.debit) as debit,
        (
          select concat(ac.idAccount,' ', ac.accountName) from account ac
          where ac.idAccount = concat(left(t.idAccount,3),'00')
@@ -239,28 +170,14 @@
         and a.idAccount is not null
         and length(t.idAccount) > 4
     group by accountGroup
-    order by t.idAccount
+    order by  t.idTransactionAcc, t.idAccount, t.transactionDate
   </select>
   
   <select id="transactionacc_selectReportNL" resultClass="transactionaccDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">
         select concat(a.idAccount,' ', trim(a.accountName)) as idAccount,
           ac.saldoAkhir as saldoAwal,
-          sum(
-                case t.kurs
-                    when 'IDR'
-                        then t.kredit
-                    when 'USD'
-                        then t.kredit*t.kursValue
-                end
-           ) as kredit,
-           sum(
-                case t.kurs
-                    when 'IDR'
-                        then t.debit
-                    when 'USD'
-                        then t.debit*t.kursValue
-                end
-           ) as debit,
+          sum(t.kredit) as kredit,
+           sum(t.debit) as debit,
            (
              select concat(ac.idAccount,' ', ac.accountName) from account ac
              where ac.idAccount = concat(left(t.idAccount,3),'00')
@@ -275,8 +192,8 @@
             on a.idAccount = t.idAccount
         left join account_saldo ac
             on ac.idAccount = t.idAccount
-            and ac.bulan = (month(DATE_ADD(t.tglTutupBuku, interval -1 month)))
-            and ac.tahun = (year(DATE_ADD(t.tglTutupBuku, interval -1 month)))         
+            and ac.bulan = (month(t.tglTutupBuku))
+            and ac.tahun = (year(t.tglTutupBuku))         
         where a.category = 'NA'
         and month(t.tglTutupBuku) = #month#
         and year(t.tglTutupBuku) = #year#
@@ -287,22 +204,8 @@
     select
           concat(a.idAccount,' ', trim(a.accountName)) as idAccount,
           ac.saldoAkhir as saldoAwal,
-          sum(
-                case t.kurs
-                    when 'IDR'
-                        then t.kredit
-                    when 'USD'
-                        then t.kredit*t.kursValue
-                end
-           ) as kredit,
-           sum(
-                case t.kurs
-                    when 'IDR'
-                        then t.debit
-                    when 'USD'
-                        then t.debit*t.kursValue
-                end
-           ) as debit,
+          sum(t.kredit) as kredit,
+           sum(t.debit) as debit,
            (
              select concat(ac.idAccount,' ', ac.accountName) from account ac
              where ac.idAccount = concat(left(t.idAccount,3),'00')
@@ -317,8 +220,8 @@
             on a.idAccount = t.idAccount
         left join account_saldo ac
             on ac.idAccount = t.idAccount
-            and ac.bulan = (month(DATE_ADD(t.tglTutupBuku, interval -1 month)))
-            and ac.tahun = (year(DATE_ADD(t.tglTutupBuku, interval -1 month)))         
+            and ac.bulan = (month(t.tglTutupBuku))
+            and ac.tahun = (year(t.tglTutupBuku))         
         where a.category = 'NP'        
         and month(t.tglTutupBuku) = #month#
         and year(t.tglTutupBuku) = #year#
@@ -328,22 +231,8 @@
   </select>
   
   <select id="transactionacc_selectByTotal" resultClass="transactionacc" parameterClass="com.wings.web.struts.forms.MonthYearForm">
-    select sum(
-            case kurs
-                when 'IDR'
-                    then kredit
-                when 'USD'
-                    then kredit*kursValue
-            end
-       ) as kredit,
-       sum(
-            case kurs
-                when 'IDR'
-                    then debit
-                when 'USD'
-                    then debit*kursValue
-            end
-       ) as debit
+    select sum(kredit) as kredit,
+       sum(debit) as debit
     from transactionacc
     where month(tglTutupBuku) = #month#
         and year(tglTutupBuku) = #year#   
@@ -395,7 +284,7 @@
       jobNo = #jobNo:VARCHAR#,
       tglTutupBuku = #tglTutupBuku:TIMESTAMP#,
       kursValue = #kursValue:DOUBLE#,
-      groupid = #groupid:VARCHAR#,
+      groupid = #groupid:VARCHAR#
     where idTransactionAcc = #idTransactionAcc#
   </update>
   

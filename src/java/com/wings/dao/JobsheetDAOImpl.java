@@ -306,6 +306,13 @@ public class JobsheetDAOImpl extends SqlMapDaoTemplate implements JobsheetDAO {
 
         return records;
     }
+    
+    public List selectUnPaymentList(MonthYearForm monthYearForm) {
+        List records = (List) queryForList("jobsheet_selectUnPayment", monthYearForm);
+
+        return records;
+    }
+    
 
     public List selectStatementOfAccountListAll(MonthYearForm monthYearForm) {
         List records = (List) queryForList("jobsheet_selectReportStatementOfAccountListAll", monthYearForm);

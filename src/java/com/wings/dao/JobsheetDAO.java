@@ -39,6 +39,8 @@ public interface JobsheetDAO {
     
     List selectStatementOfAccountListAll(MonthYearForm monthYearForm);
     
+    List selectUnPaymentList(MonthYearForm monthYearForm);
+    
     List selectUnPaymentStatementOfAccount(MonthYearForm monthYearForm);
     
     Jobsheet selectByPrimaryKey(JobsheetKey key);

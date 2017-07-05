@@ -128,26 +128,21 @@ public final class PrintGLAction extends Action {
         TransactionDetail transactionacc = null;
         TransactionDetail transactionaccsaldo = null;
 
-        Double saldoAwal = null;
+        Double saldoAwal = new Double(0.0);
         try {            
             for (int i = 0; i < list.size(); i++) {                                
                transactionacc = (TransactionDetail)list.get(i);
-               saldoAwal = null;
+               saldoAwal = new Double(0.0);
                valueOfTable[i][0] = transactionacc.getIdAccount();
 
 
-               for (int j=0; j<listSado.size(); j++) {
-                   transactionaccsaldo = (TransactionDetail)listSado.get(i);
-                   if (transactionaccsaldo.getIdAccount().equalsIgnoreCase(transactionacc.getIdAccount())) {
-                       saldoAwal = new Double(transactionaccsaldo.getDebit().doubleValue() - transactionacc.getKredit().doubleValue());
-                       saldoAwal = new Double(saldoAwal.doubleValue() + transactionacc.getSaldoAwal().doubleValue());
-                   }
-               }
+               
 
-               valueOfTable[i][1] = saldoAwal;
+               valueOfTable[i][1] = transactionacc.getSaldoAwal()== null ? new Double(0.0) : transactionacc.getSaldoAwal() ;
                valueOfTable[i][2] = transactionacc.getDebit();
                valueOfTable[i][3] = transactionacc.getKredit();
-               valueOfTable[i][4] = transactionacc.getAccountGroup();               
+               valueOfTable[i][4] = transactionacc.getAccountGroup()!=null ? transactionacc.getAccountGroup() : "";               
+               valueOfTable[i][5] = "";               
                
             }
         } catch (Exception e) {

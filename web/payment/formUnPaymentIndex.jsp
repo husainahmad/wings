@@ -114,12 +114,12 @@
                                                         />
                                                 </td>
                                                 <td class="ver10gray" vAlign="middle" noWrap align="right">Month
-                                                    <html:select  property="month">
+                                                    <html:select  property="month" styleId="month">
                                                         <html:options collection="monthList" property="monthId" labelProperty="monthName"/>
                                                     </html:select>                                                
                                                 </td>
                                                 <td class="ver10gray" vAlign="middle" noWrap align="right">&nbsp;Year
-                                                    <html:select  property="year">
+                                                    <html:select  property="year" styleId="year">
                                                         <html:options collection="yearList" property="year" labelProperty="year"/>
                                                     </html:select>
                                                 </td>

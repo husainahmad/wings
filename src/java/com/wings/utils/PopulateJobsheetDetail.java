@@ -624,9 +624,9 @@ public class PopulateJobsheetDetail {
          
          // create header transaction acc debit
          PopulateAccount populateAccount = new PopulateAccount();
-         if (jobsheetForm.getJaminan().doubleValue()>0.0) {
-             populateAccount.insertJaminanToAccount(jobsheetForm);
-         }
+//         if (jobsheetForm.getJaminan().doubleValue()>0.0) {
+//             populateAccount.insertJaminanToAccount(jobsheetForm);
+//         }
                            
 //       populateAccount.generateAccountDataHeaderDebit(jobsheetForm, baDebitList);                  
           

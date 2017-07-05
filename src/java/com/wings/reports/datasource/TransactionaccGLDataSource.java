@@ -53,22 +53,26 @@ public class TransactionaccGLDataSource implements JRDataSource
 		if ("account".equals(fieldName))
 		{
 			value = data[index][0];
-		}		
-                else if ("debit".equals(fieldName))
+		}	
+                else if ("saldoAwal".equals(fieldName))
 		{
 			value = data[index][1];
+		}
+                else if ("debit".equals(fieldName))
+		{
+			value = data[index][2];
 		}		
                 else if ("kredit".equals(fieldName))
 		{
-			value = data[index][2];
+			value = data[index][3];
 		}
                 else if ("accountGroup".equals(fieldName))
 		{
-			value = data[index][3];
+			value = data[index][4];
 		}                
                 else if ("accountSuperGroup".equals(fieldName))
 		{
-			value = data[index][4];
+			value = data[index][5];
 		}                                                        
 		return value;
 	}

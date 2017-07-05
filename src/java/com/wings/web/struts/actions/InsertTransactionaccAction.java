@@ -93,10 +93,10 @@ public final class InsertTransactionaccAction extends Action {
               List transAcc = populateTransactionAcc(transactionaccForm, request);
               request.getSession().setAttribute("transactionAccList",transAcc);                        
             
-//              TransactionaccForm transactionaccForm2 = com.wings.adapter.StrutsTransactionaccDelegate.selectTotalByDateAndBatchNo(monthYearForm);                    
-//              request.setAttribute("totalDebit", moneyFormat.format(transactionaccForm2.getDebit().doubleValue()));
-//              request.setAttribute("totalKredit", moneyFormat.format(transactionaccForm2.getKredit().doubleValue()));
-//            
+              TransactionaccForm transactionaccForm2 = com.wings.adapter.StrutsTransactionaccDelegate.selectTotalByDateAndBatchNo(monthYearForm);                    
+              request.setAttribute("totalDebit", moneyFormat.format(transactionaccForm2.getDebit().doubleValue()));
+              request.setAttribute("totalKredit", moneyFormat.format(transactionaccForm2.getKredit().doubleValue()));
+            
               request.setAttribute("transactionacc", transactionaccForm);         
               request.setAttribute("action", "insert");
 

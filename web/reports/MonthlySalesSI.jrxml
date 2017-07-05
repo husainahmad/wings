@@ -126,8 +126,7 @@ $V{subTotalOutgoingRefund}.doubleValue())]]></variableExpression>
 	</variable>
 	<variable name="subTotalOutgoingTaxUSD" class="java.lang.Double" resetType="None" calculation="Nothing">
 		<variableExpression><![CDATA[new Double(
-$V{subTotalOutgoingUSD}.doubleValue()-          
-$V{subTotalCreditNoteUSD}.doubleValue())]]></variableExpression>
+$V{subTotalOutgoingUSD}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="subTotalProfitUSD" class="java.lang.Double" resetType="Group" resetGroup="FlightsGouping" calculation="Nothing">

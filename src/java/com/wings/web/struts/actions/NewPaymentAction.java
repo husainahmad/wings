@@ -57,7 +57,7 @@ public final class NewPaymentAction extends Action {
                 monthYearForm.setMonth(new Integer(imonth));
             }
 
-            List list = com.wings.adapter.StrutsJobsheetDelegate.selectStatementOfAccountByMonthAndYear(monthYearForm);
+            List list = com.wings.adapter.StrutsJobsheetDelegate.selectUnPaymentList(monthYearForm);
             list = this.clearUnusedData(list, request);
             
             request.setAttribute("PayableList", list);
@@ -78,6 +78,7 @@ public final class NewPaymentAction extends Action {
        
        for (int i=0;i<repList.size();i++) {
             invoiceAIDetail = (InvoiceAIDetail)repList.get(i);
+            invoiceAIDetail.setTotalBillingIDR(new Double(invoiceAIDetail.getTotalBillingIDR().doubleValue()+(invoiceAIDetail.getPphIDR().doubleValue())));
             if (invoiceAIDetail.getIdNumber().substring(0,1).equalsIgnoreCase("D")) { // means Debit
                 newInvoiceAIDetail = (InvoiceAIDetail)invoiceAIDetail;
                 if (invoiceAIDetail.getBillToDebit().equalsIgnoreCase("1")) {

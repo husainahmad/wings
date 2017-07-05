@@ -171,582 +171,7 @@ public class PopulateAccount {
         } catch (Exception e) {
         }
         return sInvDesc;
-    }
-    /*
-     * public void generateAccountDataHeaderInvoice(JobsheetForm jobsheetForm,
-     * List bsInvoiceList) { try { TransactionaccForm transactionaccForm = new
-     * TransactionaccForm(); KursdollarForm kursdollarForm =
-     * com.wings.adapter.StrutsKursdollarDelegate.selectLastKurs(); String name
-     * = ""; String id = ""; String idInvoice = ""; //String noInvoice =
-     * getIdInvoiceDesc(jobsheetForm); String billInvoiceTo =
-     * this.getBillingInvoiceTo(jobsheetForm); JobsheetKey jobsheetKey = new
-     * JobsheetKey(); jobsheetKey.setIdJobSheet(jobsheetForm.getIdJobSheet());
-     *
-     * InvoiceForm invoiceForm = new InvoiceForm();
-     * invoiceForm.setIdJobSheet(jobsheetForm.getIdJobSheet()); try {
-     * invoiceForm =
-     * com.wings.adapter.StrutsInvoiceDelegate.findByIdJobsheet(invoiceForm); }
-     * catch (Exception e) { }
-     *
-     * if (billInvoiceTo != null) { if (billInvoiceTo.equalsIgnoreCase("4")) {
-     * if (jobsheetForm.getIdJobType().equalsIgnoreCase("AI")) { name = ""; } if
-     * (jobsheetForm.getIdJobType().equalsIgnoreCase("AO")) { name = ""; } if
-     * (jobsheetForm.getIdJobType().equalsIgnoreCase("SI")) { JobsheetsiForm
-     * jobsheetsiForm = new JobsheetsiForm();
-     * jobsheetsiForm.setIdJobSheet(jobsheetForm.getIdJobSheet());
-     * jobsheetsiForm =
-     * com.wings.adapter.StrutsJobsheetsiDelegate.editByIdJobsheet(jobsheetsiForm);
-     * name = jobsheetsiForm.getShippingLine(); } if
-     * (jobsheetForm.getIdJobType().equalsIgnoreCase("SO")) { JobsheetsoForm
-     * jobsheetsoForm = new JobsheetsoForm();
-     * jobsheetsoForm.setIdJobSheet(jobsheetForm.getIdJobSheet());
-     * jobsheetsoForm =
-     * com.wings.adapter.StrutsJobsheetsoDelegate.editByIdJobsheet(jobsheetsoForm);
-     * name = jobsheetsoForm.getShippingLine(); } Double totalIDR =
-     * com.wings.adapter.StrutsBillingshipperDelegate.selectTotalIDRByIdJobSheet(jobsheetKey);
-     * if (totalIDR.doubleValue() > 0.0) {
-     * transactionaccForm.setDebit(totalIDR); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("IDR");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " Rp. " + String.valueOf(totalIDR.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue()); //
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingshipperForm expensesshipper = null; // for (int i=0;
-     * i<bsInvoiceList.size(); i++) { // expensesshipper =
-     * (BillingshipperForm)bsInvoiceList.get(i); // try { //
-     * insertAccountDetailInvoice(jobsheetForm, expensesshipper, name, //
-     * kursdollarForm, invoiceForm); // } catch (Exception e) { // } // } }
-     * Double totalUSD =
-     * com.wings.adapter.StrutsBillingshipperDelegate.selectTotalUSDByIdJobSheet(jobsheetKey);
-     *
-     * id = ""; if (totalUSD.doubleValue() > 0.0) {
-     * transactionaccForm.setDebit(totalUSD); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("USD");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " $. " + String.valueOf(totalUSD.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingshipperForm expensesshipper = null; // for (int i=0;
-     * i<bsInvoiceList.size(); i++) { // expensesshipper =
-     * (BillingshipperForm)bsInvoiceList.get(i); // try { //
-     * insertAccountDetailInvoice(jobsheetForm, expensesshipper, name, //
-     * kursdollarForm, invoiceForm); // } catch (Exception e) { // } // } } }
-     * else if (billInvoiceTo.equalsIgnoreCase("3")) { ShipperForm shipperForm =
-     * new ShipperForm(); ConsigneeForm consigneeAsShipperForm = new
-     * ConsigneeForm();
-     * consigneeAsShipperForm.setIdConsignee(jobsheetForm.getIdShipper());
-     * shipperForm.setIdShipper(jobsheetForm.getIdShipper()); try {
-     * consigneeAsShipperForm =
-     * com.wings.adapter.StrutsConsigneeDelegate.edit(consigneeAsShipperForm);
-     * shipperForm.setName(consigneeAsShipperForm.getName());
-     * shipperForm.setIdShipper(consigneeAsShipperForm.getIdConsignee());
-     * shipperForm.setAddress1(consigneeAsShipperForm.getAddress1());
-     * shipperForm.setAddress2(consigneeAsShipperForm.getAddress2());
-     * shipperForm.setTelp(consigneeAsShipperForm.getTelp());
-     * shipperForm.setFax(consigneeAsShipperForm.getFax());
-     * shipperForm.setIdAccountIDR(consigneeAsShipperForm.getIdAccountIDR());
-     * shipperForm.setIdAccountUSD(consigneeAsShipperForm.getIdAccountUSD()); }
-     * catch (Exception e) { }
-     *
-     * name = shipperForm.getName(); this.setNameAccount(shipperForm.getName());
-     * Double totalIDR =
-     * com.wings.adapter.StrutsBillingshipperDelegate.selectTotalIDRByIdJobSheet(jobsheetKey);
-     * if (totalIDR.doubleValue() > 0.0) { if (shipperForm.getIdAccountIDR() !=
-     * null) { id = shipperForm.getIdAccountIDR(); }
-     * transactionaccForm.setDebit(totalIDR); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("IDR");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " RP. " + String.valueOf(totalIDR.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingshipperForm expensesshipper = null; // for (int i=0;
-     * i<bsInvoiceList.size(); i++) { // expensesshipper =
-     * (BillingshipperForm)bsInvoiceList.get(i); // try { //
-     * insertAccountDetailInvoice(jobsheetForm, expensesshipper, name, //
-     * kursdollarForm, invoiceForm); // } catch (Exception e) { // } // } } id =
-     * ""; Double totalUSD =
-     * com.wings.adapter.StrutsBillingshipperDelegate.selectTotalUSDByIdJobSheet(jobsheetKey);
-     * if (totalUSD.doubleValue() > 0.0) { if (shipperForm.getIdAccountUSD() !=
-     * null) { id = shipperForm.getIdAccountUSD(); }
-     * transactionaccForm.setDebit(totalUSD); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("USD");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " $. " + String.valueOf(totalUSD.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingshipperForm expensesshipper = null; // for (int i=0;
-     * i<bsInvoiceList.size(); i++) { // expensesshipper =
-     * (BillingshipperForm)bsInvoiceList.get(i); // try { //
-     * insertAccountDetailInvoice(jobsheetForm, expensesshipper, name, //
-     * kursdollarForm, invoiceForm); // } catch (Exception e) { // } // } } }
-     * else if (billInvoiceTo.equalsIgnoreCase("2")) { // account process
-     * ConsigneeForm consigneeForm = new ConsigneeForm();
-     * consigneeForm.setIdConsignee(jobsheetForm.getIdConsignee());
-     * consigneeForm =
-     * com.wings.adapter.StrutsConsigneeDelegate.edit(consigneeForm); name =
-     * consigneeForm.getName(); id = "";
-     * this.setNameAccount(consigneeForm.getName()); Double totalIDR =
-     * com.wings.adapter.StrutsBillingshipperDelegate.selectTotalIDRByIdJobSheet(jobsheetKey);
-     * if (totalIDR.doubleValue() > 0.0) { if (consigneeForm.getIdAccountIDR()
-     * != null) { id = consigneeForm.getIdAccountIDR(); }
-     * transactionaccForm.setDebit(totalIDR); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("IDR");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " Rp. " + String.valueOf(totalIDR.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingshipperForm expensesshipper = null; // for (int i=0;
-     * i<bsInvoiceList.size(); i++) { // expensesshipper =
-     * (BillingshipperForm)bsInvoiceList.get(i); // try { //
-     * insertAccountDetailInvoice(jobsheetForm, expensesshipper, name, //
-     * kursdollarForm, invoiceForm); // } catch (Exception e) { // } // } } id =
-     * ""; Double totalUSD =
-     * com.wings.adapter.StrutsBillingshipperDelegate.selectTotalUSDByIdJobSheet(jobsheetKey);
-     * if (totalUSD.doubleValue() > 0.0) { if (consigneeForm.getIdAccountUSD()
-     * != null) { id = consigneeForm.getIdAccountUSD(); }
-     * transactionaccForm.setDebit(totalUSD); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("USD");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " $. " + String.valueOf(totalUSD.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingshipperForm expensesshipper = null; // for (int i=0;
-     * i<bsInvoiceList.size(); i++) { // expensesshipper =
-     * (BillingshipperForm)bsInvoiceList.get(i); // try { //
-     * insertAccountDetailInvoice(jobsheetForm, expensesshipper, name, //
-     * kursdollarForm, invoiceForm); // } catch (Exception e) { // } // } } }
-     * else if (billInvoiceTo.equalsIgnoreCase("1")) { AgentForm agentForm = new
-     * AgentForm(); ConsigneeForm consigneeAsAgent = new ConsigneeForm();
-     * consigneeAsAgent.setIdConsignee(jobsheetForm.getIdAgent());
-     * agentForm.setIdAgent(jobsheetForm.getIdAgent()); try { consigneeAsAgent =
-     * com.wings.adapter.StrutsConsigneeDelegate.edit(consigneeAsAgent);
-     * agentForm.setName(consigneeAsAgent.getName());
-     * agentForm.setIdAgent(consigneeAsAgent.getIdConsignee());
-     * agentForm.setAddress1(consigneeAsAgent.getAddress1());
-     * agentForm.setAddress2(consigneeAsAgent.getAddress2());
-     * agentForm.setTelp(consigneeAsAgent.getTelp());
-     * agentForm.setFax(consigneeAsAgent.getFax());
-     *
-     * //agentForm = com.wings.adapter.StrutsAgentDelegate.edit(agentForm); }
-     * catch (Exception e) { } name = agentForm.getName(); id = "";
-     * this.setNameAccount(agentForm.getName()); Double totalIDR =
-     * com.wings.adapter.StrutsBillingshipperDelegate.selectTotalIDRByIdJobSheet(jobsheetKey);
-     * if (totalIDR.doubleValue() > 0.0) { if (agentForm.getIdAccountIDR() !=
-     * null) { id = agentForm.getIdAccountIDR(); }
-     * transactionaccForm.setDebit(totalIDR); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("IDR");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " Rp. " + String.valueOf(totalIDR.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingshipperForm expensesshipper = null; // for (int i=0;
-     * i<bsInvoiceList.size(); i++) { // expensesshipper =
-     * (BillingshipperForm)bsInvoiceList.get(i); // try { //
-     * insertAccountDetailInvoice(jobsheetForm, expensesshipper, name, //
-     * kursdollarForm, invoiceForm); // } catch (Exception e) { // } // } } id =
-     * ""; Double totalUSD =
-     * com.wings.adapter.StrutsBillingshipperDelegate.selectTotalUSDByIdJobSheet(jobsheetKey);
-     * if (totalUSD.doubleValue() > 0.0) { if (agentForm.getIdAccountUSD() !=
-     * null) { id = agentForm.getIdAccountUSD(); }
-     * transactionaccForm.setDebit(totalUSD); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("USD");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " $. " + String.valueOf(totalUSD.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingshipperForm expensesshipper = null; // for (int i=0;
-     * i<bsInvoiceList.size(); i++) { // expensesshipper =
-     * (BillingshipperForm)bsInvoiceList.get(i); // try { //
-     * insertAccountDetailInvoice(jobsheetForm, expensesshipper, name, //
-     * kursdollarForm, invoiceForm); // } catch (Exception e) { // } // } } } }
-     * } catch (Exception e) { System.out.println(e.getMessage()); } }
-     *
-     * public void generateAccountDataHeaderDebit(JobsheetForm jobsheetForm,
-     * List baDebitList) { try { TransactionaccForm transactionaccForm = new
-     * TransactionaccForm();
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); // make sure there
-     * is no same data
-     * //com.wings.adapter.StrutsTransactionaccDelegate.removeByJobNo(transactionaccForm);
-     *
-     * KursdollarForm kursdollarForm =
-     * com.wings.adapter.StrutsKursdollarDelegate.selectLastKurs(); String name
-     * = ""; String id = ""; String billDebitTo =
-     * this.getBillingDebitTo(jobsheetForm); JobsheetKey jobsheetKey = new
-     * JobsheetKey(); jobsheetKey.setIdJobSheet(jobsheetForm.getIdJobSheet());
-     *
-     * DebitForm invoiceForm = new DebitForm();
-     * invoiceForm.setIdJobSheet(jobsheetForm.getIdJobSheet()); try {
-     * invoiceForm =
-     * com.wings.adapter.StrutsDebitDelegate.findByIdJobsheet(invoiceForm); }
-     * catch (Exception e) { }
-     *
-     * if (billDebitTo != null) { if (billDebitTo.equalsIgnoreCase("4")) { if
-     * (jobsheetForm.getIdJobType().equalsIgnoreCase("AI")) { name = ""; } if
-     * (jobsheetForm.getIdJobType().equalsIgnoreCase("AO")) { name = ""; } if
-     * (jobsheetForm.getIdJobType().equalsIgnoreCase("SI")) { JobsheetsiForm
-     * jobsheetsiForm = new JobsheetsiForm();
-     * jobsheetsiForm.setIdJobSheet(jobsheetForm.getIdJobSheet());
-     * jobsheetsiForm =
-     * com.wings.adapter.StrutsJobsheetsiDelegate.editByIdJobsheet(jobsheetsiForm);
-     * name = jobsheetsiForm.getShippingLine(); } if
-     * (jobsheetForm.getIdJobType().equalsIgnoreCase("SO")) { JobsheetsoForm
-     * jobsheetsoForm = new JobsheetsoForm();
-     * jobsheetsoForm.setIdJobSheet(jobsheetForm.getIdJobSheet());
-     * jobsheetsoForm =
-     * com.wings.adapter.StrutsJobsheetsoDelegate.editByIdJobsheet(jobsheetsoForm);
-     * name = jobsheetsoForm.getShippingLine(); } Double totalIDR =
-     * com.wings.adapter.StrutsBillingagentDelegate.selectTotalIDRByIdJobSheet(jobsheetKey);
-     * if (totalIDR.doubleValue() > 0.0) {
-     * transactionaccForm.setDebit(totalIDR); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("IDR");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " Rp. " + String.valueOf(totalIDR.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     *
-     * // BillingagentForm expensesshipper = null; // for (int i=0;
-     * i<baDebitList.size(); i++) { // expensesshipper =
-     * (BillingagentForm)baDebitList.get(i); // try { //
-     * generateDataAndInsertAccountDetailDebitExpenses(jobsheetForm,
-     * expensesshipper, name, // kursdollarForm, invoiceForm); // } catch
-     * (Exception e) { // } // } } Double totalUSD =
-     * com.wings.adapter.StrutsBillingagentDelegate.selectTotalUSDByIdJobSheet(jobsheetKey);
-     * id = ""; if (totalUSD.doubleValue() > 0.0) {
-     * transactionaccForm.setDebit(totalUSD); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("USD");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " $. " + String.valueOf(totalUSD.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingagentForm expensesshipper = null; // for (int i=0;
-     * i<baDebitList.size(); i++) { // expensesshipper =
-     * (BillingagentForm)baDebitList.get(i); // try { //
-     * generateDataAndInsertAccountDetailDebitExpenses(jobsheetForm,
-     * expensesshipper, name, // kursdollarForm, invoiceForm); // } catch
-     * (Exception e) { // } // } } } else if (billDebitTo.equalsIgnoreCase("3"))
-     * { ShipperForm shipperForm = new ShipperForm(); ConsigneeForm
-     * consigneeAsShipperForm = new ConsigneeForm();
-     * consigneeAsShipperForm.setIdConsignee(jobsheetForm.getIdShipper());
-     * shipperForm.setIdShipper(jobsheetForm.getIdShipper()); try {
-     * consigneeAsShipperForm =
-     * com.wings.adapter.StrutsConsigneeDelegate.edit(consigneeAsShipperForm);
-     * shipperForm.setName(consigneeAsShipperForm.getName());
-     * shipperForm.setIdShipper(consigneeAsShipperForm.getIdConsignee());
-     * shipperForm.setAddress1(consigneeAsShipperForm.getAddress1());
-     * shipperForm.setAddress2(consigneeAsShipperForm.getAddress2());
-     * shipperForm.setTelp(consigneeAsShipperForm.getTelp());
-     * shipperForm.setFax(consigneeAsShipperForm.getFax());
-     * shipperForm.setIdAccountIDR(consigneeAsShipperForm.getIdAccountIDR());
-     * shipperForm.setIdAccountUSD(consigneeAsShipperForm.getIdAccountUSD()); }
-     * catch (Exception e) { } name = shipperForm.getName();
-     * this.setNameAccount(shipperForm.getName()); Double totalIDR =
-     * com.wings.adapter.StrutsBillingagentDelegate.selectTotalIDRByIdJobSheet(jobsheetKey);
-     * if (totalIDR.doubleValue() > 0.0) { if (shipperForm.getIdAccountIDR() !=
-     * null) { id = shipperForm.getIdAccountIDR(); }
-     * transactionaccForm.setDebit(totalIDR); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("IDR");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " RP. " + String.valueOf(totalIDR.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingagentForm expensesshipper = null; // for (int i=0;
-     * i<baDebitList.size(); i++) { // expensesshipper =
-     * (BillingagentForm)baDebitList.get(i); // try { //
-     * generateDataAndInsertAccountDetailDebitExpenses(jobsheetForm,
-     * expensesshipper, name, // kursdollarForm, invoiceForm); // } catch
-     * (Exception e) { // } // } } Double totalUSD =
-     * com.wings.adapter.StrutsBillingagentDelegate.selectTotalUSDByIdJobSheet(jobsheetKey);
-     * id = ""; if (totalUSD.doubleValue() > 0.0) { if
-     * (shipperForm.getIdAccountUSD() != null) { id =
-     * shipperForm.getIdAccountUSD(); } transactionaccForm.setDebit(totalUSD);
-     * transactionaccForm.setKredit(new Double(0.0));
-     * transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("USD");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " $. " + String.valueOf(totalUSD.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingagentForm expensesshipper = null; // for (int i=0;
-     * i<baDebitList.size(); i++) { // expensesshipper =
-     * (BillingagentForm)baDebitList.get(i); // try { //
-     * generateDataAndInsertAccountDetailDebitExpenses(jobsheetForm,
-     * expensesshipper, name, // kursdollarForm, invoiceForm); // } catch
-     * (Exception e) { // } // } } } else if (billDebitTo.equalsIgnoreCase("2"))
-     * { // account process ConsigneeForm consigneeForm = new ConsigneeForm();
-     * consigneeForm.setIdConsignee(jobsheetForm.getIdConsignee());
-     * consigneeForm =
-     * com.wings.adapter.StrutsConsigneeDelegate.edit(consigneeForm); name =
-     * consigneeForm.getName(); this.setNameAccount(consigneeForm.getName()); id
-     * = ""; Double totalIDR =
-     * com.wings.adapter.StrutsBillingagentDelegate.selectTotalIDRByIdJobSheet(jobsheetKey);
-     * if (totalIDR.doubleValue() > 0.0) { if (consigneeForm.getIdAccountIDR()
-     * != null) { id = consigneeForm.getIdAccountIDR(); }
-     * transactionaccForm.setDebit(totalIDR); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("IDR");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " RP. " + String.valueOf(totalIDR.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingagentForm expensesshipper = null; // for (int i=0;
-     * i<baDebitList.size(); i++) { // expensesshipper =
-     * (BillingagentForm)baDebitList.get(i); // try { //
-     * generateDataAndInsertAccountDetailDebitExpenses(jobsheetForm,
-     * expensesshipper, name, // kursdollarForm, invoiceForm); // } catch
-     * (Exception e) { // } // } } id = ""; Double totalUSD =
-     * com.wings.adapter.StrutsBillingagentDelegate.selectTotalUSDByIdJobSheet(jobsheetKey);
-     * if (totalUSD.doubleValue() > 0.0) { if (consigneeForm.getIdAccountUSD()
-     * != null) { id = consigneeForm.getIdAccountUSD(); }
-     * transactionaccForm.setDebit(totalUSD); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("USD");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " $. " + String.valueOf(totalUSD.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingagentForm expensesshipper = null; // for (int i=0;
-     * i<baDebitList.size(); i++) { // expensesshipper =
-     * (BillingagentForm)baDebitList.get(i); // try { //
-     * generateDataAndInsertAccountDetailDebitExpenses(jobsheetForm,
-     * expensesshipper, name, // kursdollarForm, invoiceForm); // } catch
-     * (Exception e) { // } // } } } else if (billDebitTo.equalsIgnoreCase("1"))
-     * { AgentForm agentForm = new AgentForm(); ConsigneeForm consigneeAsAgent =
-     * new ConsigneeForm();
-     * consigneeAsAgent.setIdConsignee(jobsheetForm.getIdAgent());
-     * agentForm.setIdAgent(jobsheetForm.getIdAgent()); try { consigneeAsAgent =
-     * com.wings.adapter.StrutsConsigneeDelegate.edit(consigneeAsAgent);
-     * agentForm.setName(consigneeAsAgent.getName());
-     * agentForm.setIdAgent(consigneeAsAgent.getIdConsignee());
-     * agentForm.setAddress1(consigneeAsAgent.getAddress1());
-     * agentForm.setAddress2(consigneeAsAgent.getAddress2());
-     * agentForm.setTelp(consigneeAsAgent.getTelp());
-     * agentForm.setFax(consigneeAsAgent.getFax());
-     *
-     * //agentForm = com.wings.adapter.StrutsAgentDelegate.edit(agentForm); }
-     * catch (Exception e) { } name = agentForm.getName();
-     * this.setNameAccount(agentForm.getName()); id = ""; Double totalIDR =
-     * com.wings.adapter.StrutsBillingagentDelegate.selectTotalIDRByIdJobSheet(jobsheetKey);
-     * if (totalIDR.doubleValue() > 0.0) { if (agentForm.getIdAccountIDR() !=
-     * null) { id = agentForm.getIdAccountIDR(); }
-     * transactionaccForm.setDebit(totalIDR); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("IDR");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " Rp. " + String.valueOf(totalIDR.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingagentForm expensesshipper = null; // for (int i=0;
-     * i<baDebitList.size(); i++) { // expensesshipper =
-     * (BillingagentForm)baDebitList.get(i); // try { //
-     * generateDataAndInsertAccountDetailDebitExpenses(jobsheetForm,
-     * expensesshipper, name, // kursdollarForm, invoiceForm); // } catch
-     * (Exception e) { // } // } } id = ""; Double totalUSD =
-     * com.wings.adapter.StrutsBillingagentDelegate.selectTotalUSDByIdJobSheet(jobsheetKey);
-     * if (totalUSD.doubleValue() > 0.0) { if (agentForm.getIdAccountUSD() !=
-     * null) { id = agentForm.getIdAccountUSD(); }
-     * transactionaccForm.setDebit(totalUSD); transactionaccForm.setKredit(new
-     * Double(0.0)); transactionaccForm.setIdAccount(id);
-     * transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
-     * transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
-     * transactionaccForm.setKurs("USD");
-     * transactionaccForm.setNoBatch(getNoBatch(jobsheetForm));
-     * transactionaccForm.setBatchDesc(getNamaBatch(jobsheetForm));
-     * transactionaccForm.setVoucherDesc(getIdInvoice(1));
-     * transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-     * transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0,
-     * 16) + "-" + name + " $. " + String.valueOf(totalUSD.doubleValue()));
-     * transactionaccForm.setJobNo(jobsheetForm.getJobNo()); Integer inUrut =
-     * com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
-     * transactionaccForm.setInUrut(inUrut);
-     * transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut),
-     * 3, "0")); transactionaccForm.setKursValue(kursdollarForm.getValue());
-     * transactionaccForm =
-     * com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
-     * // BillingagentForm expensesshipper = null; // for (int i=0;
-     * i<baDebitList.size(); i++) { // expensesshipper =
-     * (BillingagentForm)baDebitList.get(i); // try { //
-     * generateDataAndInsertAccountDetailDebitExpenses(jobsheetForm,
-     * expensesshipper, name, // kursdollarForm, invoiceForm); // } catch
-     * (Exception e) { // } // } } } } } catch (Exception e) {
-     * System.out.println(e); } }
-     *
-     */
+    }    
 
     public String getNameBillTo(String billDebitTo, JobsheetForm jobsheetForm) {
         String name = null;
@@ -965,8 +390,8 @@ public class PopulateAccount {
             
             
             if (jobsheetForm.getTotalBillingIDR().doubleValue() > 0.0) {
-                transactionaccForm.setDebit(new Double(0.0));
-                transactionaccForm.setKredit(jobsheetForm.getTotalBillingIDR());
+                transactionaccForm.setDebit(new Double(jobsheetForm.getTotalBillingIDR().doubleValue() + jobsheetForm.getPphIDR().doubleValue()));
+                transactionaccForm.setKredit(new Double(0.0));
                 transactionaccForm.setIdAccount("1103001");
                 transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
                 transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
@@ -975,7 +400,7 @@ public class PopulateAccount {
                 transactionaccForm.setBatchDesc("Account Receivable IDR");
                 transactionaccForm.setVoucherDesc(getIdInvoice(2));
                 transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "- Account Receivable IDR Rp. " + String.valueOf(jobsheetForm.getTotalBillingIDR().doubleValue()));
+                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "- Account Receivable IDR Rp. " + new Double(jobsheetForm.getTotalBillingIDR().doubleValue() + jobsheetForm.getPphIDR().doubleValue()));
                 transactionaccForm.setJobNo(jobsheetForm.getJobNo());
 
                 Integer inUrut = com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
@@ -988,8 +413,8 @@ public class PopulateAccount {
 
                 // sebelah debit
 
-                transactionaccForm.setDebit(jobsheetForm.getPphIDR());
-                transactionaccForm.setKredit(new Double(0.0));
+                transactionaccForm.setDebit(new Double(0.0));
+                transactionaccForm.setKredit(new Double(jobsheetForm.getVatIDR().doubleValue()+jobsheetForm.getVatIDR2().doubleValue()));
                 transactionaccForm.setIdAccount("2203001"); //PPN Keluaran
                 transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
                 transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
@@ -998,7 +423,7 @@ public class PopulateAccount {
                 transactionaccForm.setBatchDesc("PPN Keluaran");
                 transactionaccForm.setVoucherDesc(getIdInvoice(2));
                 transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "-" + "PPN Keluaran" + " Rp. " + String.valueOf(jobsheetForm.getPphIDR()));
+                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "-" + "PPN Keluaran" + " Rp. " + new Double(jobsheetForm.getVatIDR().doubleValue()+jobsheetForm.getVatIDR2().doubleValue()));
                 transactionaccForm.setJobNo(jobsheetForm.getJobNo());
                 inUrut = com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
                 transactionaccForm.setInUrut(inUrut);
@@ -1006,11 +431,16 @@ public class PopulateAccount {
                 transactionaccForm.setKursValue(kursdollarForm.getValue());
                 transactionaccForm = com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
                 
-                transactionaccForm.setDebit(new Double(jobsheetForm.getTotalBillingIDR().doubleValue() - jobsheetForm.getPphIDR().doubleValue()));
-                transactionaccForm.setKredit(new Double(0.0));
+                transactionaccForm.setDebit(new Double(0.0));
+                
+                double sales = (jobsheetForm.getTotalBillingIDR().doubleValue() - 
+                                                (jobsheetForm.getVatIDR().doubleValue() +  jobsheetForm.getVatIDR2().doubleValue()) +
+                                                jobsheetForm.getPphIDR().doubleValue());                
+                        
+                transactionaccForm.setKredit(new Double(sales));
                 transactionaccForm.setIdAccount(id); 
                 transactionaccForm.setBatchDesc(name);
-                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "-" + name + " Rp. " + String.valueOf(new Double(jobsheetForm.getTotalBillingIDR().doubleValue() - jobsheetForm.getPphIDR().doubleValue())));
+                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "-" + name + " Rp. " + String.valueOf(sales));
                 inUrut = com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
                 transactionaccForm.setInUrut(inUrut);
                 transactionaccForm.setNoUrut(StringUtils.leftPad(String.valueOf(inUrut), 3, "0"));
@@ -1019,8 +449,8 @@ public class PopulateAccount {
 
             Double totalUSD = com.wings.adapter.StrutsBillingagentDelegate.selectTotalUSDByIdJobSheet(jobsheetKey);
             if (jobsheetForm.getTotalBillingUSD().doubleValue() > 0.0) {
-                transactionaccForm.setDebit(new Double(0.0));
-                transactionaccForm.setKredit(jobsheetForm.getTotalBillingUSD());
+                transactionaccForm.setDebit(jobsheetForm.getTotalBillingUSD());
+                transactionaccForm.setKredit(new Double(0.0));
                 transactionaccForm.setIdAccount("1103002");
                 transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
                 transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
@@ -1029,7 +459,7 @@ public class PopulateAccount {
                 transactionaccForm.setBatchDesc(name);
                 transactionaccForm.setVoucherDesc(getIdInvoice(2));
                 transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "-" + name + " $. " + String.valueOf(totalUSD.doubleValue()));
+                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "-" + "Account Receivable (USD)" + " $. " + String.valueOf(totalUSD.doubleValue()));
                 transactionaccForm.setJobNo(jobsheetForm.getJobNo());
                 Integer inUrut = com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
                 transactionaccForm.setInUrut(inUrut);
@@ -1037,10 +467,10 @@ public class PopulateAccount {
                 transactionaccForm.setKursValue(kursdollarForm.getValue());
                 transactionaccForm = com.wings.adapter.StrutsTransactionaccDelegate.create(transactionaccForm);
 
-                // sebelah debit
-                transactionaccForm.setDebit(jobsheetForm.getTotalBillingUSD());
-                transactionaccForm.setKredit(new Double(0.0));
-                transactionaccForm.setIdAccount(idTR);
+                // sebelah kredit
+                transactionaccForm.setDebit(new Double(0.0));
+                transactionaccForm.setKredit(jobsheetForm.getTotalBillingUSD());
+                transactionaccForm.setIdAccount(id);
                 transactionaccForm.setTransactionDate(jobsheetForm.getShippeddate());
                 transactionaccForm.setTglTutupBuku(jobsheetForm.getShippeddate());
                 transactionaccForm.setKurs("USD");
@@ -1048,7 +478,7 @@ public class PopulateAccount {
                 transactionaccForm.setBatchDesc(nameTR);
                 transactionaccForm.setVoucherDesc(getIdInvoice(2));
                 transactionaccForm.setNoVoucher(getIdInvoiceDesc(jobsheetForm));
-                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "-" + nameTR + " $. " + String.valueOf(totalUSD.doubleValue()));
+                transactionaccForm.setDescription(jobsheetForm.getJobNo().substring(0, 16) + "-" + name + " $. " + String.valueOf(totalUSD.doubleValue()));
                 transactionaccForm.setJobNo(jobsheetForm.getJobNo());
                 inUrut = com.wings.adapter.StrutsTransactionaccDelegate.selectNoUrut(transactionaccForm);
                 transactionaccForm.setInUrut(inUrut);

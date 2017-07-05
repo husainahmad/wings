@@ -480,8 +480,11 @@
       ifnull(a.idAccountUSD,'') as idAAccountUSD,
       i.invoiceDate as dDate,
       ifnull(i.invoiceNumber,'') as idNumber,
-      totalBillingIDR,
-      totalBillingUSD,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.pphIDR,
+      j.vatIDR,
+      j.vatIDR2,
       j.idJobType,
       j.status,
       (
@@ -589,6 +592,9 @@
       ifnull(d.debitNumber,'') as idNumber,
       j.totalBillingIDR,
       j.totalBillingUSD,
+      j.pphIDR,
+      j.vatIDR,
+      j.vatIDR2,
       j.idJobType,
       j.status,
       (
@@ -698,6 +704,7 @@
       ifnull(i.invoiceNumber,'') as idNumber,
       j.totalBillingIDR,
       j.totalBillingUSD,
+      j.pphIDR,
       j.idJobType,
       j.status,
       (
@@ -804,6 +811,7 @@
       ifnull(d.debitNumber,'') as idNumber,
       j.totalBillingIDR,
       j.totalBillingUSD,
+      j.pphIDR,  
       j.idJobType,
       j.status,
       (
@@ -893,6 +901,228 @@
     and d.debitNumber is not null
   </select>
 
+<select id="jobsheet_selectUnPayment" resultClass="invoiceAIDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">   
+    select j.idJobSheet,
+      ifnull(j.jobNo,'') as jobNo,
+      ifnull(s.name,'') as idShipper,
+      ifnull(c.name,'') as idConsignee,
+      ifnull(a.name,'') as idAgent,
+      ifnull(s.idConsignee,'') as idS,
+      ifnull(c.idConsignee,'') as idC,
+      ifnull(a.idConsignee,'') as idA,
+      ifnull(s.idAccountIDR,'') as idSAccountIDR,
+      ifnull(c.idAccountIDR,'') as idCAccountIDR,
+      ifnull(a.idAccountIDR,'') as idAAccountIDR,
+      ifnull(s.idAccountUSD,'') as idSAccountUSD,
+      ifnull(c.idAccountUSD,'') as idCAccountUSD,
+      ifnull(a.idAccountUSD,'') as idAAccountUSD,
+      i.invoiceDate as dDate,
+      ifnull(i.invoiceNumber,'') as idNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.pphIDR,
+      j.vatIDR,
+      j.vatIDR2,
+      j.idJobType,
+      j.status,
+      (
+        case j.idJobType
+            when 'AI'
+               then ai.destination
+            when 'AO'
+               then ao.destination
+            when 'SI'
+               then si.origin
+            when 'SO'
+               then so.destination
+        end
+      ) as destination,
+    (
+        case j.idJobType
+            when 'AI'
+               then ai.mawb
+            when 'AO'
+               then ao.mawb
+           when 'SI'
+               then si.termHBL
+            when 'SO'
+               then so.termHBL
+        end
+      ) as hawb,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billTo
+            when 'AO'
+               then ao.billTo
+            when 'SI'
+               then si.billTo
+            when 'SO'
+               then so.billTo
+        end
+    ) as billTo,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billToDebit
+            when 'AO'
+               then ao.billToDebit
+            when 'SI'
+               then si.billToDebit
+            when 'SO'
+               then so.billToDebit
+        end
+    ) as billToDebit,
+    ifnull((
+        case j.idJobType
+            when 'AI'
+               then ''
+            when 'AO'
+               then ''
+            when 'SI'
+               then sli.name
+            when 'SO'
+               then slo.name
+        end
+    ),'') as shippingLine,
+    ifnull(i.isPayable,'') as isPayable
+    from jobsheet j
+    left join invoice i
+        on j.idJobSheet = i.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join jobsheetai ai
+        on j.idJobSheet = ai.idJobSheet
+    left join jobsheetao ao
+        on j.idJobSheet = ao.idJobSheet
+     left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee     
+    left join jobsheetso so
+        on j.idJobSheet = so.idJobSheet
+    left join consignee slo
+        on so.shippingLine = slo.idConsignee  
+    where  month(j.shippeddate) = #month# 
+    and year(j.shippeddate) = #year#
+    and i.isPayable = 'U'
+    and i.invoiceNumber is not null        
+    union
+    select j.idJobSheet,
+      ifnull(j.jobNo,'') as jobNo,
+      ifnull(s.name,'') as idShipper,
+      ifnull(c.name,'') as idConsignee,
+      ifnull(a.name,'') as idAgent,
+      ifnull(s.idConsignee,'') as idS,
+      ifnull(c.idConsignee,'') as idC,
+      ifnull(a.idConsignee,'') as idA,
+      ifnull(s.idAccountIDR,'') as idSAccountIDR,
+      ifnull(c.idAccountIDR,'') as idCAccountIDR,
+      ifnull(a.idAccountIDR,'') as idAAccountIDR,
+      ifnull(s.idAccountUSD,'') as idSAccountUSD,
+      ifnull(c.idAccountUSD,'') as idCAccountUSD,
+      ifnull(a.idAccountUSD,'') as idAAccountUSD,
+      d.debitDate as dDate,
+      ifnull(d.debitNumber,'') as idNumber,
+      j.totalBillingIDR,
+      j.totalBillingUSD,
+      j.pphIDR,
+      j.vatIDR,
+      j.vatIDR2,
+      j.idJobType,
+      j.status,
+      (
+        case j.idJobType
+            when 'AI'
+               then ai.destination
+            when 'AO'
+               then ao.destination
+            when 'SI'
+               then si.origin
+            when 'SO'
+               then so.destination
+        end
+      ) as destination,
+    (
+        case j.idJobType
+            when 'AI'
+               then ai.mawb
+            when 'AO'
+               then ao.mawb
+            when 'SI'
+               then si.termHBL
+            when 'SO'
+               then so.termHBL
+        end
+      ) as hawb,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billTo
+            when 'AO'
+               then ao.billTo
+            when 'SI'
+               then si.billTo
+            when 'SO'
+               then so.billTo
+        end
+    ) as billTo,
+     (
+        case j.idJobType
+            when 'AI'
+               then ai.billToDebit
+            when 'AO'
+               then ao.billToDebit
+            when 'SI'
+               then si.billToDebit
+            when 'SO'
+               then so.billToDebit
+        end
+    ) as billToDebit,
+    ifnull((
+        case j.idJobType
+            when 'AI'
+               then ''
+            when 'AO'
+               then ''
+            when 'SI'
+               then sli.name
+            when 'SO'
+               then slo.name
+        end
+    ),'') as shippingLine,
+    ifnull(d.isPayable,'') as isPayable
+    from jobsheet j
+    left join debit d
+        on j.idJobSheet = d.idJobSheet
+    left join consignee c
+        on c.idConsignee = j.idConsignee
+    left join consignee s
+        on s.idConsignee = j.idShipper
+    left join consignee a
+        on a.idConsignee = j.idAgent
+    left join jobsheetai ai
+        on j.idJobSheet = ai.idJobSheet
+    left join jobsheetao ao
+        on j.idJobSheet = ao.idJobSheet
+     left join jobsheetsi si
+        on j.idJobSheet = si.idJobSheet
+    left join consignee sli
+        on si.shippingLine = sli.idConsignee     
+    left join jobsheetso so
+        on j.idJobSheet = so.idJobSheet
+    left join consignee slo
+        on so.shippingLine = slo.idConsignee  
+    where  month(j.shippeddate) = #month# 
+    and year(j.shippeddate) = #year#
+    and d.isPayable = 'U'
+    and d.debitNumber is not null
+  </select>
+  
     <select id="jobsheet_selectReportUnPaymentStatementOfAccount" resultClass="invoiceAIDetail" parameterClass="com.wings.web.struts.forms.MonthYearForm">   
     select j.idJobSheet,
       ifnull(j.jobNo,'') as jobNo,
@@ -912,6 +1142,7 @@
       ifnull(i.invoiceNumber,'') as idNumber,
       j.totalBillingIDR,
       j.totalBillingUSD,
+      j.pphIDR,  
       j.idJobType,
       j.status,
       (
@@ -1018,6 +1249,7 @@
       ifnull(d.debitNumber,'') as idNumber,
       j.totalBillingIDR,
       j.totalBillingUSD,
+      j.pphIDR,  
       j.idJobType,
       j.status,
       (
@@ -1126,6 +1358,7 @@
       i.invoiceNumber as idNumber,
       j.totalBillingIDR,
       j.totalBillingUSD,
+      j.pphIDR,
       j.idJobType,
       j.status,
       (
@@ -1234,6 +1467,7 @@
       d.debitNumber as idNumber,
       j.totalBillingIDR,
       j.totalBillingUSD,
+      j.pphIDR,
       j.idJobType,
       j.status,
       (
@@ -1344,6 +1578,7 @@
       ifnull(i.invoiceNumber,'') as idNumber,
       j.totalBillingIDR,
       j.totalBillingUSD,
+      j.pphIDR,
       ifnull(j.idJobType,'') as idJobType,
       (
         case j.idJobType
@@ -1450,7 +1685,8 @@
       d.debitDate as dDate,
       ifnull(d.debitNumber,'') as idNumber,
       j.totalBillingIDR,
-      j.totalBillingUSD,
+      j.totalBillingUSD,      
+      j.pphIDR,
       j.idJobType,
       (
         case j.idJobType
