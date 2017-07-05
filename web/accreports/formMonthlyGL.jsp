@@ -116,7 +116,7 @@
                                 <tr vAlign="top">
                                     <td><b>Month</b></td>
                                     <td>
-                                        <html:select  property="month">
+                                        <html:select styleId="month"  property="month">
                                             <html:options collection="monthList" property="monthId" labelProperty="monthName"/>
                                         </html:select>                                                
                                     </td>
@@ -124,14 +124,14 @@
                                 <tr vAlign="top">
                                     <td><b>Year</b></td>
                                     <td>
-                                        <html:select  property="year">
+                                        <html:select styleId="year" property="year">
                                             <html:options collection="yearList" property="year" labelProperty="year"/>
                                         </html:select>
                                     </td>                            
                                 </tr>
                                 <tr>
                                     <td><b>Account</b></td>                                    
-                                    <td><html:text property="idAccount" size="13"/>&nbsp;
+                                    <td><html:text property="idAccount" styleId="idAccount" size="13"/>&nbsp;
                                     </td>                                    
                                 </tr>
                                 <%--
