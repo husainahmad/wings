@@ -244,6 +244,16 @@ public class StrutsJobsheetDelegate {
       return retVals;
    }
    
+   public static List selectUnPaymentList (MonthYearForm monthYearForm) throws Exception {
+      List retVals = new ArrayList();
+      JobsheetDAO jobsheetDAO;
+      DaoManager daoMgr = DaoConfig.getDaoManager();   
+      jobsheetDAO = (JobsheetDAO)daoMgr.getDao(JobsheetDAO.class);      
+      retVals = jobsheetDAO.selectUnPaymentList(monthYearForm);
+      return retVals;
+   }
+   
+   
    public static List selectStatementOfAccountAllStatusByMonthAndYear (MonthYearForm monthYearForm) throws Exception {
       List retVals = new ArrayList();
       JobsheetDAO jobsheetDAO;
